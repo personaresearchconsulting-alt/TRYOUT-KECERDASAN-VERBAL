@@ -71,7 +71,7 @@
       justify-content: space-between;
       align-items: center;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-      margin-bottom: 25px;
+      margin-bottom: 20px;
     }
 
     .timer-title {
@@ -95,42 +95,61 @@
       50% { opacity: 0.5; }
     }
 
-    .section-title {
-      background-color: var(--primary-color);
-      color: white;
-      padding: 10px 15px;
-      border-radius: 6px;
-      margin-top: 30px;
+    /* Progress Indicator */
+    .progress-container {
       margin-bottom: 20px;
-      font-size: 16px;
+    }
+
+    .progress-text {
+      display: flex;
+      justify-content: space-between;
       font-weight: 600;
+      font-size: 14px;
+      color: var(--secondary-color);
+      margin-bottom: 6px;
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 8px;
+      background-color: #bae6fd;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background-color: var(--primary-color);
+      transition: width 0.3s ease;
     }
 
     .question-block {
       background: #e0f2fe;
-      padding: 18px;
+      padding: 24px;
       border-radius: 8px;
       margin-bottom: 20px;
-      border-left: 4px solid var(--secondary-color);
+      border-left: 5px solid var(--secondary-color);
+      min-height: 220px;
     }
 
     .question {
       font-weight: 600;
-      font-size: 15px;
-      margin-bottom: 12px;
+      font-size: 16px;
+      margin-bottom: 16px;
       color: #0369a1;
     }
 
     .options label {
       display: block;
-      padding: 10px 14px;
-      margin: 6px 0;
+      padding: 12px 16px;
+      margin: 8px 0;
       background: white;
       border: 1px solid var(--border-color);
       border-radius: 6px;
       cursor: pointer;
       transition: all 0.2s ease;
-      font-size: 14px;
+      font-size: 15px;
     }
 
     .options label:hover {
@@ -139,7 +158,34 @@
     }
 
     .options input[type="radio"] {
-      margin-right: 10px;
+      margin-right: 12px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn-nav {
+      padding: 12px 24px;
+      background-color: #0369a1;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn-nav:hover {
+      background-color: #0284c7;
+    }
+
+    .btn-nav:disabled {
+      background-color: #cbd5e1;
+      cursor: not-allowed;
     }
 
     .btn-submit {
@@ -217,8 +263,8 @@
 <body>
   <div class="container" id="mainContainer">
     <div class="header">
-      <h1>ANALO GI 3 KATA LEVEL MUDAH</h1>
-      <p><strong>Persona Research & Consulting</strong> | WA: 0877 425 5786</p>
+      <h1>ANALOGI 3 KATA LEVEL MUDAH</h1>
+      <p><strong>Persona Research & Consulting</strong> | WA: 087742515786</p>
       <p>Pilihlah pasangan 3 kata yang memiliki pola hubungan dasar yang paling setara.</p>
     </div>
 
@@ -228,7 +274,26 @@
       <span id="countdown" class="timer-clock">40:00</span>
     </div>
 
-    <form id="quizForm"></form>
+    <!-- Progress Tracker Indicator -->
+    <div class="progress-container" id="progressContainer">
+      <div class="progress-text">
+        <span id="questionProgressText">Soal 1 dari 50</span>
+        <span id="percentText">2%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressBarFill"></div>
+      </div>
+    </div>
+
+    <form id="quizForm">
+      <div id="questionContainer"></div>
+
+      <div class="nav-buttons" id="navButtons">
+        <button type="button" class="btn-nav" id="btnPrev" onclick="prevQuestion()" disabled>&larr; Kembali</button>
+        <button type="button" class="btn-nav" id="btnNext" onclick="nextQuestion()">Selanjutnya &rarr;</button>
+      </div>
+    </form>
+
     <button type="button" id="submitBtn" class="btn-submit" onclick="submitQuiz()">Selesai & Lihat Hasil Pembahasan</button>
 
     <div id="result" class="hidden"></div>
@@ -246,7 +311,7 @@
       document.getElementById("mainContainer").innerHTML = `
         <div class="expired-screen">
           <h2>Ujian Ini Telah Kadaluarsa!</h2>
-          <p>Masa berlaku kuis ini telah berakhir. Silakan hubungi Persona Research & Consulting (WA: 0877 425 5786) untuk mendapatkan akses kuis terbaru.</p>
+          <p>Masa berlaku kuis ini telah berakhir. Silakan hubungi Persona Research & Consulting (WA: 087742515786) untuk mendapatkan akses kuis terbaru.</p>
         </div>
       `;
     }
@@ -329,41 +394,74 @@
       return array;
     }
 
-    // Encrypted / Processed Question List
+    // Processed Question List
     const quizQuestions = shuffleArray([...baseEasyQuestions]);
 
-    // Render Quiz Form
-    const form = document.getElementById("quizForm");
-    const chunkSize = 10;
+    let currentQuestionIndex = 0;
+    const userAnswers = new Array(quizQuestions.length).fill(null);
 
-    quizQuestions.forEach((q, i) => {
-      if (i % chunkSize === 0) {
-        const sectionHeader = document.createElement("div");
-        sectionHeader.className = "section-title";
-        sectionHeader.innerText = `BAGIAN ${Math.floor(i / chunkSize) + 1} (SOAL ${i + 1} - ${Math.min(i + chunkSize, quizQuestions.length)})`;
-        form.appendChild(sectionHeader);
-      }
-
-      const block = document.createElement("div");
-      block.className = "question-block";
+    // Render Single Question Function
+    function renderQuestion(index) {
+      const container = document.getElementById("questionContainer");
+      const q = quizQuestions[index];
 
       let optionsHTML = '';
       q.options.forEach((opt, j) => {
+        const isChecked = userAnswers[index] === j ? 'checked' : '';
         optionsHTML += `
           <div class="options">
             <label>
-              <input type="radio" name="q${i}" value="${j}">
+              <input type="radio" name="q${index}" value="${j}" ${isChecked} onchange="selectAnswer(${index}, ${j})">
               ${String.fromCharCode(65 + j)}. ${opt}
             </label>
           </div>`;
       });
 
-      block.innerHTML = `
-        <div class="question">${i + 1}. ${q.q}</div>
-        ${optionsHTML}
+      container.innerHTML = `
+        <div class="question-block">
+          <div class="question">${index + 1}. ${q.q}</div>
+          ${optionsHTML}
+        </div>
       `;
-      form.appendChild(block);
-    });
+
+      // Update Progress Tracker UI
+      const currentNo = index + 1;
+      const totalNo = quizQuestions.length;
+      const percent = Math.round((currentNo / totalNo) * 100);
+
+      document.getElementById("questionProgressText").innerText = `Soal ${currentNo} dari ${totalNo}`;
+      document.getElementById("percentText").innerText = `${percent}%`;
+      document.getElementById("progressBarFill").style.width = `${percent}%`;
+
+      // Update Navigation Buttons Status
+      document.getElementById("btnPrev").disabled = index === 0;
+      document.getElementById("btnNext").disabled = index === quizQuestions.length - 1;
+    }
+
+    // Handle Option Selection with Auto-Next
+    function selectAnswer(qIndex, valIndex) {
+      userAnswers[qIndex] = valIndex;
+      
+      if (qIndex < quizQuestions.length - 1) {
+        setTimeout(() => {
+          nextQuestion();
+        }, 300);
+      }
+    }
+
+    function nextQuestion() {
+      if (currentQuestionIndex < quizQuestions.length - 1) {
+        currentQuestionIndex++;
+        renderQuestion(currentQuestionIndex);
+      }
+    }
+
+    function prevQuestion() {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        renderQuestion(currentQuestionIndex);
+      }
+    }
 
     // Timer Countdown Script (40 Minutes = 2400 seconds)
     let totalTime = 40 * 60;
@@ -395,6 +493,7 @@
     }
 
     window.onload = function() {
+      renderQuestion(0);
       startTimer();
     };
 
@@ -403,8 +502,11 @@
         clearInterval(timerInterval);
       }
 
-      const inputs = document.querySelectorAll("input[type='radio']");
-      inputs.forEach(input => input.disabled = true);
+      // Hide question interface & navs
+      document.getElementById("questionContainer").style.display = "none";
+      document.getElementById("navButtons").style.display = "none";
+      document.getElementById("progressContainer").style.display = "none";
+
       document.getElementById("submitBtn").disabled = true;
       document.getElementById("submitBtn").style.backgroundColor = "#94a3b8";
 
@@ -412,14 +514,13 @@
       let explanationsHTML = '<h2>Pembahasan Detail Soal Level Mudah:</h2>';
 
       quizQuestions.forEach((q, i) => {
-        const selected = document.querySelector(`input[name='q${i}']:checked`);
+        const userVal = userAnswers[i];
         const ansIndex = q.answer;
         const correctText = q.options[ansIndex];
         let userSelectedText = "Tidak dijawab";
         let isCorrect = false;
 
-        if (selected) {
-          const userVal = parseInt(selected.value);
+        if (userVal !== null) {
           if (userVal === ansIndex) {
             score++;
             isCorrect = true;
