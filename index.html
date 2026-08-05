@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portal Modul Tes Analogi 3 Kata - Persona Research & Consulting</title>
+  <title>Portal Quiz - Persona Research & Consulting</title>
   <style>
     :root {
       --primary-color: #0f172a;
       --secondary-color: #2563eb;
-      --accent-color: #059669;
+      --accent-color: #10b981;
       --bg-color: #f8fafc;
       --card-bg: #ffffff;
       --text-color: #1e293b;
-      --border-color: #cbd5e1;
+      --border-color: #e2e8f0;
     }
 
     body {
@@ -26,9 +26,9 @@
 
     .container {
       max-width: 800px;
-      margin: 0 auto;
+      margin: 40px auto;
       background: var(--card-bg);
-      padding: 30px;
+      padding: 35px;
       border-radius: 12px;
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     }
@@ -37,15 +37,14 @@
       text-align: center;
       border-bottom: 2px solid var(--border-color);
       padding-bottom: 20px;
-      margin-bottom: 25px;
+      margin-bottom: 30px;
     }
 
     .header h1 {
       color: var(--primary-color);
       margin-bottom: 5px;
-      font-size: 24px;
+      font-size: 26px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
     .header p {
@@ -54,110 +53,102 @@
       margin: 3px 0;
     }
 
-    .login-box {
-      background: #f1f5f9;
-      padding: 25px;
+    /* Form Password Style */
+    .auth-box {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      padding: 20px;
       border-radius: 8px;
+      text-align: center;
       margin-bottom: 25px;
-      border-left: 4px solid var(--secondary-color);
     }
 
-    .input-group {
-      margin-bottom: 15px;
-    }
-
-    .input-group label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 6px;
-      font-size: 14px;
-    }
-
-    .input-group input {
-      width: 100%;
-      padding: 10px 12px;
+    .auth-box input[type="password"] {
+      padding: 10px 14px;
+      font-size: 15px;
       border: 1px solid var(--border-color);
       border-radius: 6px;
-      font-size: 15px;
-      box-sizing: border-box;
+      width: 220px;
+      margin-right: 8px;
     }
 
-    .btn-access {
-      width: 100%;
-      padding: 12px;
+    .auth-box button {
+      padding: 10px 20px;
+      font-size: 15px;
+      font-weight: bold;
       background-color: var(--secondary-color);
       color: white;
-      font-size: 16px;
-      font-weight: bold;
       border: none;
       border-radius: 6px;
       cursor: pointer;
       transition: background 0.2s;
     }
 
-    .btn-access:hover {
+    .auth-box button:hover {
       background-color: #1d4ed8;
     }
 
-    .menu-list {
-      display: flex;
-      flex-direction: column;
+    .error-msg {
+      color: #dc2626;
+      font-size: 13px;
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    /* Menu Navigation Grid */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 1fr;
       gap: 15px;
       margin-top: 20px;
     }
 
-    .menu-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .menu-card {
+      display: block;
       padding: 18px 20px;
       background: #ffffff;
       border: 1px solid var(--border-color);
+      border-left: 5px solid var(--secondary-color);
       border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+      text-decoration: none;
+      color: var(--text-color);
       transition: all 0.2s ease;
     }
 
-    .menu-item:hover {
-      border-color: var(--secondary-color);
+    .menu-card:hover {
       transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border-color: var(--secondary-color);
     }
 
-    .menu-info h3 {
+    .menu-card h3 {
       margin: 0 0 5px 0;
-      font-size: 16px;
       color: var(--primary-color);
+      font-size: 18px;
     }
 
-    .menu-info p {
+    .menu-card p {
       margin: 0;
       font-size: 13px;
       color: #64748b;
     }
 
-    .btn-start {
-      padding: 8px 16px;
-      background-color: var(--accent-color);
-      color: white;
-      text-decoration: none;
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      font-size: 11px;
       font-weight: bold;
-      border-radius: 6px;
-      font-size: 14px;
-      transition: background 0.2s;
+      border-radius: 4px;
+      color: white;
+      margin-bottom: 6px;
     }
-
-    .btn-start:hover {
-      background-color: #047857;
-    }
+    .badge-easy { background-color: #0284c7; }
+    .badge-medium { background-color: #d97706; }
+    .badge-hots { background-color: #0f172a; }
+    .badge-general { background-color: #10b981; }
 
     .hidden {
       display: none !important;
-    }
-
-    .expired-screen {
-      text-align: center;
-      padding: 40px 20px;
-      color: #dc2626;
     }
 
     .footer {
@@ -171,69 +162,48 @@
   </style>
 </head>
 <body>
-  <div class="container" id="mainContainer">
+  <div class="container">
     <div class="header">
-      <h1>PORTAL UJIAN ANALOGI VERBAL</h1>
-      <p><strong>Persona Research & Consulting</strong> | WA: 0877 4251 5786</p>
-      <p>Silakan masukkan kata sandi akses untuk membuka daftar modul ujian.</p>
+      <h1>PORTAL UJIAN ONLINE</h1>
+      <p><strong>Persona Research & Consulting</strong> | WA: 0877 425 5786</p>
+      <p>Pilih modul ujian analogi kata di bawah ini untuk memulai latihan.</p>
     </div>
 
-    <!-- Form Login Password -->
-    <div id="loginForm" class="login-box">
-      <div class="input-group">
-        <label for="passInput">Password Akses Ujian:</label>
-        <input type="password" id="passInput" placeholder="Masukkan password di sini..." />
-      </div>
-      <button type="button" class="btn-access" onclick="verifyPassword()">Masuk Ke Portal Ujian</button>
-      <p id="errorMsg" style="color: #dc2626; font-size: 13px; margin-top: 10px; display: none;">Password salah! Silakan periksa kembali.</p>
+    <!-- Proteksi Password -->
+    <div id="authContainer" class="auth-box">
+      <p style="margin-top:0; font-weight:600;">Masukkan Password untuk Mengakses Menu Quiz:</p>
+      <input type="password" id="passInput" placeholder="Masukkan Password..." />
+      <button onclick="checkPassword()">Buka Akses</button>
+      <div id="errorMsg" class="error-msg hidden">Password salah! Silakan coba lagi.</div>
     </div>
 
-    <!-- Menu Navigasi Modul Ujian -->
-    <div id="quizMenu" class="hidden">
-      <h2 style="font-size: 18px; color: var(--primary-color); margin-bottom: 15px;">Daftar Modul Ujian Aktif:</h2>
-      <div class="menu-list">
-        
-        <div class="menu-item">
-          <div class="menu-info">
-            <h3>1. Tes Analogi Verbal 3 Kata (Reguler)</h3>
-            <p>50 Soal Analogi Kata Interaktif Latihan Dasar</p>
-          </div>
-          <a href="analogi_reguler.html" class="btn-start">Mulai Tes</a>
-        </div>
+    <!-- Area Menu Quiz (Hidden Sebelum Login) -->
+    <div id="menuContainer" class="menu-grid hidden">
+      
+      <a href="analogi-mudah.html" class="menu-card">
+        <span class="badge badge-easy">LEVEL MUDAH</span>
+        <h3>Analogi 3 Kata - Level Mudah</h3>
+        <p>⏱ Waktu: 40 Menit | 50 Soal Hubungan Kata Dasar</p>
+      </a>
 
-        <div class="menu-item">
-          <div class="menu-info">
-            <h3>2. Tes Analogi 3 Kata Level Mudah</h3>
-            <p>50 Soal Analogi Kata dengan Alokasi Waktu 40 Menit</p>
-          </div>
-          <a href="analogi_mudah.html" class="btn-start">Mulai Tes</a>
-        </div>
+      <a href="analogi-sedang.html" class="menu-card">
+        <span class="badge badge-medium">LEVEL SEDANG</span>
+        <h3>Analogi 3 Kata - Level Sedang</h3>
+        <p>⏱ Waktu: 40 Menit | 50 Soal Hubungan Logika & Fungsional</p>
+      </a>
 
-        <div class="menu-item">
-          <div class="menu-info">
-            <h3>3. Tes Analogi 3 Kata Level Sedang</h3>
-            <p>50 Soal Analogi Tingkat Menengah dengan Alokasi Waktu 40 Menit</p>
-          </div>
-          <a href="analogi_sedang.html" class="btn-start">Mulai Tes</a>
-        </div>
+      <a href="analogi-hots.html" class="menu-card">
+        <span class="badge badge-hots">LEVEL HOTS</span>
+        <h3>Analogi 3 Kata - Level HOTS</h3>
+        <p>⏱ Waktu: 40 Menit | 50 Soal Abstrak & Konseptual Tinggi</p>
+      </a>
 
-        <div class="menu-item">
-          <div class="menu-info">
-            <h3>4. Tes Analogi 3 Kata Level HOTS</h3>
-            <p>50 Soal Penalaran Abstrak & Kompleks Alokasi Waktu 40 Menit</p>
-          </div>
-          <a href="analogi_hots.html" class="btn-start">Mulai Tes</a>
-        </div>
+      <a href="analogi-interaktif.html" class="menu-card">
+        <span class="badge badge-general">VERBAL GENERAL</span>
+        <h3>Tes Analogi 3 Kata Interaktif</h3>
+        <p>⏱ Waktu: Standar | 50 Soal Latihan Logika Verbal</p>
+      </a>
 
-        <div class="menu-item">
-          <div class="menu-info">
-            <h3>5. Tes Analogi 3 Kata Paket Lengkap / Evaluasi</h3>
-            <p>Modul Evaluasi Lengkap Analogi Verbal 3 Kata</p>
-          </div>
-          <a href="analogi_paket_lengkap.html" class="btn-start">Mulai Tes</a>
-        </div>
-
-      </div>
     </div>
 
     <div class="footer">
@@ -242,43 +212,24 @@
   </div>
 
   <script>
-    // System Date Expiry Protocol (Expired: 6 Bulan dari sekarang / 05 Februari 2027)
-    const expiryDate = new Date("2027-02-05T23:59:59");
-    if (new Date() > expiryDate) {
-      document.getElementById("mainContainer").innerHTML = `
-        <div class="expired-screen">
-          <h2>Portal Ujian Telah Kadaluarsa!</h2>
-          <p>Masa berlaku portal kuis ini telah berakhir (Expired: 05 Februari 2027).</p>
-          <p>Silakan hubungi <strong>Persona Research & Consulting</strong> via WhatsApp <strong>0877 4251 5786</strong> untuk pembaruan lisensi modul.</p>
-        </div>
-      `;
-    }
-
-    // Password Verification Script
-    function verifyPassword() {
-      const inputPass = document.getElementById("passInput").value;
+    function checkPassword() {
+      const input = document.getElementById("passInput").value;
       const errorMsg = document.getElementById("errorMsg");
-      
-      if (inputPass === "persona05") {
-        document.getElementById("loginForm").classList.add("hidden");
-        document.getElementById("quizMenu").classList.remove("hidden");
+      const authBox = document.getElementById("authContainer");
+      const menuBox = document.getElementById("menuContainer");
+
+      if (input === "persona05") {
+        authBox.classList.add("hidden");
+        menuBox.classList.remove("hidden");
       } else {
-        errorMsg.style.display = "block";
+        errorMsg.classList.remove("hidden");
       }
     }
 
-    // Allow Enter Key for Login
+    // Memungkinkan submit password menggunakan tombol Enter
     document.getElementById("passInput").addEventListener("keypress", function(event) {
       if (event.key === "Enter") {
-        verifyPassword();
-      }
-    });
-
-    // Anti-Copy & Anti-Inspect Protection
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    document.addEventListener('keydown', e => {
-      if (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 's' || e.key === 'a')) {
-        e.preventDefault();
+        checkPassword();
       }
     });
   </script>
