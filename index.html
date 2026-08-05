@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TES KECERDASAN VERBAL - Persona Research & Consulting</title>
+  <title>Portal Modul Tes Analogi 3 Kata - Persona Research & Consulting</title>
   <style>
     :root {
       --primary-color: #0f172a;
       --secondary-color: #2563eb;
-      --accent-color: #10b981;
-      --danger-color: #dc2626;
+      --accent-color: #059669;
       --bg-color: #f8fafc;
       --card-bg: #ffffff;
       --text-color: #1e293b;
@@ -23,17 +22,13 @@
       line-height: 1.6;
       margin: 0;
       padding: 20px;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
     }
 
     .container {
       max-width: 800px;
-      margin: 40px auto;
+      margin: 0 auto;
       background: var(--card-bg);
-      padding: 35px;
+      padding: 30px;
       border-radius: 12px;
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     }
@@ -42,13 +37,13 @@
       text-align: center;
       border-bottom: 2px solid var(--border-color);
       padding-bottom: 20px;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
     }
 
     .header h1 {
       color: var(--primary-color);
       margin-bottom: 5px;
-      font-size: 26px;
+      font-size: 24px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
@@ -59,86 +54,79 @@
       margin: 3px 0;
     }
 
-    .auth-section {
+    .login-box {
       background: #f1f5f9;
       padding: 25px;
       border-radius: 8px;
+      margin-bottom: 25px;
       border-left: 4px solid var(--secondary-color);
-      margin-bottom: 30px;
-      text-align: center;
-    }
-
-    .auth-section h3 {
-      margin-top: 0;
-      color: var(--primary-color);
     }
 
     .input-group {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 15px;
+      margin-bottom: 15px;
     }
 
-    input[type="password"] {
-      padding: 12px 16px;
+    .input-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px 12px;
       border: 1px solid var(--border-color);
       border-radius: 6px;
-      font-size: 16px;
-      width: 60%;
-      outline: none;
+      font-size: 15px;
+      box-sizing: border-box;
     }
 
-    input[type="password"]:focus {
-      border-color: var(--secondary-color);
-      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
-    }
-
-    .btn-auth {
-      padding: 12px 24px;
+    .btn-access {
+      width: 100%;
+      padding: 12px;
       background-color: var(--secondary-color);
       color: white;
+      font-size: 16px;
       font-weight: bold;
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      transition: background-color 0.2s;
+      transition: background 0.2s;
     }
 
-    .btn-auth:hover {
+    .btn-access:hover {
       background-color: #1d4ed8;
     }
 
-    .menu-grid {
-      display: grid;
-      grid-template-columns: 1fr;
+    .menu-list {
+      display: flex;
+      flex-direction: column;
       gap: 15px;
       margin-top: 20px;
     }
 
-    .menu-card {
-      background: #ffffff;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 20px;
-      text-decoration: none;
-      color: var(--text-color);
+    .menu-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 18px 20px;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
       transition: all 0.2s ease;
     }
 
-    .menu-card:hover {
+    .menu-item:hover {
       border-color: var(--secondary-color);
       transform: translateY(-2px);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
 
     .menu-info h3 {
       margin: 0 0 5px 0;
-      color: var(--secondary-color);
-      font-size: 18px;
+      font-size: 16px;
+      color: var(--primary-color);
     }
 
     .menu-info p {
@@ -147,28 +135,29 @@
       color: #64748b;
     }
 
-    .badge {
-      background-color: #e0f2fe;
-      color: #0369a1;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 12px;
+    .btn-start {
+      padding: 8px 16px;
+      background-color: var(--accent-color);
+      color: white;
+      text-decoration: none;
       font-weight: bold;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+
+    .btn-start:hover {
+      background-color: #047857;
     }
 
     .hidden {
       display: none !important;
     }
 
-    .expired-screen, .error-msg {
+    .expired-screen {
       text-align: center;
-      color: var(--danger-color);
-    }
-
-    .error-msg {
-      margin-top: 10px;
-      font-size: 14px;
-      font-weight: 600;
+      padding: 40px 20px;
+      color: #dc2626;
     }
 
     .footer {
@@ -184,71 +173,65 @@
 <body>
   <div class="container" id="mainContainer">
     <div class="header">
-      <h1>TES KECERDASAN VERBAL</h1>
+      <h1>PORTAL UJIAN ANALOGI VERBAL</h1>
       <p><strong>Persona Research & Consulting</strong> | WA: 0877 4251 5786</p>
-      <p>Portal Ujian Online & Modul Evaluasi Kecerdasan Verbal</p>
+      <p>Silakan masukkan kata sandi akses untuk membuka daftar modul ujian.</p>
     </div>
 
-    <!-- Verifikasi Akses Password -->
-    <div id="authSection" class="auth-section">
-      <h3>🔒 Masukkan Password Akses</h3>
-      <p style="font-size: 13px; color: #64748b; margin-bottom: 0;">Silakan masukkan password resmi untuk membuka menu modul kuis.</p>
+    <!-- Form Login Password -->
+    <div id="loginForm" class="login-box">
       <div class="input-group">
-        <input type="password" id="passInput" placeholder="Ketik Password..." onkeypress="checkEnter(event)" />
-        <button class="btn-auth" onclick="validatePassword()">Buka Akses</button>
+        <label for="passInput">Password Akses Ujian:</label>
+        <input type="password" id="passInput" placeholder="Masukkan password di sini..." />
       </div>
-      <div id="errorMsg" class="error-msg hidden">Password salah! Silakan coba lagi.</div>
+      <button type="button" class="btn-access" onclick="verifyPassword()">Masuk Ke Portal Ujian</button>
+      <p id="errorMsg" style="color: #dc2626; font-size: 13px; margin-top: 10px; display: none;">Password salah! Silakan periksa kembali.</p>
     </div>
 
-    <!-- Menu Portal Modul Kuis (Tersembunyi sebelum login) -->
-    <div id="menuSection" class="hidden">
-      <h3 style="color: var(--primary-color); border-bottom: 2px solid var(--border-color); padding-bottom: 8px;">Pilih Modul Ujian (5 Modul):</h3>
-      <div class="menu-grid">
+    <!-- Menu Navigasi Modul Ujian -->
+    <div id="quizMenu" class="hidden">
+      <h2 style="font-size: 18px; color: var(--primary-color); margin-bottom: 15px;">Daftar Modul Ujian Aktif:</h2>
+      <div class="menu-list">
         
-        <!-- Modul 1 -->
-        <a href="modul1.html" class="menu-card">
+        <div class="menu-item">
           <div class="menu-info">
-            <h3>1. Modul 1 - Analogi Verbal 1</h3>
-            <p>50 Soal Analogi (Durasi: 40 Menit)</p>
+            <h3>1. Tes Analogi Verbal 3 Kata (Reguler)</h3>
+            <p>50 Soal Analogi Kata Interaktif Latihan Dasar</p>
           </div>
-          <span class="badge">Modul 1</span>
-        </a>
+          <a href="analogi_reguler.html" class="btn-start">Mulai Tes</a>
+        </div>
 
-        <!-- Modul 2 -->
-        <a href="modul2.html" class="menu-card">
+        <div class="menu-item">
           <div class="menu-info">
-            <h3>2. Modul 2 - Analogi Verbal 2</h3>
-            <p>50 Soal Analogi (Durasi: 40 Menit)</p>
+            <h3>2. Tes Analogi 3 Kata Level Mudah</h3>
+            <p>50 Soal Analogi Kata dengan Alokasi Waktu 40 Menit</p>
           </div>
-          <span class="badge">Modul 2</span>
-        </a>
+          <a href="analogi_mudah.html" class="btn-start">Mulai Tes</a>
+        </div>
 
-        <!-- Modul 3 -->
-        <a href="modul3.html" class="menu-card">
+        <div class="menu-item">
           <div class="menu-info">
-            <h3>3. Modul 3 - Analogi Verbal 3</h3>
-            <p>50 Soal Analogi (Durasi: 40 Menit)</p>
+            <h3>3. Tes Analogi 3 Kata Level Sedang</h3>
+            <p>50 Soal Analogi Tingkat Menengah dengan Alokasi Waktu 40 Menit</p>
           </div>
-          <span class="badge">Modul 3</span>
-        </a>
+          <a href="analogi_sedang.html" class="btn-start">Mulai Tes</a>
+        </div>
 
-        <!-- Modul 4 -->
-        <a href="modul4.html" class="menu-card">
+        <div class="menu-item">
           <div class="menu-info">
-            <h3>4. Modul 4 - Analogi Verbal 4</h3>
-            <p>50 Soal Analogi (Durasi: 40 Menit)</p>
+            <h3>4. Tes Analogi 3 Kata Level HOTS</h3>
+            <p>50 Soal Penalaran Abstrak & Kompleks Alokasi Waktu 40 Menit</p>
           </div>
-          <span class="badge">Modul 4</span>
-        </a>
+          <a href="analogi_hots.html" class="btn-start">Mulai Tes</a>
+        </div>
 
-        <!-- Modul 5 -->
-        <a href="modul5.html" class="menu-card">
+        <div class="menu-item">
           <div class="menu-info">
-            <h3>5. Modul 5 - Analogi Verbal 5</h3>
-            <p>50 Soal Analogi (Durasi: 40 Menit)</p>
+            <h3>5. Tes Analogi 3 Kata Paket Lengkap / Evaluasi</h3>
+            <p>Modul Evaluasi Lengkap Analogi Verbal 3 Kata</p>
           </div>
-          <span class="badge">Modul 5</span>
-        </a>
+          <a href="analogi_paket_lengkap.html" class="btn-start">Mulai Tes</a>
+        </div>
 
       </div>
     </div>
@@ -259,43 +242,45 @@
   </div>
 
   <script>
-    // 1. Check Masa Kadaluarsa (Expired Exactly 1 Year: 2027-08-05)
-    const expiryDate = new Date("2027-08-05T23:59:59");
+    // System Date Expiry Protocol (Expired: 6 Bulan dari sekarang / 05 Februari 2027)
+    const expiryDate = new Date("2027-02-05T23:59:59");
     if (new Date() > expiryDate) {
       document.getElementById("mainContainer").innerHTML = `
         <div class="expired-screen">
           <h2>Portal Ujian Telah Kadaluarsa!</h2>
-          <p>Masa berlaku portal kuis ini telah berakhir. Silakan hubungi <strong>Persona Research & Consulting</strong> (WA: 0877 425 5786) untuk perpanjangan masa akses.</p>
+          <p>Masa berlaku portal kuis ini telah berakhir (Expired: 05 Februari 2027).</p>
+          <p>Silakan hubungi <strong>Persona Research & Consulting</strong> via WhatsApp <strong>0877 4251 5786</strong> untuk pembaruan lisensi modul.</p>
         </div>
       `;
     }
 
-    // 2. Anti-AI / Anti-Copy Protocols
+    // Password Verification Script
+    function verifyPassword() {
+      const inputPass = document.getElementById("passInput").value;
+      const errorMsg = document.getElementById("errorMsg");
+      
+      if (inputPass === "persona05") {
+        document.getElementById("loginForm").classList.add("hidden");
+        document.getElementById("quizMenu").classList.remove("hidden");
+      } else {
+        errorMsg.style.display = "block";
+      }
+    }
+
+    // Allow Enter Key for Login
+    document.getElementById("passInput").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        verifyPassword();
+      }
+    });
+
+    // Anti-Copy & Anti-Inspect Protection
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('keydown', e => {
       if (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 's' || e.key === 'a')) {
         e.preventDefault();
       }
     });
-
-    // 3. Password Validation System
-    function validatePassword() {
-      const input = document.getElementById("passInput").value;
-      const errorMsg = document.getElementById("errorMsg");
-      
-      if (input === "persona05") {
-        document.getElementById("authSection").classList.add("hidden");
-        document.getElementById("menuSection").classList.remove("hidden");
-      } else {
-        errorMsg.classList.remove("hidden");
-      }
-    }
-
-    function checkEnter(event) {
-      if (event.key === "Enter") {
-        validatePassword();
-      }
-    }
   </script>
 </body>
 </html>
