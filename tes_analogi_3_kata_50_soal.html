@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tes Analogi 3 Kata Interaktif - Persona Research & Consulting</title>
+  <style>
+    :root {
+      --primary-color: #1e3a8a;
+      --secondary-color: #3b82f6;
+      --accent-color: #10b981;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-color: #1e293b;
+      --border-color: #e2e8f0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .header {
+      text-align: center;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      color: var(--primary-color);
+      margin-bottom: 5px;
+      font-size: 26px;
+    }
+
+    .header p {
+      color: #64748b;
+      font-size: 14px;
+      margin: 3px 0;
+    }
+
+    .section-title {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 6px;
+      margin-top: 30px;
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+
+    .question-block {
+      background: #f1f5f9;
+      padding: 18px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border-left: 4px solid var(--secondary-color);
+    }
+
+    .question {
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 12px;
+      color: #0f172a;
+    }
+
+    .options label {
+      display: block;
+      padding: 8px 12px;
+      margin: 6px 0;
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .options label:hover {
+      background-color: #e0f2fe;
+      border-color: var(--secondary-color);
+    }
+
+    .options input[type="radio"] {
+      margin-right: 10px;
+    }
+
+    .btn-submit {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      background-color: var(--primary-color);
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 30px;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn-submit:hover {
+      background-color: #1d4ed8;
+    }
+
+    #result {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      color: #065f46;
+      text-align: center;
+    }
+
+    #explanation {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #ffffff;
+      border: 1px solid var(--border-color);
+    }
+
+    .explanation-item {
+      padding: 12px;
+      margin-bottom: 12px;
+      border-bottom: 1px dashed var(--border-color);
+    }
+
+    .explanation-item:last-child {
+      border-bottom: none;
+    }
+
+    .correct-ans {
+      color: var(--accent-color);
+      font-weight: bold;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 13px;
+      color: #94a3b8;
+      border-top: 1px solid var(--border-color);
+      padding-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>TES ANALOGI VERBAL 3 KATA (50 SOAL)</h1>
+      <p><strong>Persona Research & Consulting</strong> | WA: 0877 425 5786</p>
+      <p>Pilihlah pasangan kata yang memiliki hubungan analogi paling setara dengan hubungan 3 kata pada soal.</p>
+    </div>
+
+    <form id="quizForm"></form>
+    <button type="button" class="btn-submit" onclick="submitQuiz()">Selesai & Lihat Skor serta Pembahasan</button>
+
+    <div id="result" class="hidden"></div>
+    <div id="explanation" class="hidden"></div>
+
+    <div class="footer">
+      &copy; 2026 Persona Research & Consulting. All rights reserved.
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      { q: "Panas : Matahari : Terik = ... : ... : ...", options: ["Basah : Hujan : Lebat", "Dingin : Es : Beku", "Terang : Lampu : Silau", "Gelap : Malam : Sunyi", "Angin : Badai : Kencang"], answer: 0, explanation: "Panas dihasilkan oleh Matahari yang intensitasnya Terik. Sebanding dengan Basah dihasilkan oleh Hujan yang intensitasnya Lebat." },
+      { q: "Pedang : Prajurit : Perang = ... : ... : ...", options: ["Pisau : Koki : Dapur", "Stetoskop : Dokter : Pengobatan", "Cangkul : Petani : Sawah", "Pena : Penulis : Buku", "Kuas : Pelukis : Kanvas"], answer: 1, explanation: "Pedang adalah alat yang digunakan Prajurit dalam kegiatan Perang. Sebanding dengan Stetoskop yang digunakan Dokter dalam kegiatan Pengobatan." },
+      { q: "Kayu : Meja : Mebel = ... : ... : ...", options: ["Kain : Baju : Pakaian", "Besi : Pagar : Rumah", "Kertas : Buku : Perpustakaan", "Plastik : Botol : Wadah", "Benang : Kain : Tekstil"], answer: 0, explanation: "Kayu dibuat menjadi Meja yang tergolong dalam Mebel. Sebanding dengan Kain dibuat menjadi Baju yang tergolong dalam Pakaian." },
+      { q: "Telinga : Mendengar : Suara = ... : ... : ...", options: ["Mata : Melihat : Cahaya", "Hidung : Membau : Aroma", "Lidahn : Merasa : Makanan", "Kulit : Meraba : Tekstur", "Otak : Berpikir : Ide"], answer: 1, explanation: "Telinga organ untuk Mendengar rangsangan Suara. Sebanding dengan Hidung organ untuk Membau rangsangan Aroma." },
+      { q: "Kupu-kupu : Ulat : Kepompong = ... : ... : ...", options: ["Katak : Berudu : Telur", "Ayam : Telur : Anak Ayam", "Nyamuk : Jentik : Pupa", "Lalat : Belatung : Larva", "Pohon : Biji : Tunas"], answer: 2, explanation: "Urutan tahapan metamorfosis imago (Kupu-kupu), awal (Ulat), dan antara (Kepompong). Sebanding dengan Nyamuk (dewasa), Jentik (awal), dan Pupa (transisi)." },
+      { q: "Minyak : Kompor : Api = ... : ... : ...", options: ["Bensin : Mobil : Roda", "Listrik : Lampu : Cahaya", "Air : Generator : Listrik", "Batu Bara : PLTU : Uap", "Kayu : Tungku : Asap"], answer: 1, explanation: "Minyak adalah bahan bakar Kompor untuk menghasilkan Api. Sebanding dengan Listrik adalah energi untuk Lampu menghasilkan Cahaya." },
+      { q: "Oksigen : Paru-paru : Darah = ... : ... : ...", options: ["Makanan : Lambung : Nutrisi", "Air : Ginjal : Urine", "Udara : Hidung : Tenggorokan", "Cahaya : Mata : Saraf", "Obat : Usus : Penyakit"], answer: 0, explanation: "Oksigen diproses di Paru-paru lalu diserap ke Darah. Sebanding dengan Makanan diproses di Lambung lalu menghasilkan Nutrisi bagi tubuh." },
+      { q: "Cat : Pelukis : Lukisan = ... : ... : ...", options: ["Semen : Tukang : Bangunan", "Sutra : Penjahit : Baju", "Nada : Komposer : Simfoni", "Tinta : Penulis : Novel", "Pahat : Patung : Ukiran"], answer: 2, explanation: "Cat digunakan oleh Pelukis untuk menciptakan Lukisan. Sebanding dengan Nada digunakan oleh Komposer untuk menciptakan Simfoni." },
+      { q: "Gigi : Mengunyah : Makanan = ... : ... : ...", options: ["Mata : Membaca : Buku", "Kaki : Melangkah : Jalan", "Tangan : Menulis : Surat", "Paru-paru : Bernapas : Udara", "Jantung : Memompa : Darah"], answer: 4, explanation: "Gigi berfungsi Mengunyah objek Makanan. Sebanding dengan Jantung berfungsi Memompa objek Darah." },
+      { q: "Buku : Membaca : Ilmu = ... : ... : ...", options: ["Olahraga : Melatih : Sehat", "Pena : Menulis : Gagasan", "Makanan : Makan : Tenaga", "Lampu : Menerangi : Gelap", "Uang : Belanja : Barang"], answer: 2, explanation: "Buku dimanfaatkan dengan Membaca untuk memperoleh Ilmu. Sebanding dengan Makanan dimanfaatkan dengan Makan untuk memperoleh Tenaga." },
+
+      { q: "Dokter : Rumah Sakit : Pasien = ... : ... : ...", options: ["Guru : Sekolah : Murid", "Polisi : Jalan : Pengendara", "Koki : Restoran : Makanan", "Hakim : Pengadilan : Terdakwa", "Dosen : Kampus : Skripsi"], answer: 0, explanation: "Dokter bekerja di Rumah Sakit melayani Pasien. Sebanding dengan Guru bekerja di Sekolah melayani Murid." },
+      { q: "Ikan : Air : Berenang = ... : ... : ...", options: ["Burung : Udara : Terbang", "Kambing : Rumput : Mengunyah", "Cacing : Tanah : Melata", "Katak : Darat : Melompat", "Ular : Semak : Merayap"], answer: 0, explanation: "Ikan hidup di Air dan bergerak dengan Berenang. Sebanding dengan Burung hidup di Udara dan bergerak dengan Terbang." },
+      { q: "Benih : Tunas : Pohon = ... : ... : ...", options: ["Telur : Larva : Dewasa", "Bayi : Anak : Dewasa", "Konsep : Desain : Produk", "Awal : Tengah : Akhir", "Gagasan : Rencana : Aksi"], answer: 1, explanation: "Tahapan pertumbuhan awal, menengah, hingga matang: Benih berkembang jadi Tunas lalu Pohon. Sebanding dengan Bayi berkembang jadi Anak lalu Dewasa." },
+      { q: "Besi : Magnet : Tarik = ... : ... : ...", options: ["Kaca : Cermin : Pantul", "Air : Api : Padam", "Listrik : Kabel : Alir", "Batu : Air : Tenggelam", "Minyak : Air : Tolak"], answer: 0, explanation: "Besi jika dikenakan Magnet akan menghasilkan reaksi Tarik. Sebanding dengan Kaca jika dijadikan Cermin akan menghasilkan reaksi Pantul." },
+      { q: "Langit : Biru : Siang = ... : ... : ...", options: ["Malam : Gelap : Sunyi", "Awan : Putih : Hujan", "Daun : Hijau : Segar", "Laut : Biru : Dalam", "Malam : Hitam : Gelap"], answer: 2, explanation: "Langit berwarna khas Biru pada kondisi Siang. Sebanding dengan Daun berwarna khas Hijau pada kondisi Segar." },
+      { q: "Mata : Melihat : Pemandangan = ... : ... : ...", options: ["Telinga : Mendengar : Musik", "Hidung : Mencium : Parfum", "Lidah : Mengecap : Rasa", "Tangan : Memegang : Benda", "Kulit : Merasakan : Dingin"], answer: 0, explanation: "Mata digunakan untuk Melihat objek Pemandangan. Sebanding dengan Telinga digunakan untuk Mendengar objek Musik." },
+      { q: "Garam : Asin : Masakan = ... : ... : ...", options: ["Gula : Manis : Minuman", "Cabai : Pedas : Sambal", "Cuka : Asam : Acar", "Obat : Pahit : Jamu", "Lada : Hangat : Sup"], answer: 0, explanation: "Garam memberikan rasa Asin pada Masakan. Sebanding dengan Gula memberikan rasa Manis pada Minuman." },
+      { q: "Petani : Sawah : Padi = ... : ... : ...", options: ["Nelayan : Laut : Ikan", "Peternak : Kandang : Sapi", "Pekebun : Kebun : Teh", "Petambak : Tambak : Udang", "Pemburu : Hutan : Rusa"], answer: 0, explanation: "Petani bekerja di Sawah menghasilkan Padi. Sebanding dengan Nelayan bekerja di Laut menghasilkan Ikan." },
+      { q: "Kunci : Pintu : Terbuka = ... : ... : ...", options: ["Sakelar : Lampu : Menyala", "Remote : TV : Hidup", "Rem : Mobil : Berhenti", "Kran : Air : Mengalir", "Korek : Api : Menyala"], answer: 0, explanation: "Kunci dipasang pada Pintu agar bisa Terbuka. Sebanding dengan Sakelar dipasang pada Lampu agar bisa Menyala." },
+      { q: "Roda : Mobil : Transportasi = ... : ... : ...", options: ["Baling-baling : Pesawat : Penerbangan", "Layar : Kapal : Pelayaran", "Mesin : Motor : Otomotif", "Sayap : Burung : Penerbangan", "Kemudi : Kapal : Navigasi"], answer: 0, explanation: "Roda adalah penggerak utama Mobil yang digunakan untuk Transportasi. Sebanding dengan Baling-baling penggerak Pesawat untuk Penerbangan." },
+
+      { q: "Bulan : Malam : Terang = ... : ... : ...", options: ["Matahari : Siang : Silau", "Bintang : Malam : Indah", "Lampu : Gelap : Redup", "Api : Unggun : Hangat", "Lilin : Malam : Temaram"], answer: 0, explanation: "Bulan muncul pada Malam hari memberikan efek Terang. Sebanding dengan Matahari muncul pada Siang hari memberikan efek Silau." },
+      { q: "Pasir : Gurun : Tandus = ... : ... : ...", options: ["Salju : Kutub : Dingin", "Air : Laut : Asin", "Pohon : Hutan : Lebat", "Batu : Gunung : Tinggi", "Tanah : Sawah : Subur"], answer: 0, explanation: "Pasir mendominasi area Gurun yang berkarakteristik Tandus. Sebanding dengan Salju mendominasi area Kutub yang berkarakteristik Dingin." },
+      { q: "Asap : Api : Kebakaran = ... : ... : ...", options: ["Awan : Hujan : Banjir", "Embun : Pagi : Sejuk", "Uap : Air : Mendidih", "Banjir : Hujan : Bencana", "Pelangi : Hujan : Indah"], answer: 0, explanation: "Asap adalah tanda Api yang terjadi saat Kebakaran. Sebanding dengan Awan adalah tanda Hujan yang dapat memicu Banjir." },
+      { q: "Pisau : Tajam : Memotong = ... : ... : ...", options: ["Jarum : Runcing : Menjahit", "Palu : Berat : Memukul", "Gunting : Tajam : Membelah", "Pena : Tinta : Menulis", "Sapu : Bersih : Menyapu"], answer: 0, explanation: "Pisau bermata Tajam digunakan untuk Memotong. Sebanding dengan Jarum berkondisi Runcing digunakan untuk Menjahit." },
+      { q: "Kata : Kalimat : Paragraf = ... : ... : ...", options: ["Huruf : Kata : Kalimat", "Bait : Puisi : Buku", "Detik : Menit : Jam", "Hari : Minggu : Bulan", "Pemain : Tim : Liga"], answer: 0, explanation: "Kumpulan Kata membentuk Kalimat, kumpulan kalimat membentuk Paragraf. Sebanding dengan Huruf membentuk Kata, kata membentuk Kalimat." },
+      { q: "Hujan : Payung : Basah = ... : ... : ...", options: ["Panas : Topi : Silau", "Panas : Kacamata Hitam : Silau", "Dingin : Jaket : Menggigil", "Nyamuk : Obat Nyamuk : Bentol", "Bahaya : Helm : Cedera"], answer: 2, explanation: "Saat Hujan kita menggunakan Payung agar tidak Basah. Sebanding dengan saat Dingin menggunakan Jaket agar tidak Menggigil." },
+      { q: "Es : Dingin : Membeku = ... : ... : ...", options: ["Api : Panas : Membakar", "Air : Cair : Mengalir", "Uap : Panas : Menguap", "Batu : Keras : Mengkristal", "Minyak : Licin : Mengendap"], answer: 0, explanation: "Es berkarakteristik Dingin dan membuat sesuatu Membeku. Sebanding dengan Api berkarakteristik Panas dan membuat sesuatu Membakar." },
+      { q: "Ayah : Laki-laki : Keluarga = ... : ... : ...", options: ["Ibu : Perempuan : Keluarga", "Anak : Muda : Sekolah", "Raja : Pria : Kerajaan", "Guru : Dewasa : Sekolah", "Direktur : Pemimpin : Perusahaan"], answer: 0, explanation: "Ayah berjenis kelamin Laki-laki dalam struktur Keluarga. Sebanding dengan Ibu berjenis kelamin Perempuan dalam struktur Keluarga." },
+      { q: "Sinar : Cahaya : Terang = ... : ... : ...", options: ["Getaran : Suara : Nyaring", "Panas : Api : Membara", "Gema : Bunyi : Bising", "Angin : Udara : Sejuk", "Air : Gelombang : Deras"], answer: 0, explanation: "Sinar menghasilkan Cahaya yang berdampak Terang. Sebanding dengan Getaran menghasilkan Suara yang berdampak Nyaring." },
+      { q: "Kaki : Sepatu : Berjalan = ... : ... : ...", options: ["Kepala : Helm : Berkendara", "Tangan : Sarung Tangan : Bekerja", "Mata : Kacamata : Membaca", "Badan : Baju : Berpose", "Jari : Cincin : Hiasan"], answer: 0, explanation: "Kaki mengenakan Sepatu saat Berjalan. Sebanding dengan Kepala mengenakan Helm saat Berkendara." },
+
+      { q: "Pohon : Batang : Daun = ... : ... : ...", options: ["Bunga : Tangkai : Kelopak", "Manusia : Badan : Tangan", "Rumah : Dinding : Atap", "Mobil : Mesin : Roda", "Buku : Sampul : Halaman"], answer: 0, explanation: "Pohon terdiri dari bagian Batang dan Daun. Sebanding dengan Bunga terdiri dari bagian Tangkai dan Kelopak." },
+      { q: "Presenter : Mikrofon : Panggung = ... : ... : ...", options: ["Dosen : Proyektor : Kelas", "Penyanyi : Musik : Studio", "Aktor : Naskah : Film", "Koki : Pisau : Dapur", "Pelukis : Kuas : Studio"], answer: 0, explanation: "Presenter menggunakan Mikrofon saat beraksi di Panggung. Sebanding dengan Dosen menggunakan Proyektor saat mengajar di Kelas." },
+      { q: "Bawang : Ungu : Bumbu = ... : ... : ...", options: ["Kunyit : Kuning : Rempah", "Cabai : Merah : Sayur", "Garam : Putih : Mineral", "Gula : Cokelat : Pemanis", "Teh : Hijau : Minuman"], answer: 0, explanation: "Bawang berwarna Ungu (bawang merah) dan tergolong Bumbu. Sebanding dengan Kunyit berwarna Kuning dan tergolong Rempah." },
+      { q: "Kardus : Kertas : Kemasan = ... : ... : ...", options: ["Botol : Plastik : Wadah", "Cangkir : Keramik : Alat Minum", "Meja : Kayu : Furnitur", "Baju : Kain : Pakaian", "Cermin : Kaca : Hiasan"], answer: 0, explanation: "Kardus terbuat dari Kertas dan berfungsi sebagai Kemasan. Sebanding dengan Botol terbuat dari Plastik dan berfungsi sebagai Wadah." },
+      { q: "Penjara : Narapidana : Hukuman = ... : ... : ...", options: ["Sekolah : Siswa : Pembelajaran", "Rumah Sakit : Pasien : Pengobatan", "Stadion : Atlet : Pertandingan", "Pasar : Pedagang : Transaksi", "Kantor : Karyawan : Pekerjaan"], answer: 1, explanation: "Penjara tempat bagi Narapidana menjalani Hukuman. Sebanding dengan Rumah Sakit tempat bagi Pasien menjalani Pengobatan." },
+      { q: "Hutan : Pohon : Oksigen = ... : ... : ...", options: ["Sawah : Padi : Beras", "Laut : Terumbu Karang : Ikan", "Danau : Air : Kehidupan", "Awan : Uap Air : Hujan", "Tambang : Batu Bara : Energi"], answer: 4, explanation: "Hutan berisi Pohon yang menghasilkan Oksigen. Sebanding dengan Tambang berisi Batu Bara yang menghasilkan Energi." },
+      { q: "Kamera : Lensa : Fotografi = ... : ... : ...", options: ["Teleskop : Cermin : Astronomi", "Komputer : Prosesor : Komputasi", "Mobil : Mesin : Otomotif", "Gitar : Senar : Musik", "Sepeda : Rantai : Olahraga"], answer: 3, explanation: "Kamera memiliki komponen penting Lensa untuk bidang Fotografi. Sebanding dengan Gitar memiliki komponen penting Senar untuk bidang Musik." },
+      { q: "Krayon : Mewarnai : Gambar = ... : ... : ...", options: ["Pena : Menulis : Naskah", "Kuas : Mengecat : Tembok", "Pahat : Mengukir : Patung", "Sapu : Membersihkan : Lantai", "Gunting : Memotong : Kertas"], answer: 0, explanation: "Krayon digunakan untuk Mewarnai karya Gambar. Sebanding dengan Pena digunakan untuk Menulis karya Naskah." },
+      { q: "Kamus : Kata : Arti = ... : ... : ...", options: ["Peta : Lokasi : Koordinat", "Enciklopedia : Informasi : Topik", "Buku Telepon : Nama : Nomor", "Jadwal : Waktu : Kegiatan", "Menu : Makanan : Harga"], answer: 2, explanation: "Kamus mencantumkan daftar Kata beserta Arti. Sebanding dengan Buku Telepon mencantumkan daftar Nama beserta Nomor." },
+      { q: "Sapi : Daging : Protein = ... : ... : ...", options: ["Padi : Beras : Karbohidrat", "Tebu : Gula : Manis", "Buah : Vitamin : Sehat", "Ikan : Minyak : Lemak", "Telur : Putih Telur : Nutrisi"], answer: 0, explanation: "Sapi menghasilkan Daging yang kaya kandungan Protein. Sebanding dengan Padi menghasilkan Beras yang kaya kandungan Karbohidrat." },
+
+      { q: "Hujan : Petir : Badai = ... : ... : ...", options: ["Ombak : Angin : Tsunami", "Panas : Kemarau : Kekeringan", "Gempa : Tsunami : Bencana", "Awan : Mendung : Hujan", "Salju : Es : Mendidih"], answer: 1, explanation: "Hujan disertai Petir dapat berkembang menjadi Badai. Sebanding dengan Panas disertai Kemarau panjang dapat berkembang menjadi Kekeringan." },
+      { q: "Televisi : Gambar : Suara = ... : ... : ...", options: ["Radio : Suara : Frekuensi", "Film : Visual : Audio", "Buku : Teks : Gambar", "HP : Pesan : Panggilan", "Komputer : Monitor : Speaker"], answer: 1, explanation: "Televisi menyajikan output berupa Gambar dan Suara. Sebanding dengan Film menyajikan output berupa Visual dan Audio." },
+      { q: "Penyair : Bait : Puisi = ... : ... : ...", options: ["Novelis : Bab : Novel", "Komposer : Nada : Lagu", "Arsitek : Cetak Biru : Gedung", "Sutradara : Adegan : Film", "Dramawan : Babak : Drama"], answer: 0, explanation: "Penyair menyusun Bait untuk membuat Puisi. Sebanding dengan Novelis menyusun Bab untuk membuat Novel." },
+      { q: "Bandara : Pesawat : Landasan = ... : ... : ...", options: ["Stasiun : Kereta : Rel", "Pelabuhan : Kapal : Dermaga", "Terminal : Bus : Jalur", "Garasi : Mobil : Area", "Heliport : Helikopter : Pad"], answer: 1, explanation: "Bandara tempat Pesawat beroperasi di area Landasan. Sebanding dengan Pelabuhan tempat Kapal beroperasi di area Dermaga." },
+      { q: "Komputer : Keyboard : Ketik = ... : ... : ...", options: ["Mobil : Setir : Kemudi", "Sepeda : Pedal : Kayuh", "Smartphone : Layar Sentuh : Ketuk", "Televisi : Remote : Tekan", "Gitar : Senar : Petik"], answer: 2, explanation: "Komputer menggunakan alat input Keyboard dengan cara Di-ketik. Sebanding dengan Smartphone menggunakan alat input Layar Sentuh dengan cara Di-ketuk." },
+      { q: "Belajar : Paham : Lulus = ... : ... : ...", options: ["Latihan : Terampil : Menang", "Bekerja : Dapat Uang : Kaya", "Makan : Kenyang : Sehat", "Berobat : Sembuh : Pulih", "Menanam : Tumbuh : Panen"], answer: 0, explanation: "Proses berurutan: Belajar menghasilkan Paham sehingga bisa Lulus. Sebanding dengan Latihan menghasilkan Terampil sehingga bisa Menang." },
+      { q: "Benang : Jarum : Menjahit = ... : ... : ...", options: ["Tinta : Pena : Menulis", "Cat : Kuas : Melukis", "Semen : Sendok Adukan : Membangun", "Batu : Ketapel : Melempar", "Air : Selang : Menyiram"], answer: 0, explanation: "Benang dan Jarum dipadukan untuk aktivitas Menjahit. Sebanding dengan Tinta dan Pena dipadukan untuk aktivitas Menulis." },
+      { q: "Teleskop : Bintang : Astronomi = ... : ... : ...", options: ["Mikroskop : Bakteri : Biologi", "Stetoskop : Jantung : Kedokteran", "Termometer : Suhu : Fisika", "Peta : Wilayah : Geografi", "Kamera : Objek : Fotografi"], answer: 0, explanation: "Teleskop digunakan mengamati Bintang dalam ilmu Astronomi. Sebanding dengan Mikroskop digunakan mengamati Bakteri dalam ilmu Biologi." },
+      { q: "Perahu : Dayung : Sungai = ... : ... : ...", options: ["Mobil : Setir : Jalan", "Sepeda : Pedal : Jalan", "Pesawat : Kemudi : Udara", "Kapal : Baling-baling : Laut", "Kereta : Mesin : Rel"], answer: 1, explanation: "Perahu digerakkan oleh Dayung untuk melintasi Sungai. Sebanding dengan Sepeda digerakkan oleh Pedal untuk melintasi Jalan." },
+      { q: "Pohon : Ranting : Daun = ... : ... : ...", options: ["Tubuh : Tangan : Jari", "Buku : Bab : Subbab", "Rumah : Kamar : Kasur", "Gedung : Lantai : Ruangan", "Kota : Jalan : Rumah"], answer: 0, explanation: "Pohon cabang utamanya Ranting dan di ujungnya terdapat Daun. Sebanding dengan Tubuh percabangannya Tangan dan di ujungnya terdapat Jari." }
+    ];
+
+    const form = document.getElementById("quizForm");
+    const chunkSize = 10;
+    
+    questions.forEach((q, i) => {
+      if (i % chunkSize === 0) {
+        const sectionHeader = document.createElement("div");
+        sectionHeader.className = "section-title";
+        sectionHeader.innerText = `Bagian ${Math.floor(i / chunkSize) + 1} (Soal ${i + 1} - ${Math.min(i + chunkSize, questions.length)})`;
+        form.appendChild(sectionHeader);
+      }
+
+      const block = document.createElement("div");
+      block.className = "question-block";
+      
+      let optionsHTML = '';
+      q.options.forEach((opt, j) => {
+        optionsHTML += `
+          <div class="options">
+            <label>
+              <input type="radio" name="q${i}" value="${j}">
+              ${String.fromCharCode(65 + j)}. ${opt}
+            </label>
+          </div>`;
+      });
+
+      block.innerHTML = `
+        <div class="question">${i + 1}. ${q.q}</div>
+        ${optionsHTML}
+      `;
+      form.appendChild(block);
+    });
+
+    function submitQuiz() {
+      let score = 0;
+      let explanationsHTML = '<h2>Pembahasan Detail Soal:</h2>';
+
+      questions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name='q${i}']:checked`);
+        const ansIndex = q.answer;
+        const correctText = q.options[ansIndex];
+        let userSelectedText = "Tidak dijawab";
+        let isCorrect = false;
+
+        if (selected) {
+          const userVal = parseInt(selected.value);
+          if (userVal === ansIndex) {
+            score++;
+            isCorrect = true;
+          }
+          userSelectedText = `${String.fromCharCode(65 + userVal)}. ${q.options[userVal]}`;
+        }
+
+        explanationsHTML += `
+          <div class="explanation-item">
+            <p><strong>Soal ${i + 1}:</strong> ${q.q}</p>
+            <p>Jawaban Anda: <span style="color: ${isCorrect ? 'green' : 'red'}; font-weight: bold;">${userSelectedText}</span></p>
+            <p>Jawaban Benar: <span class="correct-ans">${String.fromCharCode(65 + ansIndex)}. ${correctText}</span></p>
+            <p><em>Analogi & Pembahasan:</em> ${q.explanation}</p>
+          </div>
+        `;
+      });
+
+      const finalScore = (score / questions.length) * 100;
+
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = `
+        <h2>Hasil Tes Anda</h2>
+        <p style="font-size: 24px; font-weight: bold; margin: 10px 0;">Skor: ${score} / ${questions.length} (Nilai: ${finalScore.toFixed(1)})</p>
+        <p>${finalScore >= 70 ? 'Luar biasa! Pemahaman analogi Anda sangat baik.' : 'Tetap semangat! Pelajari pembahasan di bawah untuk meningkatkan kemampuan analogi Anda.'}</p>
+      `;
+      resultDiv.classList.remove("hidden");
+
+      const expDiv = document.getElementById("explanation");
+      expDiv.innerHTML = explanationsHTML;
+      expDiv.classList.remove("hidden");
+
+      resultDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

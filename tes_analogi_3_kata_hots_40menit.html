@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tes Analogi 3 Kata HOTS (40 Menit) - Persona Research & Consulting</title>
+  <style>
+    :root {
+      --primary-color: #0f172a;
+      --secondary-color: #2563eb;
+      --accent-color: #059669;
+      --danger-color: #dc2626;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-color: #1e293b;
+      --border-color: #cbd5e1;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .header {
+      text-align: center;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 25px;
+    }
+
+    .header h1 {
+      color: var(--primary-color);
+      margin-bottom: 5px;
+      font-size: 24px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .header p {
+      color: #64748b;
+      font-size: 14px;
+      margin: 3px 0;
+    }
+
+    .timer-sticky {
+      position: sticky;
+      top: 15px;
+      z-index: 100;
+      background: #1e293b;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      margin-bottom: 25px;
+    }
+
+    .timer-title {
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .timer-clock {
+      font-size: 22px;
+      font-weight: bold;
+      font-family: monospace;
+      color: #38bdf8;
+    }
+
+    .timer-clock.warning {
+      color: #f87171;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0.5; }
+    }
+
+    .section-title {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 6px;
+      margin-top: 30px;
+      margin-bottom: 20px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .question-block {
+      background: #f1f5f9;
+      padding: 18px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border-left: 4px solid var(--secondary-color);
+    }
+
+    .question {
+      font-weight: 600;
+      font-size: 15px;
+      margin-bottom: 12px;
+      color: #0f172a;
+    }
+
+    .options label {
+      display: block;
+      padding: 10px 14px;
+      margin: 6px 0;
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 14px;
+    }
+
+    .options label:hover {
+      background-color: #e0f2fe;
+      border-color: var(--secondary-color);
+    }
+
+    .options input[type="radio"] {
+      margin-right: 10px;
+    }
+
+    .btn-submit {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      background-color: var(--primary-color);
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 30px;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn-submit:hover {
+      background-color: #334155;
+    }
+
+    #result {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      color: #065f46;
+      text-align: center;
+    }
+
+    #explanation {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #ffffff;
+      border: 1px solid var(--border-color);
+    }
+
+    .explanation-item {
+      padding: 14px;
+      margin-bottom: 14px;
+      border-bottom: 1px dashed var(--border-color);
+    }
+
+    .explanation-item:last-child {
+      border-bottom: none;
+    }
+
+    .correct-ans {
+      color: var(--accent-color);
+      font-weight: bold;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 13px;
+      color: #94a3b8;
+      border-top: 1px solid var(--border-color);
+      padding-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>TES ANALOGI VERBAL 3 KATA - TINGKAT HOTS (50 SOAL)</h1>
+      <p><strong>Persona Research & Consulting</strong> | WA: 0877 425 5786</p>
+      <p>Pilihlah pasangan 3 kata yang memiliki pola hubungan abstrak, ilmiah, atau fungsional paling setara.</p>
+    </div>
+
+    <!-- Timer Countdown 40 Menit -->
+    <div class="timer-sticky">
+      <span class="timer-title">⏱ Sisa Waktu Ujian:</span>
+      <span id="countdown" class="timer-clock">40:00</span>
+    </div>
+
+    <form id="quizForm"></form>
+    <button type="button" id="submitBtn" class="btn-submit" onclick="submitQuiz()">Selesai & Lihat Hasil Pembahasan</button>
+
+    <div id="result" class="hidden"></div>
+    <div id="explanation" class="hidden"></div>
+
+    <div class="footer">
+      &copy; 2026 Persona Research & Consulting. All rights reserved.
+    </div>
+  </div>
+
+  <script>
+    const hotsQuestions = [
+      { q: "Enzim : Biokatalis : Metabolisme = ... : ... : ...", options: ["Hormon : Regulator : Fisiologi", "Antibodi : Patogen : Imunitas", "Klorofil : Pigmen : Transpirasi", "Gen : Kromosom : Hereditas", "Katalis : Reaktan : Sintesis"], answer: 0, explanation: "Enzim berfungsi sebagai Biokatalis dalam proses Metabolisme. Sebanding dengan Hormon yang berfungsi sebagai Regulator dalam proses Fisiologi tubuh." },
+      { q: "Inflasi : Suku Bunga : Moneter = ... : ... : ...", options: ["Defisit : Anggaran : Fiskal", "Stagflasi : Pengangguran : Mikro", "Devaluasi : Ekspor : Perdagangan", "Resesi : Investasi : Pasar", "Likuiditas : Bank : Kas"], answer: 0, explanation: "Inflasi dikendalikan dengan penyesuaian Suku Bunga dalam kebijakan Moneter. Sebanding dengan Defisit yang dikendalikan melalui penataan Anggaran dalam kebijakan Fiskal." },
+      { q: "Korupsi : Transparansi : Integritas = ... : ... : ...", options: ["Plagiarisme : Sitasi : Orisinalitas", "Kejahatan : Hukuman : Keadilan", "Anarki : Regulasi : Ketertiban", "Kebohongan : Kejujuran : Kepercayaan", "Konflik : Mediasi : Perdamaian"], answer: 0, explanation: "Korupsi dicegah dengan Transparansi untuk mewujudkan Integritas. Sebanding dengan Plagiarisme yang dicegah dengan Sitasi untuk menjaga Orisinalitas." },
+      { q: "Hipotesis : Eksperimen : Verifikasi = ... : ... : ...", options: ["Tuduhan : Investigasi : Pembuktian", "Rancangan : Konstruksi : Evaluasi", "Premis : Argumentasi : Konklusi", "Teori : Observasi : Falsifikasi", "Gagasan : Uji Coba : Validasi"], answer: 4, explanation: "Hipotesis diuji melalui Eksperimen untuk mencapai Verifikasi. Sebanding dengan Gagasan yang diuji melalui Uji Coba untuk mencapai Validasi." },
+      { q: "Mitokondria : Respirasi : ATP = ... : ... : ...", options: ["Kloroplas : Fotosintesis : Glukosa", "Ribosom : Translasi : Protein", "Lisosom : Pencernaan : Enzim", "Badan Golgi : Sekresi : Vesikel", "Inti Sel : Replikasi : DNA"], answer: 0, explanation: "Mitokondria melakukan organel Respirasi seluler yang menghasilkan energi ATP. Sebanding dengan Kloroplas yang melakukan Fotosintesis untuk menghasilkan Glukosa." },
+      { q: "Epidemi : Pandemi : Global = ... : ... : ...", options: ["Lokal : Nasional : Teritorial", "Konflik : Perang : Internasional", "Isu : Krisis : Katastrofe", "Lokalitas : Regionalitas : Universalitas", "Gejala : Penyakit : Wabah"], answer: 3, explanation: "Eskalasi jangkauan dari Epidemik ke Pandemik yang berskala Global. Sebanding dengan tingkatan jangkauan cakupan dari Lokalitas, Regionalitas, hingga Universalitas." },
+      { q: "Semiotika : Tanda : Makna = ... : ... : ...", options: ["Etika : Moral : Perilaku", "Fonologi : Bunyi : Bahasa", "Aksiologi : Nilai : Manfaat", "Epistemologi : Pengetahuan : Kebenaran", "Logika : Penalaran : Kesimpulan"], answer: 3, explanation: "Semiotika adalah cabang ilmu yang mempelajari Tanda untuk menemukan Makna. Sebanding dengan Epistemologi yang mempelajari Pengetahuan untuk menemukan Kebenaran." },
+      { q: "Entropi : Termodinamika : Acak = ... : ... : ...", options: ["Inersia : Mekanika : Pertahanan", "Viskositas : Fluida : Kekentalan", "Peluang : Statistik : Ketidakpastian", "Refraksi : Optik : Pembiasan", "Frekuensi : Gelombang : Getaran"], answer: 2, explanation: "Entropi adalah ukuran dalam Termodinamika yang menyatakan tingkat Keacakan sistem. Sebanding dengan Peluang dalam Statistik yang menyatakan tingkat Ketidakpastian." },
+      { q: "Yurisprudensi : Hakim : Putusan = ... : ... : ...", options: ["Doktrin : Ahli Hukum : Opini", "Konstitusi : DPR : Undang-Undang", "Konvensi : Masyarakat : Adat", "Statuta : Rektor : Peraturan", "Preseden : Pengadilan : Perkara"], answer: 0, explanation: "Yurisprudensi bersumber dari Hakim dalam bentuk Putusan hukum. Sebanding dengan Doktrin yang bersumber dari Ahli Hukum dalam bentuk Opini ilmiah." },
+      { q: "Algoritma : Efisiensi : Komputasi = ... : ... : ...", options: ["Naskah : Drama : Pementasan", "Resep : Takaran : Kuliner", "SOP : Standarisasi : Operasional", "Peta : Skala : Navigasi", "Desain : Estetika : Arsitektur"], answer: 2, explanation: "Algoritma dirancang untuk mencapai Efisiensi dalam proses Komputasi. Sebanding dengan SOP dirancang untuk mencapai Standarisasi dalam proses Operasional." },
+
+      { q: "Ablasi : Sinar : Jaringan = ... : ... : ...", options: ["Erosi : Air : Tanah", "Corong : Angin : Cerobong", "Kavitasi : Tekanan : Cairan", "Karat : Oksigen : Besi", "Fusi : Panas : Atom"], answer: 0, explanation: "Ablasi adalah pengikisan Jaringan akibat paparan Sinar/Radiasi. Sebanding dengan Erosi yang merupakan pengikisan Tanah akibat aliran Air." },
+      { q: "Vaksin : Antigen : Imunitas = ... : ... : ...", options: ["Pupuk : Nutrisi : Kesuburan", "Obat : Dosis : Kesembuhan", "Nasihat : Moral : Kebijaksanaan", "Oli : Pelumas : Gesekan", "Vitamin : Suplemen : Kesehatan"], answer: 0, explanation: "Vaksin memberikan Antigen untuk menstimulasi Imunitas. Sebanding dengan Pupuk yang memberikan Nutrisi untuk menstimulasi Kesuburan tanah." },
+      { q: "Katalisator : Reaksi : Laju = ... : ... : ...", options: ["Moderator : Diskusi : Arah", "Motivator : Kinerja : Produktivitas", "Inhibitor : Proses : Hambatan", "Stabilisator : Harga : Keseimbangan", "Regulator : Pasar : Ketertiban"], answer: 1, explanation: "Katalisator mempercepat Reaksi untuk meningkatkan Laju. Sebanding dengan Motivator yang memacu Kinerja untuk meningkatkan Produktivitas." },
+      { q: "Oligopoli : Pasar : Produsen = ... : ... : ...", options: ["Monopsoni : Perdagangan : Pembeli", "Demokrasi : Politik : Rakyat", "Oligarki : Pemerintahan : Elit", "Autokrasi : Negara : Pemimpin", "Feodalisme : Tuan Tanah : Buruh"], answer: 2, explanation: "Oligopoli adalah struktur Pasar yang dikuasai sedikit Produsen. Sebanding dengan Oligarki yang merupakan sistem Pemerintahan yang dikuasai sedikit Elit." },
+      { q: "Aplikasi : Coding : Developer = ... : ... : ...", options: ["Bangunan : Arsitektur : Kontraktor", "Novel : Penulisan : Pengarang", "Simfoni : Komposisi : Komposer", "Gedung : Perancangan : Arsitek", "Undang-Undang : Legislasi : Parlemen"], answer: 4, explanation: "Aplikasi dihasilkan melalui proses Coding oleh Parlemen/Developer. Sebanding dengan Undang-Undang yang dihasilkan melalui proses Legislasi oleh Parlemen." },
+      { q: "Sublimasi : Zat : Wujud = ... : ... : ...", options: ["Evolusi : Spesies : Morfologi", "Mutasi : Gen : Struktur", "Revolusi : Sistem : Tatanan", "Metamorfosis : Serangga : Bentuk", "Ionisasi : Atom : Muatan"], answer: 1, explanation: "Sublimasi menyebabkan pergeseran Zat pada tingkat Wujud. Sebanding dengan Mutasi yang menyebabkan pergeseran Gen pada tingkat Struktur." },
+      { q: "Isoterma : Suhu : Peta = ... : ... : ...", options: ["Isobar : Tekanan : Meteorologi", "Isobath : Kedalaman : Oceanografi", "Isohiet : Curah Hujan : Peta", "Isogonis : Magnet : Bumi", "Kontur : Ketinggian : Topografi"], answer: 2, explanation: "Isoterma adalah garis penghubung daerah ber-Suhu sama dalam Peta. Sebanding dengan Isohiet yang menghubungkan daerah ber-Curah Hujan sama dalam Peta." },
+      { q: "Anomali : Deviasi : Standar = ... : ... : ...", options: ["Cacat : Kerusakan : Mutu", "Aberasi : Penyimpangan : Normal", "Plagiat : Peniru : Asli", "Paradoks : Pertentangan : Logika", "Inovasi : Perubahan : Tradisi"], answer: 1, explanation: "Anomali ditandai oleh adanya Deviasi terhadap Standar. Sebanding dengan Aberasi yang ditandai oleh adanya Penyimpangan terhadap kondisi Normal." },
+      { q: "Deduksi : Umum : Khusus = ... : ... : ...", options: ["Induksi : Khusus : Umum", "Reduksi : Kompleks : Sederhana", "Analogi : Sama : Setara", "Sintesis : Unsur : Kesatuan", "Abstraksi : Realitas : Konsep"], answer: 0, explanation: "Deduksi adalah penarikan kesimpulan dari hal Umum ke Khusus. Sebanding dengan Induksi yang menarik kesimpulan dari hal Khusus ke Umum." },
+      { q: "Metakognisi : Berpikir : Kesadaran = ... : ... : ...", options: ["Empati : Perasaan : Kepedulian", "Introspeksi : Diri : Evaluasi", "Intuisi : Keputusan : Insting", "Persuasi : Komunikasi : Pengaruh", "Adaptasi : Lingkungan : Kelangsungan"], answer: 1, explanation: "Metakognisi adalah kemampuan Berpikir yang melibatkan Kesadaran atas pikiran sendiri. Sebanding dengan Introspeksi yang merupakan analisis Diri yang melibatkan Evaluasi internal." },
+
+      { q: "Sinergi : Kolaborasi : Hasil = ... : ... : ...", options: ["Inovasi : Riset : Kemajuan", "Resonansi : Getaran : Amplifikasi", "Kombinasi : Campuran : Varian", "Simbiosism : Interaksi : Kelangsungan", "Harmoni : Nada : Keindahan"], answer: 1, explanation: "Sinergi muncul dari Kolaborasi yang menghasilkan peningkatkan (Hasil). Sebanding dengan Resonansi yang muncul dari Getaran yang menghasilkan penguatan (Amplifikasi)." },
+      { q: "Kardinal : Urutan : Angka = ... : ... : ...", options: ["Nominal : Kategori : Data", "Ordinal : Peringkat : Skala", "Kualitatif : Sifat : Variabel", "Vektor : Arah : Besaran", "Absolut : Nilai : Angka"], answer: 1, explanation: "Angka Ordinal menunjukkan Peringkat dalam Skala pengukuran. (Catatan: Kardinal mewakili kuantitas, Ordinal mewakili Peringkat)." },
+      { q: "Amnesti : Pengampunan : Pidana = ... : ... : ...", options: ["Grasis : Pengurangan : Hukuman", "Abolisi : Penghentian : Tuntutan", "Rehabilitasi : Pemulihan : Nama Baik", "Moratorium : Penundaan : Kewajiban", "Remisi : Pengurangan : Masa Tahanan"], answer: 1, explanation: "Amnesti berupa Pengampunan atas tindakan Pidana. Sebanding dengan Abolisi yang berupa Penghentian atas proses Tuntutan hukum." },
+      { q: "Supernova : Bintang : Ledakan = ... : ... : ...", options: ["Tsunami : Gempa : Gelombang", "Erupsi : Gunung Berapi : Muncuran", "Karat : Besi : Oksidasi", "Pelapukan : Batuan : Disintegrasi", "Komet : Angkasa : Ekor"], answer: 1, explanation: "Supernova adalah fenomena Ledakan pada Bintang. Sebanding dengan Erupsi yang merupakan fenomena Pancuran/Semburan pada Gunung Berapi." },
+      { q: "Katalisis : Enzim : Reaktan = ... : ... : ...", options: ["Filtrasi : Penyaring : Campuran", "Oksidasi : Oksigen : Senyawa", "Sedimentasi : Gravitasi : Partikel", "Reduksi : Elektron : Ion", "Transkripsi : RNA : DNA"], answer: 0, explanation: "Katalisis dilakukan oleh Enzim terhadap Reaktan. Sebanding dengan Filtrasi dilakukan oleh Penyaring terhadap Campuran." },
+      { q: "Paradoks : Kontradiksi : Kebenaran = ... : ... : ...", options: ["Ironi : Sindiran : Kenyataan", "Oksimoron : Pertentangan : Makna", "Anomali : Penyimpangan : Kejanggalan", "Dilema : Pilihan : Keputusan", "Ambiguitas : Keraguan : Pemahaman"], answer: 0, explanation: "Paradoks mengandung Kontradiksi namun dapat menyimpan Kebenaran. Sebanding dengan Ironi yang mengandung Sindiran berdasarkan Kenyataan." },
+      { q: "Homeostasis : Keseimbangan : Tubuh = ... : ... : ...", options: ["Ekosistem : Keanekaragaman : Lingkungan", "Ekuilibrium : Keseimbangan : Pasar", "Termoregulasi : Suhu : Organisme", "Stabilitas : Keamanan : Negara", "Toleransi : Kerukunan : Masyarakat"], answer: 1, explanation: "Homeostasis adalah kondisi Keseimbangan internal pada Tubuh. Sebanding dengan Ekuilibrium yang merupakan kondisi Keseimbangan pada Pasar." },
+      { q: "Audit : Keuangan : Akuntabilitas = ... : ... : ...", options: ["Inspeksi : Kelayakan : Keselamatan", "Uji Klinis : Obat : Efektivitas", "Akreditasi : Institusi : Kualitas", "Evaluasi : Kinerja : Produktivitas", "Sertifikasi : Keahlian : Kompetensi"], answer: 2, explanation: "Audit dilakukan terhadap Keuangan untuk memastikan Akuntabilitas. Sebanding dengan Akreditasi dilakukan terhadap Institusi untuk memastikan Kualitas." },
+      { q: "Refraksi : Cermin : Pembiasan = ... : ... : ...", options: ["Difraksi : Celah : Penyebaran", "Dispersion : Prisma : Penguraian", "Absorpsi : Benda Gelap : Penyerapan", "Polarisasi : Filter : Pembatasan", "Gema : Dinding : Pemantulan"], answer: 1, explanation: "Dispersi terjadi saat cahaya melewati Prisma berupa Penguraian warna. Sebanding dengan Difraksi melewati Celah berupa Penyebaran." },
+      { q: "Garis Bintang : Deklinasi : Astronomi = ... : ... : ...", options: ["Garis Lintang : Latitudo : Geografi", "Garis Bujur : Longitudo : Peta", "Garis Isobar : Tekanan : Klimatologi", "Garis Kontur : Ketinggian : Topografi", "Ekuator : Khatulistiwa : Bumi"], answer: 3, explanation: "Garis Kontur menunjukkan Ketinggian dalam peta Topografi. Sebanding dengan Deklinasi menunjukkan posisi koordinat dalam Astronomi." },
+
+      { q: "Osmosis : Membran : Konsentrasi = ... : ... : ...", options: ["Kapilaritas : Pipa : Tegangan", "Difusi : Medium : Gradien", "Konveksi : Fluida : Densitas", "Konduksi : Padat : Konduktivitas", "Radiasi : Ruang Hampa : Gelombang"], answer: 1, explanation: "Osmosis adalah perpindahan pelarut melintasi Membran karena perbedaan Konsentrasi. Sebanding dengan Difusi melintasi Medium karena adanya Gradien." },
+      { q: "Hipotermia : Suhu : Penurunan = ... : ... : ...", options: ["Hipertensi : Tekanan Darah : Peningkatan", "Anemia : Hemoglobin : Kekurangan", "Dehidrasi : Cairan : Kehilangan", "Hipoksia : Oksigen : Penurunan", "Depresi : Mood : Penurunan"], answer: 3, explanation: "Hipotermia terjadi akibat Penurunan Suhu tubuh di bawah normal. Sebanding dengan Hipoksia terjadi akibat Penurunan Oksigen dalam jaringan." },
+      { q: "Morfologi : Bentuk : Bahasa = ... : ... : ...", options: ["Anatomi : Struktur : Tubuh", "Taksonomi : Klasifikasi : Makhluk Hidup", "Etimologi : Asal-usul : Kata", "Sintaksis : Struktur : Kalimat", "Histologi : Jaringan : Biologi"], answer: 3, explanation: "Morfologi mempelajari Bentuk kata dalam Bahasa. Sebanding dengan Sintaksis mempelajari Struktur susunan Kalimat." },
+      { q: "Propaganda : Opini : Publik = ... : ... : ...", options: ["Iklan : Persepsi : Konsumen", "Edukasi : Pengetahuan : Siswa", "Sosialisasi : Kesadaran : Masyarakat", "Kampanye : Dukungan : Pemilih", "Indoktrinasi : Ideologi : Pengikut"], answer: 0, explanation: "Propaganda bertujuan membentuk Opini pada Publik. Sebanding dengan Iklan yang bertujuan membentuk Persepsi pada Konsumen." },
+      { q: "Sterilisasi : Mikroba : Steril = ... : ... : ...", options: ["Purifikasi : Impuritas : Murni", "Filtrasi : Partikel : Jernih", "Pasteurisasi : Bakteri : Aman", "Desinfeksi : Kuman : Bersih", "Netralisasi : Asam : Netral"], answer: 0, explanation: "Sterilisasi menghilangkan Mikroba untuk mencapai kondisi Steril. Sebanding dengan Purifikasi menghilangkan Impuritas (pengotor) untuk mencapai kondisi Murni." },
+      { q: "Arbitrase : Sengketa : Netral = ... : ... : ...", options: ["Mediasi : Konflik : Penengah", "Negosiasi : Perbedaan : Kesepakatan", "Konsiliasi : Perselisihan : Damai", "Peradilan : Perkara : Adil", "Diplomasi : Hubungan : Kompromi"], answer: 0, explanation: "Arbitrase menyelesaikan Sengketa dengan pihak pihak Netral. Sebanding dengan Mediasi menyelesaikan Konflik dengan pihak Penengah." },
+      { q: "Isotop : Proton : Semak = ... : ... : ...", options: ["Isobar : Massa : Sama", "Isoton : Neutron : Sama", "Isomer : Struktur : Berbeda", "Allotrop : Unsur : Sama", "Isoelektron : Elektron : Sama"], answer: 1, explanation: "Isotop adalah atom dengan jumlah Proton Sama. Sebanding dengan Isoton yaitu atom dengan jumlah Neutron Sama." },
+      { q: "Simbiosis Mutualisme : Keuntungan : Kedua Pihak = ... : ... : ...", options: ["Syirkah : Keuntungan : Bersama", "Gotong Royong : Beban : Ringan", "Sinergisme : Efisiensi : Maksimal", "Kooperatif : Tujuan : Capai", "Kemitraan : Manfaat : Bersama"], answer: 4, explanation: "Simbiosis Mutualisme memberikan Manfaat bagi Kedua Pihak. Sebanding dengan Kemitraan yang dirancang memberikan Manfaat bagi Bersama (kedua pihak)." },
+      { q: "Resesi : Output : Penurunan = ... : ... : ...", options: ["Deflasi : Harga : Penurunan", "Stagflasi : Pertumbuhan : Stagnan", "Inflasi : Uang : Depresiasi", "Ekspansi : Ekonomi : Peningkatan", "Pengangguran : Tenaga Kerja : Surplus"], answer: 0, explanation: "Resesi ditandai dengan Penurunan nilai Output perekonomian. Sebanding dengan Deflasi yang ditandai dengan Penurunan tingkat Harga." },
+      { q: "Prisma : Cahaya : Pembiasan = ... : ... : ...", options: ["Lensa : Bayangan : Pemfokusan", "Gema : Suara : Pemantulan", "Layar : Gambar : Proyeksi", "Filter : Warna : Penyaringan", "Magnet : Medan : Penarikan"], answer: 0, explanation: "Prisma memproses Cahaya melalui peristiwa Pembiasan. Sebanding dengan Lensa memproses cahaya untuk pembentukan Bayangan melalui Pemfokusan." },
+
+      { q: "Vektor : Besaran : Arah = ... : ... : ...", options: ["Matriks : Baris : Kolom", "Skalar : Nilai : Tanpa Arah", "Koordinat : Titik : Posisi", "Fungsi : Domain : Kodomain", "Garis : Panjang : Dimensi"], answer: 1, explanation: "Vektor adalah Besaran yang memiliki nilai dan Arah. Sebanding dengan Skalar yang merupakan besaran yang hanya memiliki Nilai Tanpa Arah." },
+      { q: "Kriptografi : Enkripsi : Keamanan = ... : ... : ...", options: ["Antivirus : Scanning : Proteksi", "Firewall : Filtering : Blokir", "Autentikasi : Verifikasi : Akses", "Steganografi : Penyembunyian : Kerahasiaan", "Backup : Duplikasi : Pemulihan"], answer: 3, explanation: "Kriptografi menggunakan Enkripsi untuk menjaga Keamanan data. Sebanding dengan Steganografi menggunakan Penyembunyian pesan untuk menjaga Kerahasiaan." },
+      { q: "Kromatografi : Pemisahan : Pigmen = ... : ... : ...", options: ["Distilasi : Pemurnian : Cairan", "Centrifugasi : Pemisahan : Endapan", "Electrophoresis : Pemisahan : DNA", "Kristalisasi : Pembentukan : Padatan", "Titrasi : Penentuan : Kadar"], answer: 2, explanation: "Kromatografi teknik Pemisahan sampel berdasarkan komponen seperti Pigmen. Sebanding dengan Electrophoresis teknik Pemisahan molekul seperti DNA." },
+      { q: "Yurisdiksi : Wilayah : Kewenangan = ... : ... : ...", options: ["Otonomi : Daerah : Hak", "Kedaulatan : Negara : Kekuasaan", "Domisili : Tempat : Tinggal", "Kompetensi : Bidang : Keahlian", "Otoritas : Jabatan : Hak"], answer: 3, explanation: "Yurisdiksi menentukan cakupan Wilayah hukum atas Kewenangan. Sebanding dengan Kompetensi menentukan cakupan Bidang tugas atas Keahlian." },
+      { q: "Fotosintesis : Anabolisme : Energi = ... : ... : ...", options: ["Glikolisis : Katabolisme : ATP", "Fermentasi : Anaerob : Asam", "Krenasi : Osmosis : Air", "Transkripsi : Sintesis : RNA", "Digesti : Hidrolisis : Makanan"], answer: 0, explanation: "Fotosintesis adalah reaksi Anabolisme yang menyimpan/membutuhkan Energi. Sebanding dengan Glikolisis yang merupakan reaksi Katabolisme yang menghasilkan ATP." },
+      { q: "Restrukturisasi : Organisasi : Efisiensi = ... : ... : ...", options: ["Renovasi : Bangunan : Estetika", "Rehabilitasi : Fisik : Pemulihan", "Reformasi : Tatanan : Kemajuan", "Revisi : Dokumen : Akurasi", "Rekayasa : Sistem : Optimaasi"], answer: 2, explanation: "Restrukturisasi dilakukan pada Organisasi untuk mencapai Efisiensi. Sebanding dengan Reformasi dilakukan pada Tatanan sistem untuk mencapai Kemajuan." },
+      { q: "Inersia : Massa : Kecondongan = ... : ... : ...", options: ["Elastisitas : Bahan : Kelenturan", "Momentum : Kecepatan : Gerak", "Entropi : Sistem : Keacakan", "Gravitasi : Jarak : Tarikan", "Friksi : Permukaan : Hambatan"], answer: 2, explanation: "Inersia bergantung pada Massa yang menyatakan Kecondongan mempertahankan keadaan. Sebanding dengan Entropi pada Sistem yang menyatakan tingkat Keacakan." },
+      { q: "Aksioma : Teorema : Pembuktian = ... : ... : ...", options: ["Dogma : Doktrin : Keyakinan", "Hipotesis : Hukum : Eksperimen", "Postulat : Proposisi : Deduksi", "Premis : Kesimpulan : Logika", "Teori : Model : Simulasi"], answer: 2, explanation: "Aksioma menjadi dasar bagi Teorema yang membutuhkan Pembuktian. Sebanding dengan Postulat yang menjadi dasar bagi Proposisi melalui proses Deduksi." },
+      { q: "Kuantisasi : Foton : Energi = ... : ... : ...", options: ["Ionisasi : Elektron : Muatan", "Disintegrasi : Radiasi : Inti", "Kristalisasi : Molekul : Kisi", "Kondensasi : Uap : Titik Air", "Kromatin : Gen : DNA"], answer: 0, explanation: "Kuantisasi menjelaskan Foton sebagai paket Energi. Sebanding dengan Ionisasi yang menjelaskan pelepasan Elektron untuk menghasilkan Muatan." },
+      { q: "Etimologi : Kata : Sejarah = ... : ... : ...", options: ["Genealogi : Keluarga : Silsilah", "Arkeologi : Artefak : Peradaban", "Paleontologi : Fosil : Kehidupan", "Kronologi : Peristiwa : Waktu", "Geologi : Batuan : Bumi"], answer: 2, explanation: "Etimologi mempelajari Kata berdasarkan Sejarah perkembangannya. Sebanding dengan Paleontologi yang mempelajari Fosil berdasarkan Sejarah Kehidupan purba." }
+    ];
+
+    // Render Quiz Questions
+    const form = document.getElementById("quizForm");
+    const chunkSize = 10;
+
+    hotsQuestions.forEach((q, i) => {
+      if (i % chunkSize === 0) {
+        const sectionHeader = document.createElement("div");
+        sectionHeader.className = "section-title";
+        sectionHeader.innerText = `BAGIAN ${Math.floor(i / chunkSize) + 1} (SOAL ${i + 1} - ${Math.min(i + chunkSize, hotsQuestions.length)})`;
+        form.appendChild(sectionHeader);
+      }
+
+      const block = document.createElement("div");
+      block.className = "question-block";
+
+      let optionsHTML = '';
+      q.options.forEach((opt, j) => {
+        optionsHTML += `
+          <div class="options">
+            <label>
+              <input type="radio" name="q${i}" value="${j}">
+              ${String.fromCharCode(65 + j)}. ${opt}
+            </label>
+          </div>`;
+      });
+
+      block.innerHTML = `
+        <div class="question">${i + 1}. ${q.q}</div>
+        ${optionsHTML}
+      `;
+      form.appendChild(block);
+    });
+
+    // Timer Countdown Script (40 Minutes = 2400 seconds)
+    let totalTime = 40 * 60;
+    let timerInterval = null;
+
+    function startTimer() {
+      const display = document.getElementById("countdown");
+      timerInterval = setInterval(() => {
+        let minutes = Math.floor(totalTime / 60);
+        let seconds = totalTime % 60;
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = `${minutes}:${seconds}`;
+
+        if (totalTime <= 300) { // 5 minutes remaining
+          display.classList.add("warning");
+        }
+
+        if (totalTime <= 0) {
+          clearInterval(timerInterval);
+          alert("Waktu 40 menit telah habis! Jawaban Anda akan otomatis dikumpulkan.");
+          submitQuiz(true);
+        } else {
+          totalTime--;
+        }
+      }, 1000);
+    }
+
+    // Auto-start timer on page load
+    window.onload = function() {
+      startTimer();
+    };
+
+    function submitQuiz(isTimeUp = false) {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+      }
+
+      // Disable inputs
+      const inputs = document.querySelectorAll("input[type='radio']");
+      inputs.forEach(input => input.disabled = true);
+      document.getElementById("submitBtn").disabled = true;
+      document.getElementById("submitBtn").style.backgroundColor = "#94a3b8";
+
+      let score = 0;
+      let explanationsHTML = '<h2>Pembahasan Detail Soal HOTS:</h2>';
+
+      hotsQuestions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name='q${i}']:checked`);
+        const ansIndex = q.answer;
+        const correctText = q.options[ansIndex];
+        let userSelectedText = "Tidak dijawab";
+        let isCorrect = false;
+
+        if (selected) {
+          const userVal = parseInt(selected.value);
+          if (userVal === ansIndex) {
+            score++;
+            isCorrect = true;
+          }
+          userSelectedText = `${String.fromCharCode(65 + userVal)}. ${q.options[userVal]}`;
+        }
+
+        explanationsHTML += `
+          <div class="explanation-item">
+            <p><strong>Soal ${i + 1}:</strong> ${q.q}</p>
+            <p>Jawaban Anda: <span style="color: ${isCorrect ? '#059669' : '#dc2626'}; font-weight: bold;">${userSelectedText}</span></p>
+            <p>Jawaban Benar: <span class="correct-ans">${String.fromCharCode(65 + ansIndex)}. ${correctText}</span></p>
+            <p><em>Analogi & Pembahasan:</em> ${q.explanation}</p>
+          </div>
+        `;
+      });
+
+      const finalScore = (score / hotsQuestions.length) * 100;
+
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = `
+        <h2>${isTimeUp ? 'Waktu Habis! Hasil Ujian Anda' : 'Hasil Tes Analogi HOTS Anda'}</h2>
+        <p style="font-size: 26px; font-weight: bold; margin: 10px 0;">Skor: ${score} / ${hotsQuestions.length} (Nilai: ${finalScore.toFixed(1)})</p>
+        <p>${finalScore >= 75 ? 'Sangat Luar Biasa! Penalaran logis dan pemahaman konsep HOTS Anda sangat kuat.' : 'Tetap Semangat! Soal tingkat HOTS memerlukan pemahaman pola konseptual. Pelajari pembahasan di bawah ini.'}</p>
+      `;
+      resultDiv.classList.remove("hidden");
+
+      const expDiv = document.getElementById("explanation");
+      expDiv.innerHTML = explanationsHTML;
+      expDiv.classList.remove("hidden");
+
+      resultDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

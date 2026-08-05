@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analogi 3 Kata Level Sedang - Persona Research & Consulting</title>
+  <style>
+    :root {
+      --primary-color: #d97706;
+      --secondary-color: #b45309;
+      --accent-color: #16a34a;
+      --danger-color: #dc2626;
+      --bg-color: #fffbeeb3;
+      --card-bg: #ffffff;
+      --text-color: #1e293b;
+      --border-color: #fde68a;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fefce8;
+      color: var(--text-color);
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .header {
+      text-align: center;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 25px;
+    }
+
+    .header h1 {
+      color: var(--primary-color);
+      margin-bottom: 5px;
+      font-size: 24px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .header p {
+      color: #b45309;
+      font-size: 14px;
+      margin: 3px 0;
+    }
+
+    .timer-sticky {
+      position: sticky;
+      top: 15px;
+      z-index: 100;
+      background: #d97706;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      margin-bottom: 25px;
+    }
+
+    .timer-title {
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .timer-clock {
+      font-size: 22px;
+      font-weight: bold;
+      font-family: monospace;
+      color: #ffffff;
+    }
+
+    .timer-clock.warning {
+      color: #fecaca;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0.5; }
+    }
+
+    .section-title {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 6px;
+      margin-top: 30px;
+      margin-bottom: 20px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .question-block {
+      background: #fef3c7;
+      padding: 18px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border-left: 4px solid var(--secondary-color);
+    }
+
+    .question {
+      font-weight: 600;
+      font-size: 15px;
+      margin-bottom: 12px;
+      color: #92400e;
+    }
+
+    .options label {
+      display: block;
+      padding: 10px 14px;
+      margin: 6px 0;
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 14px;
+    }
+
+    .options label:hover {
+      background-color: #fde68a;
+      border-color: var(--secondary-color);
+    }
+
+    .options input[type="radio"] {
+      margin-right: 10px;
+    }
+
+    .btn-submit {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      background-color: var(--primary-color);
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 30px;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn-submit:hover {
+      background-color: #b45309;
+    }
+
+    #result {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+      text-align: center;
+    }
+
+    #explanation {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #ffffff;
+      border: 1px solid var(--border-color);
+    }
+
+    .explanation-item {
+      padding: 14px;
+      margin-bottom: 14px;
+      border-bottom: 1px dashed var(--border-color);
+    }
+
+    .explanation-item:last-child {
+      border-bottom: none;
+    }
+
+    .correct-ans {
+      color: var(--accent-color);
+      font-weight: bold;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .expired-screen {
+      text-align: center;
+      padding: 50px 20px;
+      color: #dc2626;
+    }
+
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 13px;
+      color: #64748b;
+      border-top: 1px solid var(--border-color);
+      padding-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="mainContainer">
+    <div class="header">
+      <h1>ANALOGI 3 KATA LEVEL SEDANG</h1>
+      <p><strong>Persona Research & Consulting</strong> | WA: 0877 425 5786</p>
+      <p>Pilihlah pasangan 3 kata yang memiliki hubungan logika, proses, atau hubungan fungsional yang paling setara.</p>
+    </div>
+
+    <!-- Timer Countdown 40 Menit -->
+    <div class="timer-sticky">
+      <span class="timer-title">⏱ Sisa Waktu Ujian:</span>
+      <span id="countdown" class="timer-clock">40:00</span>
+    </div>
+
+    <form id="quizForm"></form>
+    <button type="button" id="submitBtn" class="btn-submit" onclick="submitQuiz()">Selesai & Lihat Hasil Pembahasan</button>
+
+    <div id="result" class="hidden"></div>
+    <div id="explanation" class="hidden"></div>
+
+    <div class="footer">
+      &copy; 2026 Persona Research & Consulting. All rights reserved.
+    </div>
+  </div>
+
+  <script>
+    // Expiration Protocol Check (Tanggal Kadaluarsa: 2026-12-31)
+    const expiryDate = new Date("2026-12-31T23:59:59");
+    if (new Date() > expiryDate) {
+      document.getElementById("mainContainer").innerHTML = `
+        <div class="expired-screen">
+          <h2>Ujian Ini Telah Kadaluarsa!</h2>
+          <p>Masa berlaku kuis ini telah berakhir. Silakan hubungi Persona Research & Consulting (WA: 0877 425 5786) untuk mendapatkan akses kuis terbaru.</p>
+        </div>
+      `;
+    }
+
+    // Anti-AI / Anti-Copy Protocols
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('keydown', e => {
+      if (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 's' || e.key === 'a')) {
+        e.preventDefault();
+      }
+    });
+
+    // Base Medium Questions Data (50 Soal Analogi Tingkat Sedang)
+    const baseMediumQuestions = [
+      { q: "Tepung : Roti : Oven = ... : ... : ...", options: ["Padi : Beras : Sawah", "Tanah Clay : Tembikar : Tanur", "Kayu : Meja : Gergaji", "Kapas : Kain : Jarum", "Semen : Gedung : Arsitek"], answer: 1, explanation: "Tepung diolah menjadi Roti yang dipanggang dalam Oven. Sebanding dengan Tanah Clay diolah menjadi Tembikar yang dibakar dalam Tanur (tungku pemanas)." },
+      { q: "Konstitusi : Undang-Undang : Peraturan = ... : ... : ...", options: ["Anggaran : Belanja : Kas", "Statuta : Tata Tertib : Anjuran", "Kitab : Bab : Pasal", "Visi : Misi : Program Kerja", "Direktur : Manajer : Staf"], answer: 1, explanation: "Konstitusi, Undang-Undang, dan Peraturan merupakan tingkatan norma hukum dari yang paling tinggi ke rendah. Sebanding dengan Statuta, Tata Tertib, dan Anjuran." },
+      { q: "Resep : Masakan : Koki = ... : ... : ...", options: ["Naskah : Film : Sutradara", "Obat : Pasien : Dokter", "Sketsa : Gedung : Arsitek", "Buku : Cetak : Penerbit", "Lagu : Musik : Penyanyi"], answer: 0, explanation: "Resep dijadikan panduan membuat Masakan oleh Koki. Sebanding dengan Naskah dijadikan panduan membuat Film oleh Sutradara." },
+      { q: "Aspirasi : DPR : Undang-Undang = ... : ... : ...", options: ["Gugatan : Pengadilan : Putusan", "Kritik : Media : Berita", "Vonis : Hakim : Penjara", "Saran : Presiden : Kebijakan", "Perkara : Polisi : Tahanan"], answer: 0, explanation: "Aspirasi diproses di DPR untuk menghasilkan Undang-Undang. Sebanding dengan Gugatan diproses di Pengadilan untuk menghasilkan Putusan." },
+      { q: "Kecelakaan : Rem : Sabuk Pengaman = ... : ... : ...", options: ["Kebakaran : APAR : Detektor Asap", "Penyakit : Vaksin : Obat", "Banjir : Tanggul : Pompa", "Kecurian : Gembok : CCTV", "Penyusupan : Pagar : Satpam"], answer: 0, explanation: "Untuk mencegah/mengurangi kecelakaan digunakan Rem (aktif) dan Sabuk Pengaman (pasif). Sebanding dengan Kebakaran yang diatasi APAR dan diantisipasi Detektor Asap." },
+      { q: "Hipotesis : Eksperimen : Kesimpulan = ... : ... : ...", options: ["Rencana : Pelaksanaan : Evaluasi", "Tuduhan : Sidang : Vonis", "Niat : Usaha : Hasil", "Teori : Uji Coba : Aplikasi", "Soal : Ujian : Nilai"], answer: 0, explanation: "Tahapan ilmiah terdiri dari Hipotesis, lalu Eksperimen, dan menghasilkan Kesimpulan. Sebanding dengan siklus Rencana, Pelaksanaan, dan Evaluasi." },
+      { q: "Geologi : Batuan : Bumi = ... : ... : ...", options: ["Astronomi : Bintang : Angkasa", "Oceanografi : Arus : Laut", "Botani : Tumbuhan : Hutan", "Entomologi : Serangga : Hewan", "Meteorologi : Cuaca : Atmosfer"], answer: 4, explanation: "Geologi mempelajari Batuan yang ada di Bumi. Sebanding dengan Meteorologi mempelajari Cuaca yang ada di Atmosfer." },
+      { q: "Perpustakaan : Katalog : Buku = ... : ... : ...", options: ["Supermarket : Daftar Harga : Barang", "Museum : Label : Benda Cagar Budaya", "Arsip : Indeks : Dokumen", "Restoran : Menu : Makanan", "Bank : Rekening : Uang"], answer: 2, explanation: "Di Perpustakaan, Katalog digunakan untuk mengorganisasi dan mencari Buku. Sebanding dengan di Arsip, Indeks digunakan untuk mengorganisasi Dokumen." },
+      { q: "Sutradara : Skenario : Film = ... : ... : ...", options: ["Koreografer : Gerak : Tari", "Komponis : Partitur : Simfoni", "Arsitek : Cetak Biru : Bangunan", "Penulis : Outline : Novel", "Desainer : Pola : Pakaian"], answer: 2, explanation: "Sutradara menggunakan Skenario untuk memproduksi Film. Sebanding dengan Arsitek menggunakan Cetak Biru untuk membangun Bangunan." },
+      { q: "Vaksin : Antibodi : Kekebalan = ... : ... : ...", options: ["Obat : Kuman : Sembuh", "Pupuk : Nutrisi : Pertumbuhan", "Pendidikan : Ilmu : Kecerdasan", "Latihan : Otot : Kekuatan", "Pengalaman : Wawasan : Kebijaksanaan"], answer: 1, explanation: "Vaksin memicu pembentukan Antibodi yang menghasilkan Kekebalan. Sebanding dengan Pupuk menyediakan Nutrisi yang memicu Pertumbuhan." },
+
+      { q: "Penyair : Bait : Puisi = ... : ... : ...", options: ["Novelis : Paragraf : Bab", "Komponis : Nada : Lagu", "Pemahat : Pahat : Patung", "Arsitek : Ruang : Rumah", "Dramawan : Babak : Drama"], answer: 4, explanation: "Penyair menyusun Bait untuk membentuk Puisi. Sebanding dengan Dramawan menyusun Babak untuk membentuk Drama." },
+      { q: "Uang : Inflasi : Daya Beli = ... : ... : ...", options: ["Saham : Dividen : Keuntungan", "Tanah : Erosi : Kesuburan", "Nilai : Remedial : Kelulusan", "Batu Bara : Polusi : Lingkungan", "Mobil : Aus : Nilai Jual"], answer: 1, explanation: "Uang yang mengalami Inflasi akan menurun Daya Beli-nya. Sebanding dengan Tanah yang mengalami Erosi akan menurun Kesuburan-nya." },
+      { q: "Jaringan : Sel : Organ = ... : ... : ...", options: ["Kalimat : Kata : Paragraf", "Bata : Semen : Dinding", "Taraf : Tingkat : Golongan", "Masyarakat : Individu : Negara", "Planet : Bintang : Galaksi"], answer: 0, explanation: "Jaringan terdiri dari kumpulan Sel dan membentuk Organ. Sebanding dengan Kalimat terdiri dari kumpulan Kata dan membentuk Paragraf." },
+      { q: "Insomnia : Tidur : Kesehatan = ... : ... : ...", options: ["Anemia : Darah : Stamina", "Amnesia : Memori : Otak", "Dehidrasi : Air : Kebugaran", "Kelaparan : Makanan : Produktivitas", "Pengangguran : Kerja : Kesejahteraan"], answer: 4, explanation: "Insomnia adalah kondisi kurang Tidur yang mengganggu Kesehatan. Sebanding dengan Pengangguran adalah kondisi kurang Kerja yang mengganggu Kesejahteraan." },
+      { q: "Arkeologi : Fosil : Sejarah = ... : ... : ...", options: ["Geologi : Mineral : Tambang", "Paleontologi : Purba : Kehidupan", "Filologi : Naskah Kuno : Bahasa", "Criminologi : Kejahatan : Hukum", "Antropologi : Budaya : Manusia"], answer: 2, explanation: "Arkeologi mengkaji Fosil untuk merekonstruksi Sejarah. Sebanding dengan Filologi mengkaji Naskah Kuno untuk merekonstruksi Kebudayaan/Bahasa." },
+      { q: "Sensor : Deteksi : Alarm = ... : ... : ...", options: ["Lensa : Fokus : Kamera", "Otak : Pikir : Tindakan", "Sakelar : Aliran : Lampu", "Termostat : Suhu : Pendingin", "Kamera : Rekam : Layar"], answer: 3, explanation: "Sensor melakukan Deteksi untuk mengaktifkan Alarm. Sebanding dengan Termostat mengukur Suhu untuk mengaktifkan Pendingin." },
+      { q: "Sanksi : Pelanggaran : Aturan = ... : ... : ...", options: ["Denda : Keterlambatan : Perjanjian", "Hadiah : Prestasi : Lomba", "Pujian : Kebaikan : Norma", "Vonis : Kejahatan : Hukum", "Kritik : Kesalahan : Pekerjaan"], answer: 0, explanation: "Sanksi diberikan atas Pelanggaran terhadap Aturan. Sebanding dengan Denda diberikan atas Keterlambatan terhadap Perjanjian." },
+      { q: "Hutan : Deforestasi : Banjir = ... : ... : ...", options: ["Laut : Overfishing : Kepunahan", "Sawah : Erosi : Padi", "Gambut : Kebakaran : Asap", "Atmosfer : Emisi : Pemanasan Global", "Sungai : Pendangkalan : Luapan"], answer: 3, explanation: "Hutan yang mengalami Deforestasi dapat menyebabkan Banjir. Sebanding dengan Atmosfer yang terpapar Emisi dapat menyebabkan Pemanasan Global." },
+      { q: "Detektif : Bukti : Kejadian = ... : ... : ...", options: ["Wartawan : Data : Berita", "Peneliti : Sampel : Fenomena", "Hakim : Saksi : Persidangan", "Dokter : Gejala : Penyakit", "Sejarawan : Dokumen : Masa Lalu"], answer: 3, explanation: "Detektif menganalisis Bukti untuk mengungkap Kejadian. Sebanding dengan Dokter menganalisis Gejala untuk mengungkap Penyakit." },
+      { q: "Ekosistem : Predasi : Keseimbangan = ... : ... : ...", options: ["Pasar : Kompetisi : Harga Stabil", "Masyarakat : Asimilasi : Kerukunan", "Mesin : Gesekan : Kehausan", "Negara : Pengawasan : Keadilan", "Perusahaan : Efisiensi : Keuntungan"], answer: 0, explanation: "Dalam Ekosistem, mekanisme Predasi menjaga Keseimbangan. Sebanding dengan dalam Pasar, mekanisme Kompetisi menjaga Harga Stabil." },
+
+      { q: "Naskah : Editor : Penerbitan = ... : ... : ...", options: ["Desain : Revisi : Cetak", "Baju : Penjahit : Pemasaran", "Produk : Quality Control : Distribusi", "Lagu : Arranger : Rekaman", "Film : Sensor : Tayang"], answer: 2, explanation: "Naskah diperiksa oleh Editor sebelum tahap Penerbitan. Sebanding dengan Produk diperiksa oleh Quality Control sebelum tahap Distribusi." },
+      { q: "Peta : Skala : Jarak = ... : ... : ...", options: ["Grafik : Sumbu : Data", "Denah : Rasio : Luas", "Termometer : Derajat : Suhu", "Laporan : Lampiran : Ringkasan", "Jam : Jarum : Waktu"], answer: 2, explanation: "Peta menggunakan Skala untuk mengukur Jarak. Sebanding dengan Termometer menggunakan Derajat untuk mengukur Suhu." },
+      { q: "Kunci : Slot : Terbuka = ... : ... : ...", options: ["Kata Sandi : Kolom : Akses", "Palu : Paku : Tancap", "Kancing : Lubang : Rapat", "Sakelar : Kontrik : Menyala", "Tombol : Layar : Aktif"], answer: 0, explanation: "Kunci dimasukkan ke Slot agar Akses Terbuka. Sebanding dengan Kata Sandi dimasukkan ke Kolom agar Akses terbuka." },
+      { q: "Karat : Besi : Oksidasi = ... : ... : ...", options: ["Pelapukan : Batuan : Pelapukan Kimia", "Pembusukan : Buah : Fermentasi", "Erosi : Tanah : Pengikisan", "Pencairan : Es : Pemanasan", "Jelaga : Kayu : Pembakaran"], answer: 4, explanation: "Karat terbentuk pada Besi akibat proses Oksidasi. Sebanding dengan Jelaga terbentuk pada Kayu akibat proses Pembakaran." },
+      { q: "Teleskop : Astronom : Benda Langit = ... : ... : ...", options: ["Mikroskop : Biolog : Mikroorganisme", "Stetoskop : Dokter : Jantung", "Kamera : Fotografer : Pemandangan", "Radar : Navigator : Kapal", "Kaca Pembesar : Detektif : Jejak"], answer: 0, explanation: "Teleskop digunakan oleh Astronom untuk mengamati Benda Langit. Sebanding dengan Mikroskop digunakan oleh Biolog untuk mengamati Mikroorganisme." },
+      { q: "Kamus : Definisi : Kata = ... : ... : ...", options: ["Atlas : Peta : Wilayah", "Ensiklopedi : Informasi : Topik", "Direktori : Alamat : Orang", "Katalog : Deskripsi : Produk", "Daftar Isi : Judul : Halaman"], answer: 3, explanation: "Kamus memuat Definisi dari suatu Kata. Sebanding dengan Katalog memuat Deskripsi dari suatu Produk." },
+      { q: "Satelit : Orbit : Planet = ... : ... : ...", options: ["Elektron : Lintasan : Inti Atom", "Bulan : Pasang : Laut", "Pesawat : Jalur : Bandara", "Kereta : Rel : Stasiun", "Kapal : Alur : Pelabuhan"], answer: 0, explanation: "Satelit bergerak mengelilingi Orbit mengitari Planet. Sebanding dengan Elektron bergerak mengelilingi Lintasan mengitari Inti Atom." },
+      { q: "Debat : Argumen : Kemenangan = ... : ... : ...", options: ["Ujian : Jawaban : Kelulusan", "Olahraga : Taktik : Skor", "Negosiasi : Penawaran : Kesepakatan", "Perang : Senjata : Perdamaian", "Lomba : Latihan : Juara"], answer: 2, explanation: "Dalam Debat, pertukaran Argumen bertujuan mencapai Kemenangan/Kesepakatan. Sebanding dengan dalam Negosiasi, pertukaran Penawaran bertujuan mencapai Kesepakatan." },
+      { q: "Kamera : Apertur : Cahaya = ... : ... : ...", options: ["Mata : Pupil : Cahaya", "Telinga : Gendang : Suara", "Hidung : Nostril : Udara", "Kulit : Pori : Keringat", "Paru-paru : Alveolus : Oksigen"], answer: 0, explanation: "Pada Kamera, Apertur mengatur jumlah Cahaya yang masuk. Sebanding dengan Mata, di mana Pupil mengatur jumlah Cahaya yang masuk." },
+      { q: "Penyakit : Epidemi : Pandemi = ... : ... : ...", options: ["Lokal : Nasional : Internasional", "Skala : Jangkauan : Dampak", "Masalah : Krisis : Bencana", "Angin : Puting Beliung : Badai", "Api : Percikan : Kebakaran Great"], answer: 2, explanation: "Penyakit yang meluas menjadi Epidemi lalu memuncak menjadi Pandemi. Sebanding dengan Masalah yang membesar menjadi Krisis lalu menjadi Bencana." },
+
+      { q: "Gitar : Frekuensi : Nada = ... : ... : ...", options: ["Lampu : Watt : Terang", "Mobil : Kecepatan : Jarak", "Beban : Massa : Berat", "Warna : Panjang Gelombang : Warna Khusus", "Kanvas : Cat : Gambar"], answer: 3, explanation: "Pada Gitar, variasi Frekuensi menentukan Tinggi Nada. Sebanding dengan pada Cahaya, variasi Panjang Gelombang menentukan Warna Khusus." },
+      { q: "Batu Bara : Pembangkit Listrik : Energi = ... : ... : ...", options: ["Minyak Bumi : Kilang : Bensin", "Gandum : Pabrik : Roti", "Air : Bendungan : Listrik", "Kayu : Meubel : Furnitur", "Solar : Mesin : Gerak"], answer: 4, explanation: "Batu Bara digunakan pada Pembangkit Listrik untuk menghasilkan Energi. Sebanding dengan Solar digunakan pada Mesin untuk menghasilkan Gerak." },
+      { q: "Anemia : Zat Besi : Hemoglobin = ... : ... : ...", options: ["Rakhitis : Vitamin D : Kalsium", "Goiter : Yodium : Hormon Tiroid", "Sariawan : Vitamin C : Gusi", "Rabun : Vitamin A : Retina", "Diabetes : Insulin : Glukosa"], answer: 1, explanation: "Anemia disebabkan kekurangan Zat Besi yang menghambat pembentukan Hemoglobin. Sebanding dengan Goiter (Gondok) disebabkan kekurangan Yodium yang menghambat pembentukan Hormon Tiroid." },
+      { q: "Barometer : Tekanan Udara : Cuaca = ... : ... : ...", options: ["Higrometer : Kelembapan : Awan", "Anemometer : Kecepatan Angin : Angin", "Termometer : Suhu : Iklim", "Seismograf : Getaran : Gempa", "Altimeter : Ketinggian : Navigasi"], answer: 4, explanation: "Barometer mengukur Tekanan Udara untuk memprediksi Cuaca. Sebanding dengan Altimeter mengukur Ketinggian untuk panduan Navigasi." },
+      { q: "Komposer : Partitur : Orchestra = ... : ... : ...", options: ["Koreografer : Notasi : Penari", "Sutradara : Skenario : Aktor", "Sutradara : Naskah : Teater", "Desain : Pola : Model", "Arsitek : Maket : Tukang"], answer: 2, explanation: "Komposer membuat Partitur untuk dimainkan oleh Orchestra. Sebanding dengan Sutradara mengarahkan Naskah untuk dipentaskan oleh Teater." },
+      { q: "Minyak : Pengilangan : Avtur = ... : ... : ...", options: ["Tebu : Pabrik : Gula", "Kayu : Pemotongan : Papan", "Biji Kopi : Sangrai : Espsresso", "Kelapa Sawit : Ekstraksi : Minyak Goreng", "Batu Bara : Gasifikasi : Gas Alam"], answer: 3, explanation: "Minyak mentah melalui proses Pengilangan menghasilkan Avtur. Sebanding dengan Kelapa Sawit melalui proses Ekstraksi menghasilkan Minyak Goreng." },
+      { q: "Teori : Hipotesis : Verifikasi = ... : ... : ...", options: ["Tuduhan : Dugaan : Pembuktian", "Hukum : RUU : Pengesahan", "Rencana : Gagasan : Eksekusi", "Gugatan : Klaim : Mediasi", "Penyakit : Diagnosis : Pengobatan"], answer: 0, explanation: "Teori diawali dari Hipotesis yang membutuhkan Verifikasi. Sebanding dengan Tuduhan diawali dari Dugaan yang membutuhkan Pembuktian." },
+      { q: "Sawah : Irigasi : Padi = ... : ... : ...", options: ["Pabrik : Mesin : Produk", "Taman : Penyiraman : Bunga", "Kolam : Aerator : Ikan", "Hutan : Reboisasi : Pohon", "Laboratorium : Sterilisasi : Bakteri"], answer: 2, explanation: "Di Sawah, sistem Irigasi dipasang untuk menunjang kehidupan Padi. Sebanding dengan di Kolam, sistem Aerator dipasang untuk menunjang kehidupan Ikan." },
+      { q: "Arsitek : Cetak Biru : Kontraktor = ... : ... : ...", options: ["Perancang Busana : Pola : Penjahit", "Sutradara : Skenario : Produser", "Koki : Resep : Pelayan", "Penulis : Naskah : Editor", "Dokter : Resep : Apoteker"], answer: 0, explanation: "Arsitek membuat Cetak Biru yang dieksekusi oleh Kontraktor. Sebanding dengan Perancang Busana membuat Pola yang dieksekusi oleh Penjahit." },
+      { q: "Monarki : Raja : Mahkota = ... : ... : ...", options: ["Republik : Presiden : Istana", "Keuskupan : Uskup : Tongkat Gembala", "Demokrasi : Rakyat : Hak Pilih", "Militer : Jenderal : Bintang", "Kekaisaran : Kaisar : Singgasana"], answer: 1, explanation: "Sistem Monarki dipimpin Raja yang identik dengan simbol Mahkota. Sebanding dengan Keuskupan dipimpin Uskup yang identik dengan simbol Tongkat Gembala." },
+
+      { q: "Kapital : Investasi : Keuntungan = ... : ... : ...", options: ["Pengetahuan : Belajar : Prestasi", "Tenaga : Kerja : Upah", "Latihan : Taktik : Kemenangan", "Benang : Tenun : Kain", "Bibit : Tanam : Panen"], answer: 4, explanation: "Kapital ditanamkan melalui Investasi untuk menghasilkan Keuntungan. Sebanding dengan Bibit ditanamkan melalui Tanam untuk menghasilkan Panen." },
+      { q: "Hukum : Hakim : Keadilan = ... : ... : ...", options: ["Pendidikan : Guru : Kecerdasan", "Agama : Ustadz : Kedamaian", "Kesehatan : Dokter : Kesembuhan", "Lalu Lintas : Polisi : Ketertiban", "Politik : Politisi : Kekuasaan"], answer: 3, explanation: "Hukum ditegakkan oleh Hakim untuk mewujudkan Keadilan. Sebanding dengan Aturan Lalu Lintas ditegakkan oleh Polisi untuk mewujudkan Ketertiban." },
+      { q: "Batu : Metamorfosis : Marmer = ... : ... : ...", options: ["Ulat : Metamorfosis : Kupu-kupu", "Pasir : Peleburan : Kaca", "Kayu : Pelapukan : Fosil", "Air : Pembekuan : Es", "Biji : Perkecambahan : Tunas"], answer: 1, explanation: "Batu mengalami proses Metamorfosis (perubahan bentuk/geologi) menjadi Marmer. Sebanding dengan Pasir mengalami proses Peleburan menjadi Kaca." },
+      { q: "Bahasa : Tata Bahasa : Komunikasi = ... : ... : ...", options: ["Musik : Harmoni : Ekspresi", "Lalu Lintas : Rambu : Kelancaran", "Tari : Koreografi : Keindahan", "Komputer : Algoritma : Pemrosesan", "Masyarakat : Hukum : Ketertiban"], answer: 3, explanation: "Bahasa diatur oleh Tata Bahasa untuk mencapai Komunikasi yang efektif. Sebanding dengan Komputer diatur oleh Algoritma untuk mencapai Pemrosesan yang efektif." },
+      { q: "Suhu : Kalor : Pemuaian = ... : ... : ...", options: ["Gaya : Beban : Pergeseran", "Tegangan : Arus : Hambatan", "Tekanan : Volume : Kompresi", "Kecepatan : Gesekan : Panas", "Konsentrasi : Reaksi : Laju"], answer: 3, explanation: "Peningkatan Suhu akibat Kalor menyebabkan Pemuaian. Sebanding dengan peningkatan Kecepatan akibat Gesekan menyebabkan Panas." },
+      { q: "Insulator : Kalor : Penahan = ... : ... : ...", options: ["Konduktor : Listrik : Penyalur", "Kapasitor : Arus : Penyimpan", "Sikring : Beban : Pemutus", "Katalis : Reaksi : Pengcepat", "Filter : Saringan : Pemisah"], answer: 0, explanation: "Insulator berfungsi terhadap Kalor sebagai Penahan. Sebanding dengan Konduktor berfungsi terhadap Listrik sebagai Penyalur." },
+      { q: "Setir : Kemudi : Arah = ... : ... : ...", options: ["Rem : Pedal : Kecepatan", "Pedal Gas : Akselerasi : Laju", "Katup : Pengatur : Aliran", "Sakelar : Hubung : Arus", "Kompas : Jarum : Orientasi"], answer: 2, explanation: "Setir bertindak sebagai penyesuai Kemudi untuk mengatur Arah. Sebanding dengan Katup bertindak sebagai Pengatur untuk mengontrol Aliran." },
+      { q: "Kardiovaskular : Jantung : Darah = ... : ... : ...", options: ["Respirasi : Paru-paru : Oksigen", "Pencernaan : Lambung : Enzim", "Saraf : Otak : Sinyal", "Eksresi : Ginjal : Urin", "Limfatik : Kelenjar : Limfa"], answer: 0, explanation: "Sistem Kardiovaskular berpusat di Jantung memompa Darah. Sebanding dengan sistem Respirasi berpusat di Paru-paru mengolah Oksigen." },
+      { q: "Piramida : Firaun : Mesir = ... : ... : ...", options: ["Candi Borobudur : Syailendra : Indonesia", "Tembok Besar : Qin Shi Huang : Tiongkok", "Colosseum : Gladiator : Roma", "Taj Mahal : Shah Jahan : India", "Parthenon : Yunani : Athena"], answer: 3, explanation: "Piramida dibangun untuk/oleh Firaun di negara Mesir. Sebanding dengan Taj Mahal dibangun oleh Shah Jahan di negara India." },
+      { q: "Drama : Prolog : Epilog = ... : ... : ...", options: ["Buku : Kata Pengantar : Daftar Pustaka", "Lagu : Intro : Outro", "Ujian : Pembukaan : Penutup", "Rapat : Pembuka : Doa Penutup", "Cerita : Konflik : Resolusi"], answer: 1, explanation: "Drama diawali dengan Prolog dan diakhiri dengan Epilog. Sebanding dengan Lagu yang diawali dengan Intro dan diakhiri dengan Outro." }
+    ];
+
+    // Encryption & Auto-Shuffle Key Function
+    function shuffleArray(array) {
+      let currentIndex = array.length, randomIndex;
+      let seed = 20260806; // Auto key base
+      while (currentIndex != 0) {
+        randomIndex = Math.floor(Math.abs(Math.sin(seed++)) * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+      }
+      return array;
+    }
+
+    // Encrypted / Processed Question List
+    const quizQuestions = shuffleArray([...baseMediumQuestions]);
+
+    // Render Quiz Form
+    const form = document.getElementById("quizForm");
+    const chunkSize = 10;
+
+    quizQuestions.forEach((q, i) => {
+      if (i % chunkSize === 0) {
+        const sectionHeader = document.createElement("div");
+        sectionHeader.className = "section-title";
+        sectionHeader.innerText = `BAGIAN ${Math.floor(i / chunkSize) + 1} (SOAL ${i + 1} - ${Math.min(i + chunkSize, quizQuestions.length)})`;
+        form.appendChild(sectionHeader);
+      }
+
+      const block = document.createElement("div");
+      block.className = "question-block";
+
+      let optionsHTML = '';
+      q.options.forEach((opt, j) => {
+        optionsHTML += `
+          <div class="options">
+            <label>
+              <input type="radio" name="q${i}" value="${j}">
+              ${String.fromCharCode(65 + j)}. ${opt}
+            </label>
+          </div>`;
+      });
+
+      block.innerHTML = `
+        <div class="question">${i + 1}. ${q.q}</div>
+        ${optionsHTML}
+      `;
+      form.appendChild(block);
+    });
+
+    // Timer Countdown Script (40 Minutes = 2400 seconds)
+    let totalTime = 40 * 60;
+    let timerInterval = null;
+
+    function startTimer() {
+      const display = document.getElementById("countdown");
+      timerInterval = setInterval(() => {
+        let minutes = Math.floor(totalTime / 60);
+        let seconds = totalTime % 60;
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = `${minutes}:${seconds}`;
+
+        if (totalTime <= 300) { // 5 minutes warning
+          display.classList.add("warning");
+        }
+
+        if (totalTime <= 0) {
+          clearInterval(timerInterval);
+          alert("Waktu 40 menit telah habis! Jawaban Anda otomatis dikumpulkan.");
+          submitQuiz(true);
+        } else {
+          totalTime--;
+        }
+      }, 1000);
+    }
+
+    window.onload = function() {
+      startTimer();
+    };
+
+    function submitQuiz(isTimeUp = false) {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+      }
+
+      const inputs = document.querySelectorAll("input[type='radio']");
+      inputs.forEach(input => input.disabled = true);
+      document.getElementById("submitBtn").disabled = true;
+      document.getElementById("submitBtn").style.backgroundColor = "#94a3b8";
+
+      let score = 0;
+      let explanationsHTML = '<h2>Pembahasan Detail Soal Level Sedang:</h2>';
+
+      quizQuestions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name='q${i}']:checked`);
+        const ansIndex = q.answer;
+        const correctText = q.options[ansIndex];
+        let userSelectedText = "Tidak dijawab";
+        let isCorrect = false;
+
+        if (selected) {
+          const userVal = parseInt(selected.value);
+          if (userVal === ansIndex) {
+            score++;
+            isCorrect = true;
+          }
+          userSelectedText = `${String.fromCharCode(65 + userVal)}. ${q.options[userVal]}`;
+        }
+
+        explanationsHTML += `
+          <div class="explanation-item">
+            <p><strong>Soal ${i + 1}:</strong> ${q.q}</p>
+            <p>Jawaban Anda: <span style="color: ${isCorrect ? '#16a34a' : '#dc2626'}; font-weight: bold;">${userSelectedText}</span></p>
+            <p>Jawaban Benar: <span class="correct-ans">${String.fromCharCode(65 + ansIndex)}. ${correctText}</span></p>
+            <p><em>Analisis Korelasi Kata:</em> ${q.explanation}</p>
+          </div>
+        `;
+      });
+
+      const finalScore = (score / quizQuestions.length) * 100;
+
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = `
+        <h2>${isTimeUp ? 'Waktu Habis! Hasil Ujian Anda' : 'Hasil Tes Analogi Level Sedang'}</h2>
+        <p style="font-size: 26px; font-weight: bold; margin: 10px 0;">Skor: ${score} / ${quizQuestions.length} (Nilai: ${finalScore.toFixed(1)})</p>
+        <p>${finalScore >= 75 ? 'Sangat Bagus! Kemampuan analisis korelasi tingkat sedang Anda sangat solid.' : 'Terus Berlatih! Pelajari kerangka logika dan pola korelasi kata pada pembahasan di bawah ini.'}</p>
+      `;
+      resultDiv.classList.remove("hidden");
+
+      const expDiv = document.getElementById("explanation");
+      expDiv.innerHTML = explanationsHTML;
+      expDiv.classList.remove("hidden");
+
+      resultDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

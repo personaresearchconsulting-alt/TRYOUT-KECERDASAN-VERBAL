@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Persona Research & Consulting - Analogi Verbal HOTS</title>
+    <style>
+        :root {
+            --midnight: #0f172a;
+            --crimson: #991b1b;
+            --gold: #d97706;
+            --ivory: #f8fafc;
+            --white: #ffffff;
+            --border: #cbd5e1;
+            --text-main: #1e293b;
+        }
+
+        /* PROTOKOL KEAMANAN: Anti-Selection */
+        * { 
+            box-sizing: border-box; 
+            transition: all 0.2s ease; 
+            -webkit-user-select: none; 
+            -moz-user-select: none; 
+            -ms-user-select: none; 
+            user-select: none; 
+        }
+        
+        body { background-color: var(--ivory); color: var(--text-main); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; }
+
+        /* --- LOGIN --- */
+        .auth-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
+        .auth-card { background: var(--white); padding: 40px; border-radius: 12px; text-align: center; width: 100%; max-width: 450px; border-top: 8px solid var(--gold); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
+        .brand-full { font-size: 22px; font-weight: 800; color: var(--midnight); text-transform: uppercase; letter-spacing: 1.5px; }
+        .brand-sub { font-size: 12px; letter-spacing: 2px; color: var(--gold); margin-bottom: 30px; font-weight: 700; }
+        
+        input { width: 100%; padding: 15px; margin-bottom: 20px; border: 2px solid var(--border); border-radius: 8px; font-size: 16px; outline: none; -webkit-user-select: text; user-select: text; text-align: center; font-weight: bold; color: var(--midnight); }
+        input:focus { border-color: var(--gold); }
+        .btn-gold { width: 100%; padding: 16px; background: var(--gold); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 16px; box-shadow: 0 4px 6px -1px rgba(217, 119, 6, 0.3); }
+        .btn-gold:hover { background: #b45309; }
+
+        /* --- HEADER --- */
+        header { background: var(--midnight); padding: 15px 30px; border-bottom: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; color: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .header-brand { font-weight: 800; letter-spacing: 1px; }
+        
+        /* --- LAYOUT --- */
+        .container { max-width: 1200px; margin: 30px auto; display: flex; flex-wrap: wrap; gap: 25px; padding: 0 20px; }
+        .quiz-box { flex: 1; min-width: 320px; background: var(--white); padding: 40px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); }
+        .q-text { font-size: 24px; font-weight: 800; margin-bottom: 35px; color: var(--midnight); text-transform: uppercase; line-height: 1.5; border-left: 5px solid var(--gold); padding-left: 15px; }
+
+        .option { padding: 18px 20px; border: 2px solid var(--border); margin-bottom: 15px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; font-weight: 600; font-size: 16px; color: #334155; }
+        .opt-label { width: 35px; height: 35px; background: #e2e8f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-weight: 800; font-size: 14px; color: #475569; }
+        .option:hover { border-color: #94a3b8; background: #f8fafc; }
+        .option.active { background: #fffbeb; color: #b45309; border-color: var(--gold); }
+        .option.active .opt-label { background: var(--gold); color: white; }
+
+        /* --- NAV GRID --- */
+        .sidebar { width: 100%; max-width: 350px; }
+        .nav-panel { background: var(--white); padding: 30px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); }
+        .grid-50 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+        .dot { height: 40px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--border); font-size: 13px; cursor: pointer; border-radius: 8px; font-weight: 700; color: #64748b; }
+        .dot:hover { border-color: #94a3b8; }
+        .dot.current { background: var(--gold); color: white; border-color: var(--gold); transform: scale(1.05); }
+        .dot.filled { border-color: var(--midnight); background: var(--midnight); color: white; }
+
+        /* --- RESULT --- */
+        #page-res { display: none; background: var(--white); max-width: 900px; margin: 40px auto; padding: 50px; text-align: center; border-radius: 16px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); border: 1px solid var(--border); }
+        .score-box { background: #f8fafc; padding: 40px; border-radius: 16px; margin-bottom: 40px; display: inline-block; min-width: 400px; border: 2px dashed var(--border); }
+        .score-big { font-size: 120px; font-weight: 900; color: var(--midnight); line-height: 1; margin: 0; text-shadow: 2px 2px 0px #cbd5e1; }
+        .score-scale { font-size: 35px; color: var(--gold); font-weight: 700; }
+        .score-detail { font-size: 20px; color: #475569; margin-top: 20px; font-weight: 800; letter-spacing: 1px; }
+        
+        .pembahasan-card { 
+            text-align: left; 
+            background: #ffffff; 
+            padding: 25px; 
+            margin-bottom: 25px; 
+            border-left: 6px solid var(--midnight); 
+            border-radius: 10px; 
+            font-size: 15px; 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            border-top: 1px solid #f1f5f9;
+            border-right: 1px solid #f1f5f9;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .pembahasan-card .title { font-size: 18px; font-weight: 900; color: var(--midnight); margin-bottom: 12px; letter-spacing: 0.5px; }
+        .pembahasan-card .user-ans { font-weight: 700; margin-bottom: 15px; padding: 10px; background: #f8fafc; border-radius: 6px; }
+        .pembahasan-card .exp-box { 
+            background: #f1f5f9; 
+            padding: 15px 20px; 
+            border-radius: 8px; 
+            color: #334155; 
+            line-height: 1.7;
+            font-weight: 500;
+            border-left: 4px solid var(--gold);
+        }
+
+        .action-buttons { display: flex; gap: 15px; justify-content: center; margin-top: 40px; }
+
+        @media (max-width: 768px) { .container { flex-direction: column; } .sidebar { max-width: 100%; } .score-box { min-width: 100%; } }
+        
+        /* PRINT STYLES FOR DOWNLOADING PDF */
+        @media print { 
+            body { background: white; }
+            .no-print { display: none !important; } 
+            #page-res { border: none; box-shadow: none; margin: 0; padding: 0; max-width: 100%; } 
+            .pembahasan-card { page-break-inside: avoid; border: 1px solid #000; border-left: 6px solid #000; box-shadow: none; }
+            .score-box { border: 2px solid #000; background: white; }
+            .exp-box { border: 1px solid #ddd; background: white; border-left: 4px solid #666; }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;" onkeydown="return (event.keyCode != 123)">
+
+<div id="view-auth" class="auth-wrapper">
+    <div class="auth-card">
+        <div class="brand-full">Persona Assessment</div>
+        <div class="brand-sub">HOTS ANALOGY TEST (LEVEL 3)</div>
+        <input type="text" id="userName" placeholder="MASUKKAN NAMA LENGKAP" autocomplete="off">
+        <button class="btn-gold" onclick="startTest()">MULAI TES SEKARANG</button>
+    </div>
+</div>
+
+<div id="view-test" style="display:none;">
+    <header>
+        <div class="header-brand">PERSONA RESEARCH - HOTS EVALUATION</div>
+        <div id="timer" style="font-size: 26px; font-weight: 900; color: var(--gold); background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 6px;">30:00</div>
+    </header>
+    <div class="container">
+        <div class="quiz-box">
+            <div id="q-label" style="color:var(--gold); font-size:13px; font-weight:800; margin-bottom:15px; letter-spacing: 2px;"></div>
+            <div id="q-body" class="q-text"></div>
+            <div id="q-options"></div>
+        </div>
+        <div class="sidebar">
+            <div class="nav-panel">
+                <p style="font-size: 12px; font-weight: 800; margin-bottom: 20px; color: var(--midnight); border-bottom: 2px solid var(--border); padding-bottom: 10px;">PETA JAWABAN</p>
+                <div id="nav-dots" class="grid-50"></div>
+                <button class="btn-gold no-print" style="margin-top: 30px; background: var(--midnight);" onclick="if(confirm('Apakah Anda yakin ingin menyelesaikan tes dan melihat hasil analitik?')) finalize()">SUBMIT & LIHAT HASIL</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="page-res">
+    <div class="brand-full">LAPORAN HASIL EVALUASI HOTS</div>
+    <div class="brand-sub">HIGHER ORDER THINKING SKILLS - VERBAL ANALOGY</div>
+    
+    <div class="score-box">
+        <p style="font-size: 14px; font-weight: 800; color: #64748b; margin-bottom: 15px; letter-spacing: 3px;">AKUMULASI SKOR KOGNITIF</p>
+        <span class="score-big" id="final-score">0</span>
+        <span class="score-scale">/ 100</span>
+        <div class="score-detail" id="score-raw">AKURASI: 0 DARI 50 SOAL</div>
+    </div>
+
+    <p style="font-size: 16px; color: #64748b; font-weight: bold; margin-bottom: 5px;">NAMA PESERTA:</p>
+    <p id="res-name" style="font-size: 30px; font-weight: 900; color: var(--midnight); text-transform: uppercase; margin-top: 0; margin-bottom: 50px; border-bottom: 3px solid var(--gold); display: inline-block; padding-bottom: 10px;"></p>
+    
+    <div id="discussion-area" style="text-align: left;">
+        <h2 style="color: var(--midnight); border-left: 6px solid var(--gold); padding-left: 15px; margin-bottom: 30px; font-weight: 900;">ANALISIS KOMPREHENSIF (PEMBAHASAN DETIL)</h2>
+        <div id="discussion-list"></div>
+    </div>
+    <div class="action-buttons no-print">
+        <button class="btn-gold" style="width: 300px; background: var(--midnight);" onclick="window.print()">📥 DOWNLOAD HASIL (PDF)</button>
+        <button class="btn-gold" style="width: 300px;" onclick="location.reload()">🔄 ULANGI TES</button>
+    </div>
+</div>
+
+<script>
+    let currentIdx = 0;
+    let userSelections = {};
+    let questions = [];
+    const labels = ['A', 'B', 'C', 'D', 'E'];
+
+    // Database 50 Soal Analogi HOTS (Tingkat Kesulitan Tinggi) + Pembahasan Mendalam
+    const pool = [
+        { q: "DESALINASI : GARAM = PURIFIKASI : ...", a: "Kontaminan", o: ["Air", "Mineral", "Oksigen", "Limbah"], r: "<strong>Hubungan Proses Penghilangan (Eliminasi):</strong> Desalinasi adalah proses spesifik untuk menghilangkan/memisahkan <em>garam</em> dari air laut. Purifikasi adalah proses spesifik untuk menghilangkan <em>kontaminan</em> (zat pengotor) dari suatu zat agar menjadi murni." },
+        { q: "AFASIA : BERBICARA = AMNESIA : ...", a: "Mengingat", o: ["Mendengar", "Melihat", "Berjalan", "Berpikir"], r: "<strong>Hubungan Gangguan Neorologis & Hilangnya Fungsi:</strong> Afasia adalah kondisi medis hilangnya kemampuan untuk <em>berbicara/berbahasa</em> akibat kerusakan otak. Amnesia adalah kondisi medis hilangnya kemampuan untuk <em>mengingat</em> (memori)." },
+        { q: "VAKSINASI : ANTIBODI = OLAHRAGA : ...", a: "Endorfin", o: ["Otot", "Keringat", "Kelelahan", "Kalori"], r: "<strong>Hubungan Stimulus & Produksi Zat Internal Tubuh:</strong> Vaksinasi menstimulasi tubuh untuk memproduksi <em>antibodi</em> secara internal. Olahraga menstimulasi otak untuk memproduksi hormon <em>endorfin</em> (hormon kebahagiaan/pengurang rasa sakit) secara internal." },
+        { q: "INFLASI : DAYA BELI = KOROSI : ...", a: "Integritas Struktural", o: ["Besi", "Karat", "Kelembaban", "Warna"], r: "<strong>Hubungan Proses Degeneratif & Dampak Penurunannya:</strong> Inflasi adalah proses ekonomi yang menyebabkan penurunan/pelemahan <em>daya beli</em> mata uang. Korosi adalah proses kimiawi yang menyebabkan penurunan/pelemahan <em>integritas struktural</em> (kekuatan) pada logam." },
+        { q: "EPILOG : NOVEL = KODA : ...", a: "Simfoni", o: ["Teater", "Puisi", "Lukisan", "Tarian"], r: "<strong>Hubungan Terminologi Bagian Penutup Karya Seni:</strong> Epilog adalah bagian penutup/konklusi pada akhir sebuah karya sastra (<em>novel</em>). Koda (Coda) adalah bagian penutup/konklusi pada akhir sebuah karya musik (<em>simfoni/komposisi</em>)." },
+        { q: "OTODIDAK : GURU = ANOMALI : ...", a: "Keteraturan", o: ["Fenomena", "Aturan", "Kejadian", "Pola"], r: "<strong>Hubungan Ketiadaan/Ketidakbergantungan:</strong> Seseorang yang otodidak belajar <em>tanpa keberadaan</em> seorang guru. Sebuah anomali terjadi <em>tanpa adanya</em> keteraturan (menyimpang dari pola normal/standar baku)." },
+        { q: "METAMORFOSIS : BENTUK = TRANSLASI : ...", a: "Posisi", o: ["Bahasa", "Makna", "Suhu", "Waktu"], r: "<strong>Hubungan Jenis Perubahan Fisika/Biologi/Matematika:</strong> Metamorfosis adalah proses perubahan <em>bentuk</em> fisik suatu organisme. Translasi (dalam geometri/fisika) adalah proses perubahan/pergeseran <em>posisi</em> suatu titik tanpa mengubah bentuknya." },
+        { q: "SKEPTIS : BUKTI = PRAGMATIS : ...", a: "Kegunaan", o: ["Teori", "Moral", "Ideologi", "Logika"], r: "<strong>Hubungan Aliran Berpikir & Orientasi Utama:</strong> Orang yang skeptis menuntut dan berorientasi pada <em>bukti</em> empiris sebelum mempercayai sesuatu. Orang yang pragmatis berorientasi pada nilai <em>kegunaan/kepraktisan</em> suatu tindakan dibandingkan teorinya." },
+        { q: "KATALIS : REAKSI KIMIA = INKUBATOR : ...", a: "Pertumbuhan Bisnis", o: ["Laboratorium", "Suhu", "Penelitian", "Mikroba"], r: "<strong>Hubungan Analogi Fasilitator Percepatan (Sains vs Sosial):</strong> Katalis adalah agen yang mempercepat <em>reaksi kimia</em> tanpa ikut bereaksi. Inkubator (dalam konteks bisnis) adalah lembaga/agen yang mempercepat <em>pertumbuhan bisnis</em> rintisan (startup)." },
+        { q: "SILOGISME : LOGIKA = ALGORITMA : ...", a: "Komputasi", o: ["Matematika", "Program", "Data", "Sistem"], r: "<strong>Hubungan Metode Pemecahan Masalah & Bidang Ilmunya:</strong> Silogisme adalah metode pengambilan kesimpulan terstruktur dalam ilmu <em>logika</em>. Algoritma adalah urutan langkah terstruktur untuk memecahkan masalah dalam ilmu <em>komputasi (ilmu komputer)</em>." },
+        { q: "FILATELI : PRANGKO = NUMISMATIK : ...", a: "Uang Koin", o: ["Barang Antik", "Lukisan", "Buku Langka", "Keramik"], r: "<strong>Hubungan Istilah Hobi & Objek Koleksi Spesifik:</strong> Filateli adalah studi dan aktivitas mengoleksi <em>prangko</em>. Numismatik adalah studi dan aktivitas mengoleksi <em>uang koin, uang kertas, dan medali</em>." },
+        { q: "ABRASI : LAUT = DEFLASI : ...", a: "Angin", o: ["Sungai", "Es", "Hujan", "Gravitasi"], r: "<strong>Hubungan Jenis Erosi Geologi & Agen Penggeraknya:</strong> Abrasi adalah proses pengikisan daratan yang disebabkan oleh tenaga gelombang <em>laut</em>. Deflasi (dalam geologi) adalah proses pengikisan/pengangkutan material permukaan bumi oleh tenaga <em>angin</em>." },
+        { q: "EKLIPTIKA : MATAHARI = ORBIT : ...", a: "Planet", o: ["Bulan", "Satelit", "Gravitasi", "Bintang"], r: "<strong>Hubungan Jalur Lintasan Astronomi:</strong> Ekliptika adalah jalur semu lintasan <em>matahari</em> jika dilihat dari bumi (atau bidang orbit bumi mengelilingi matahari). Orbit adalah jalur lintasan <em>planet</em> saat mengelilingi pusat tata surya." },
+        { q: "ANESTESI : NYERI = KONSILIASI : ...", a: "Konflik", o: ["Negosiasi", "Hukum", "Sidang", "Perdamaian"], r: "<strong>Hubungan Upaya Peredaman/Penghilangan:</strong> Anestesi (pembiusan) diberikan untuk meredam/menghilangkan rasa <em>nyeri</em>. Konsiliasi (mediasi pihak ketiga) dilakukan untuk meredam/menyelesaikan sebuah <em>konflik</em> sengketa." },
+        { q: "HEMODIALISIS : GINJAL = PACU JANTUNG : ...", a: "Nodus Sinoatrial", o: ["Darah", "Paru-Paru", "Aorta", "Otot"], r: "<strong>Hubungan Intervensi Medis & Anatomi yang Digantikan:</strong> Hemodialisis (cuci darah) adalah prosedur medis yang menggantikan fungsi <em>ginjal</em> yang rusak. Alat pacu jantung (pacemaker) ditanam untuk menggantikan fungsi <em>nodus sinoatrial</em> (sumber listrik alami jantung)." },
+        { q: "PLAGIARISME : KARYA TULIS = PEMALSUAN : ...", a: "Dokumen Resmi", o: ["Hak Cipta", "Uang", "Tanda Tangan", "Identitas"], r: "<strong>Hubungan Pelanggaran & Objek Intelektual yang Diklaim:</strong> Plagiarisme adalah tindakan menjiplak atau mengklaim <em>karya tulis/gagasan</em> orang lain tanpa izin. Pemalsuan (forgery) umumnya merujuk pada tindakan meniru secara ilegal <em>dokumen resmi/tanda tangan/uang</em>." }, // Adjusted logic
+        { q: "APRESIASI : NILAI ASET = DEPRESIASI : ...", a: "Nilai Buku", o: ["Hutang", "Inflasi", "Kurs", "Saham"], r: "<strong>Hubungan Terminologi Ekonomi Antonim:</strong> Apresiasi adalah proses kenaikan/peningkatan <em>nilai aset/mata uang</em>. Depresiasi adalah proses penyusutan/penurunan <em>nilai buku/nilai aset</em> seiring berjalannya waktu." },
+        { q: "EKSTROVERT : STIMULASI SOSIAL = AUTOTROF : ...", a: "Cahaya Matahari", o: ["Oksigen", "Senyawa Organik", "Air", "Karbon Dioksida"], r: "<strong>Hubungan Sifat Organisme & Sumber Energi Utama:</strong> Ekstrovert mendapatkan energi psikologis utama dari <em>stimulasi sosial/interaksi eksternal</em>. Organisme autotrof (seperti tumbuhan) memproduksi energi sendiri terutama menggunakan <em>cahaya matahari</em> (melalui fotosintesis)." },
+        { q: "KONSEKUENSI : TINDAKAN = RESIDU : ...", a: "Reaksi Kimia", o: ["Pembakaran", "Filter", "Sampah", "Solusi"], r: "<strong>Hubungan Hasil Sisa/Dampak Paska Kejadian:</strong> Konsekuensi adalah hasil turunan yang pasti mengikuti suatu <em>tindakan</em>. Residu (endapan/sisa) adalah hasil turunan material yang tertinggal setelah terjadinya <em>reaksi kimia/proses fisik</em>." },
+        { q: "ORATOR : RETORIKA = ARSITEK : ...", a: "Desain Spasial", o: ["Bangunan", "Material", "Matematika", "Estetika"], r: "<strong>Hubungan Profesi & Kompetensi Inti (Skill Set):</strong> Seorang orator harus menguasai kompetensi <em>retorika</em> (seni berbicara) untuk bekerja efektif. Seorang arsitek harus menguasai kompetensi <em>desain spasial</em> (penataan tata ruang) untuk merancang bangunan." },
+        { q: "SINERGI : HASIL BERGANDA = GESEKAN : ...", a: "Resistensi Energi", o: ["Panas", "Kerusakan", "Kecepatan", "Gravitasi"], r: "<strong>Hubungan Fisika/Manajemen (Efek Peningkatan vs Penurunan):</strong> Sinergi (kolaborasi) menghasilkan efek positif berupa <em>hasil berganda</em> (1+1=3). Gesekan (friksi mekanis atau konflik sosial) menghasilkan efek negatif berupa <em>resistensi energi/hambatan</em>." },
+        { q: "TAUTOLOGI : MAJAMUK = OKSIMORON : ...", a: "Kontradiksi", o: ["Sindiran", "Kiasan", "Singkatan", "Hiperbola"], r: "<strong>Hubungan Gaya Bahasa & Karakteristik Strukturalnya:</strong> Tautologi adalah gaya bahasa yang menggunakan pengulangan kata bermakna sama (<em>majamuk redundant</em>). Oksimoron adalah gaya bahasa yang menggabungkan dua kata yang maknanya saling <em>kontradiksi</em> (contoh: 'diam yang memekakkan')." },
+        { q: "VETO : LEGISLASI = GRASI : ...", a: "Putusan Pidana", o: ["Hukuman Mati", "Pengadilan", "Terdakwa", "Konstitusi"], r: "<strong>Hubungan Hak Prerogatif Pemimpin & Objek yang Dibatalkan:</strong> Veto adalah hak kepala negara untuk menolak/membatalkan suatu rancangan <em>legislasi (undang-undang)</em>. Grasi adalah hak kepala negara untuk mengampuni atau meringankan <em>putusan pidana/hukuman</em> seseorang." },
+        { q: "MITOS : FOLKLOR = PARADIGMA : ...", a: "Epistemologi", o: ["Sains", "Filsafat", "Teori", "Asumsi"], r: "<strong>Hubungan Sub-Kategori & Domain Kajian yang Lebih Luas:</strong> Mitos adalah salah satu bentuk cerita rakyat yang menjadi bagian dari kajian <em>folklor</em>. Paradigma (kerangka berpikir ilmiah) adalah bagian mendasar dari kajian <em>epistemologi</em> (filsafat ilmu)." },
+        { q: "KOKLEA : PENDENGARAN = RETINA : ...", a: "Penglihatan", o: ["Cahaya", "Mata", "Lensa", "Fokus"], r: "<strong>Hubungan Anatomi Saraf Sensorik Otak:</strong> Koklea adalah bagian telinga dalam yang menerjemahkan getaran menjadi impuls saraf untuk <em>pendengaran</em>. Retina adalah lapisan mata yang menerjemahkan cahaya menjadi impuls saraf untuk <em>penglihatan</em>." },
+        { q: "ALIBI : DAKWAAN = ANTIDOT : ...", a: "Toksisitas", o: ["Bakteri", "Infeksi", "Racun", "Penyakit"], r: "<strong>Hubungan Penawar & Hal yang Dinetralisir (Abstrak vs Fisik):</strong> Alibi (bukti ketidakhadiran di TKP) digunakan oleh tersangka untuk menetralisir <em>dakwaan</em> hukum. Antidot (penawar racun) digunakan secara medis untuk menetralisir <em>toksisitas (keracunan)</em> di dalam tubuh." },
+        { q: "EMANSIPASI : KESETARAAN = REVOLUSI : ...", a: "Transformasi Sistemik", o: ["Pemberontakan", "Perang", "Pemerintahan", "Kemerdekaan"], r: "<strong>Hubungan Gerakan Sosial & Tujuan Akhir Makro:</strong> Gerakan emansipasi bertujuan akhir mencapai sebuah <em>kesetaraan</em> hak. Gerakan revolusi bertujuan akhir mencapai sebuah <em>transformasi sistemik</em> (perubahan mendasar dan cepat dari struktur lama)." },
+        { q: "SATELIT : TELEKOMUNIKASI = FIBER OPTIK : ...", a: "Transmisi Data", o: ["Internet", "Cahaya", "Kabel", "Jaringan"], r: "<strong>Hubungan Infrastruktur Fisik & Fungsi Layanannya:</strong> Satelit di luar angkasa berfungsi sebagai infrastruktur utama untuk layanan <em>telekomunikasi</em> nirnirkabel. Kabel fiber optik adalah infrastruktur fisik bawah tanah/laut yang berfungsi untuk layanan <em>transmisi data</em> pita lebar." },
+        { q: "KOLUSI : NEPOTISME = SIMBIOSIS : ...", a: "Mutualisme", o: ["Parasitisme", "Biologi", "Komensalisme", "Ekosistem"], r: "<strong>Hubungan Kategori Spesifik (Perilaku Menyimpang KKN vs Relasi Biologi):</strong> Kolusi (kongkalikong) berada dalam satu rumpun istilah dengan nepotisme (kroni). Simbiosis (hubungan makhluk hidup) memiliki kategori spesifik seperti <em>mutualisme</em> (saling menguntungkan)." },
+        { q: "PARALAKS : ASTRONOMI = ELASTISITAS : ...", a: "Ilmu Ekonomi", o: ["Fisika Kuantum", "Geologi", "Matematika", "Kimia"], r: "<strong>Hubungan Konsep & Bidang Keilmuan yang Menerapkannya Secara Kritis:</strong> Paralaks (perbedaan sudut pandang) adalah konsep pengukur jarak krusial dalam <em>astronomi</em>. Elastisitas (kepekaan perubahan jumlah permintaan/penawaran terhadap harga) adalah konsep krusial dalam <em>ilmu ekonomi</em>." },
+        { q: "NOMADEN : MENETAP = AMORF : ...", a: "Kristalin", o: ["Keras", "Beraturan", "Bentuk", "Cair"], r: "<strong>Hubungan Oposisi Sifat Karakteristik (Sosial vs Fisika Zat):</strong> Suku nomaden berpindah-pindah, lawan dari sifat <em>menetap</em>. Zat amorf (seperti kaca/karet) susunan atomnya tidak beraturan, lawan dari zat <em>kristalin</em> (seperti intan yang susunannya teratur sempurna)." },
+        { q: "PROKARIOTIK : NUKLEUS = INVERTEBRATA : ...", a: "Tulang Belakang", o: ["Kerangka", "Saraf", "Kaki", "Cangkang"], r: "<strong>Hubungan Biologis & Organ Esensial yang Tidak Dimiliki (Absen):</strong> Sel prokariotik (bakteri) didefinisikan oleh ketidakmampuannya memiliki <em>nukleus</em> (inti sel membran). Hewan avertebrata/invertebrata didefinisikan oleh ketiadaan <em>tulang belakang</em> pada strukturnya." },
+        { q: "KREMASI : ABU = DEKOMPOSISI : ...", a: "Humus", o: ["Tanah", "Fosil", "Minyak", "Bangkai"], r: "<strong>Hubungan Proses Penguraian & Produk Akhir Residu:</strong> Kremasi adalah proses penguraian tubuh secara termal (pembakaran) yang menyisakan <em>abu</em>. Dekomposisi adalah proses penguraian biologis oleh mikroba yang pada akhirnya menghasilkan unsur hara organik (<em>humus</em>)." },
+        { q: "PATEN : INVENSI TANGIBEL = HAK CIPTA : ...", a: "Ekspresi Seni/Sastra", o: ["Merek Dagang", "Ide Bisnis", "Perangkat Lunak", "Logo"], r: "<strong>Hubungan Hukum Kekayaan Intelektual (HAKI):</strong> Paten melindungi sebuah karya berupa <em>invensi tangibel (penemuan teknologi/alat)</em>. Hak cipta (Copyright) khusus melindungi kekayaan intelektual yang berupa <em>ekspresi seni, sastra, atau literatur</em>." },
+        { q: "DIFUSI : KONSENTRASI = OSMOSIS : ...", a: "Membran Semipermeabel", o: ["Tekanan Turgor", "Air", "Sel", "Pelarut"], r: "<strong>Hubungan Mekanisme Perpindahan Zat (Prinsip Pembeda):</strong> Difusi terjadi akibat gradien perbedaan <em>konsentrasi</em> (zat mengalir dari pekat ke encer). Osmosis adalah perpindahan pelarut yang secara spesifik harus melewati sebuah <em>membran semipermeabel</em>." },
+        { q: "EMBARGO : PERDAGANGAN = BOIKOT : ...", a: "Konsumsi / Partisipasi", o: ["Produk", "Diplomasi", "Unjuk Rasa", "Negara"], r: "<strong>Hubungan Metode Restriksi Internasional:</strong> Embargo adalah larangan resmi dari pemerintah untuk melakukan <em>perdagangan</em> dengan negara tertentu. Boikot adalah gerakan penolakan massal untuk melakukan <em>konsumsi/partisipasi</em> terhadap suatu entitas." },
+        { q: "APATIS : EMPATI = STAGNAN : ...", a: "Progresi", o: ["Inovasi", "Dinamis", "Perubahan", "Kemunduran"], r: "<strong>Hubungan Antonim (Kondisi Psikologis vs Kondisi Sistem):</strong> Apatis (tidak peduli) adalah kebalikan mutlak dari memiliki <em>empati</em>. Kondisi sistem yang stagnan (mandek) adalah kebalikan mutlak dari mengalami <em>progresi (kemajuan berlanjut)</em>." },
+        { q: "ISOTOP : NEUTRON = ALOTROP : ...", a: "Struktur Ikatan", o: ["Proton", "Elektron", "Unsur", "Wujud"], r: "<strong>Hubungan Variasi Kimia Unsur:</strong> Isotop adalah unsur kimia sama (proton sama) namun berbeda jumlah <em>neutron</em>. Alotrop adalah wujud unsur yang sama namun berbeda dalam <em>struktur ikatan fisikanya</em> (misal: intan vs grafit, sama-sama karbon)." },
+        { q: "EMPIRIS : OBSERVASI = DEDUKTIF : ...", a: "Premis Awal", o: ["Silogisme", "Kesimpulan", "Fakta", "Hipotesis"], r: "<strong>Hubungan Epistemologi / Cara Mendapatkan Pengetahuan:</strong> Pengetahuan empiris didapatkan melalui mekanisme <em>observasi</em> indrawi. Pengetahuan secara logika deduktif diturunkan (disimpulkan) dari sebuah <em>premis awal</em> (aksioma umum)." },
+        { q: "SINKRONIK : SEZAMAN = DIAKRONIK : ...", a: "Lintas Waktu", o: ["Sejarah", "Masa Depan", "Kronologis", "Era"], r: "<strong>Hubungan Metodologi Sejarah:</strong> Kajian sinkronik menganalisis peristiwa sejarah yang meluas dalam ruang tetapi pada masa yang sama (<em>sezaman</em>). Kajian diakronik menganalisis peristiwa yang memanjang menyusuri <em>lintas waktu</em> (kronologis berkelanjutan)." },
+        { q: "HEURISTIK : SEJARAH = EKSKAVASI : ...", a: "Arkeologi", o: ["Fosil", "Tanah", "Artefak", "Antropologi"], r: "<strong>Hubungan Tahapan Krusial Pencarian Data Keilmuan:</strong> Heuristik adalah tahapan pengumpulan sumber-sumber tertulis dalam ilmu <em>sejarah</em>. Ekskavasi (penggalian) adalah metode utama pengumpulan data material dalam ilmu <em>arkeologi</em>." },
+        { q: "SUBLIMASI : GAS = KONDENSASI : ...", a: "Cair", o: ["Padat", "Uap", "Suhu", "Awan"], r: "<strong>Hubungan Termodinamika & Hasil Wujud Perubahan:</strong> Sublimasi adalah perubahan wujud zat dari padat yang hasil akhirnya menjadi <em>gas</em>. Kondensasi (pengembunan) adalah perubahan wujud zat dari gas yang hasil akhirnya menjadi benda <em>cair</em>." },
+        { q: "OASE : GURUN = ENKLAVE : ...", a: "Teritori Asing", o: ["Negara", "Batas", "Pulau", "Politik"], r: "<strong>Hubungan Entitas Minoritas di Tengah Mayoritas Berbeda:</strong> Oase adalah area berair dan subur yang terkurung sepenuhnya di tengah <em>gurun</em> yang kering. Enklave adalah suatu wilayah negara/daerah yang terkurung sepenuhnya di dalam <em>teritori asing</em>." },
+        { q: "DIURETIK : URINE = EKSPEKTORAN : ...", a: "Dahak", o: ["Darah", "Napas", "Paru-Paru", "Keringat"], r: "<strong>Hubungan Farmakologi (Obat Pemicu Pengeluaran):</strong> Obat diuretik berfungsi merangsang ginjal untuk meningkatkan pengeluaran <em>urine</em>. Obat ekspektoran berfungsi merangsang saluran napas untuk mengencerkan dan mengeluarkan <em>dahak (mukus)</em>." },
+        { q: "RETINOPATI : MATA = NEFROPATI : ...", a: "Ginjal", o: ["Hati", "Saraf", "Jantung", "Otak"], r: "<strong>Hubungan Terminologi Patologi (Penyakit Medis):</strong> Retinopati adalah istilah medis untuk kelainan/kerusakan pada retina di organ <em>mata</em>. Nefropati adalah istilah medis untuk kondisi kerusakan atau kelainan pada fungsi <em>ginjal</em>." },
+        { q: "ZENIT : TITIK KULMINASI UTAMA = NADIR : ...", a: "Titik Terendah", o: ["Orbit", "Khatulistiwa", "Horison", "Ekuator"], r: "<strong>Hubungan Astronomi/Koordinat Oposisi:</strong> Zenit adalah titik khayal di langit tepat di atas pengamat (<em>titik kulminasi utama/tertinggi</em>). Nadir adalah oposisi langsung dari zenit, yakni titik khayal tepat di bawah pengamat (<em>titik terendah</em>)." },
+        { q: "KATARSI : EMOSI = DETOKSIFIKASI : ...", a: "Toksin", o: ["Tubuh", "Hati", "Penyakit", "Diet"], r: "<strong>Hubungan Proses Pembersihan (Psikologi vs Medis):</strong> Katarsis adalah proses pembersihan atau pelampiasan beban <em>emosi</em> yang terpendam. Detoksifikasi adalah proses fisiologis/medis untuk menetralkan dan membuang <em>toksin (racun)</em> dari tubuh." },
+        { q: "KLEPTOMANIA : MENCURI = PIROMANIA : ...", a: "Membakar", o: ["Membunuh", "Api", "Menyiksa", "Berbohong"], r: "<strong>Hubungan Gangguan Impuls Psikologis & Kompulsinya:</strong> Kleptomania adalah gangguan kesehatan mental di mana penderitanya memiliki dorongan tak tertahankan untuk <em>mencuri</em>. Piromania adalah gangguan kontrol impuls untuk memicu api atau <em>membakar</em> sesuatu." },
+        { q: "SILIKON : SEMIKONDUKTOR = KEVLAR : ...", a: "Polimer Kuat", o: ["Tembaga", "Plastik", "Logam Ringan", "Peluru"], r: "<strong>Hubungan Material Material Ilmu Bahan Khusus:</strong> Silikon dikenal secara fundamental dalam industri karena sifatnya sebagai <em>semikonduktor</em> (bahan mikroprosesor). Kevlar adalah material sintetis yang esensinya adalah <em>polimer kuat</em> (anti peluru, sangat liat)." },
+        { q: "APOGEE : BUMI = APHELION : ...", a: "Matahari", o: ["Bulan", "Komet", "Lintasan", "Galaksi"], r: "<strong>Hubungan Jarak Maksimal Orbital (Astronomi):</strong> Apogee adalah titik jarak terjauh sebuah benda langit (seperti bulan) terhadap <em>Bumi</em>. Aphelion adalah titik jarak terjauh sebuah planet (seperti bumi) dalam orbitnya terhadap <em>Matahari</em>." }
+    ];
+
+    function startTest() {
+        if(document.getElementById('userName').value.trim().length > 2) {
+            // Shuffle soal dan opsi
+            questions = pool.sort(() => Math.random() - 0.5).map(q => ({
+                ...q, shuffled: [q.a, ...q.o].sort(() => Math.random() - 0.5)
+            }));
+            document.getElementById('view-auth').style.display = 'none';
+            document.getElementById('view-test').style.display = 'block';
+            render(); 
+            startTimer(1800);
+        } else { 
+            alert("⚠️ Sistem Keamanan: Masukkan nama lengkap yang valid untuk keperluan sertifikat/laporan."); 
+        }
+    }
+
+    function render() {
+        const q = questions[currentIdx];
+        document.getElementById('q-label').innerText = `ITEM EVALUASI ${currentIdx + 1} DARI 50`;
+        document.getElementById('q-body').innerText = q.q;
+        let h = "";
+        q.shuffled.forEach((opt, i) => {
+            h += `<div class="option ${userSelections[currentIdx] === opt ? 'active' : ''}" onclick="pick('${opt.replace(/'/g, "\'")}')">
+                    <div class="opt-label">${labels[i]}</div>${opt}
+                  </div>`;
+        });
+        document.getElementById('q-options').innerHTML = h;
+        updateGrid();
+    }
+
+    function pick(val) {
+        userSelections[currentIdx] = val; 
+        render();
+        // Auto-next dengan sedikit jeda agar animasi klik terlihat
+        setTimeout(() => { if(currentIdx < 49) { currentIdx++; render(); } }, 300);
+    }
+
+    function updateGrid() {
+        let h = "";
+        questions.forEach((_, i) => { 
+            h += `<div class="dot ${currentIdx === i ? 'current' : ''} ${userSelections[i] ? 'filled' : ''}" onclick="currentIdx=${i};render()">${i+1}</div>`; 
+        });
+        document.getElementById('nav-dots').innerHTML = h;
+    }
+
+    function startTimer(sec) {
+        const t = document.getElementById('timer');
+        const inv = setInterval(() => {
+            sec--; let m = Math.floor(sec/60), s = sec%60;
+            t.innerText = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+            if(sec <= 0) { clearInterval(inv); finalize(); }
+        }, 1000);
+    }
+
+    function finalize() {
+        document.getElementById('view-test').style.display = 'none';
+        document.getElementById('page-res').style.display = 'block';
+        let correct = 0;
+        let dHtml = "";
+        questions.forEach((q, i) => {
+            const isOk = userSelections[i] === q.a;
+            if(isOk) correct++;
+            
+            // Format icon
+            const statusIcon = isOk ? '✅' : '❌';
+            const statusColor = isOk ? '#16a34a' : '#dc2626';
+            
+            dHtml += `
+            <div class="pembahasan-card">
+                <div class="title">${i+1}. ${q.q}</div>
+                <div class="user-ans" style="border-left: 4px solid ${statusColor};">
+                    Respons Anda: <span style="color:${statusColor};">${userSelections[i] || 'TIDAK MERESPONS'}</span> ${statusIcon} 
+                    <br><span style="font-size: 13px; color: #64748b; margin-top: 5px; display: inline-block;">Kunci Jawaban Absolut: <strong>${q.a}</strong></span>
+                </div>
+                <div class="exp-box">
+                    ${q.r}
+                </div>
+            </div>`;
+        });
+        
+        // Perhitungan Skor Skala 100
+        const finalScore = Math.round((correct / 50) * 100);
+        
+        // Evaluasi Kognitif (Predikat)
+        let predikat = "PERLU PENINGKATAN KOGNITIF";
+        if(finalScore >= 85) predikat = "SANGAT SUPERIOR (HOTS EXCELLENT)";
+        else if (finalScore >= 70) predikat = "TINGGI (ABOVE AVERAGE)";
+        else if (finalScore >= 50) predikat = "RATA-RATA KOGNITIF (AVERAGE)";
+
+        document.getElementById('final-score').innerText = finalScore;
+        document.getElementById('score-raw').innerText = `AKURASI LOGIKA: ${correct} DARI 50 | ${predikat}`;
+        document.getElementById('res-name').innerText = document.getElementById('userName').value;
+        document.getElementById('discussion-list').innerHTML = dHtml;
+        window.scrollTo(0,0);
+    }
+</script>
+</body>
+</html>
