@@ -185,7 +185,7 @@
   <div class="container" id="mainContainer">
     <div class="header">
       <h1>TES KECERDASAN VERBAL</h1>
-      <p><strong>Persona Research & Consulting</strong> | WA: 0877 425 5786</p>
+      <p><strong>Persona Research & Consulting</strong> | WA: 0877 4251 5786</p>
       <p>Portal Ujian Online & Modul Evaluasi Kecerdasan Verbal</p>
     </div>
 
@@ -202,31 +202,52 @@
 
     <!-- Menu Portal Modul Kuis (Tersembunyi sebelum login) -->
     <div id="menuSection" class="hidden">
-      <h3 style="color: var(--primary-color); border-bottom: 2px solid var(--border-color); padding-bottom: 8px;">Pilih Modul Ujian:</h3>
+      <h3 style="color: var(--primary-color); border-bottom: 2px solid var(--border-color); padding-bottom: 8px;">Pilih Modul Ujian (5 Modul):</h3>
       <div class="menu-grid">
         
-        <a href="analogi_mudah.html" class="menu-card">
+        <!-- Modul 1 -->
+        <a href="modul1.html" class="menu-card">
           <div class="menu-info">
-            <h3>1. Analogi 3 Kata - Level Mudah</h3>
-            <p>50 Soal dasar korelasi logika kata (Durasi: 40 Menit)</p>
+            <h3>1. Modul 1 - Analogi Verbal 1</h3>
+            <p>50 Soal Analogi (Durasi: 40 Menit)</p>
           </div>
-          <span class="badge">Mudah</span>
+          <span class="badge">Modul 1</span>
         </a>
 
-        <a href="analogi_sedang.html" class="menu-card">
+        <!-- Modul 2 -->
+        <a href="modul2.html" class="menu-card">
           <div class="menu-info">
-            <h3>2. Analogi 3 Kata - Level Sedang</h3>
-            <p>50 Soal tingkat menengah proses & fungsional (Durasi: 40 Menit)</p>
+            <h3>2. Modul 2 - Analogi Verbal 2</h3>
+            <p>50 Soal Analogi (Durasi: 40 Menit)</p>
           </div>
-          <span class="badge" style="background-color: #fef3c7; color: #b45309;">Sedang</span>
+          <span class="badge">Modul 2</span>
         </a>
 
-        <a href="analogi_hots.html" class="menu-card">
+        <!-- Modul 3 -->
+        <a href="modul3.html" class="menu-card">
           <div class="menu-info">
-            <h3>3. Analogi 3 Kata - Level HOTS</h3>
-            <p>50 Soal penalaran konsep abstrak & ilmiah (Durasi: 40 Menit)</p>
+            <h3>3. Modul 3 - Analogi Verbal 3</h3>
+            <p>50 Soal Analogi (Durasi: 40 Menit)</p>
           </div>
-          <span class="badge" style="background-color: #f1f5f9; color: #0f172a;">HOTS</span>
+          <span class="badge">Modul 3</span>
+        </a>
+
+        <!-- Modul 4 -->
+        <a href="modul4.html" class="menu-card">
+          <div class="menu-info">
+            <h3>4. Modul 4 - Analogi Verbal 4</h3>
+            <p>50 Soal Analogi (Durasi: 40 Menit)</p>
+          </div>
+          <span class="badge">Modul 4</span>
+        </a>
+
+        <!-- Modul 5 -->
+        <a href="modul5.html" class="menu-card">
+          <div class="menu-info">
+            <h3>5. Modul 5 - Analogi Verbal 5</h3>
+            <p>50 Soal Analogi (Durasi: 40 Menit)</p>
+          </div>
+          <span class="badge">Modul 5</span>
         </a>
 
       </div>
@@ -238,7 +259,7 @@
   </div>
 
   <script>
-    // 1. Check Masa Kadaluarsa (Expired Exactly 1 Year from Today: 2027-08-05)
+    // 1. Check Masa Kadaluarsa (Expired Exactly 1 Year: 2027-08-05)
     const expiryDate = new Date("2027-08-05T23:59:59");
     if (new Date() > expiryDate) {
       document.getElementById("mainContainer").innerHTML = `
