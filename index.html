@@ -1,237 +1,325 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portal Quiz - Persona Research & Consulting</title>
-  <style>
-    :root {
-      --primary-color: #0f172a;
-      --secondary-color: #2563eb;
-      --accent-color: #10b981;
-      --bg-color: #f8fafc;
-      --card-bg: #ffffff;
-      --text-color: #1e293b;
-      --border-color: #e2e8f0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PERSONA RESEARCH & CONSULTING</title>
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      line-height: 1.6;
-      margin: 0;
-      padding: 20px;
-    }
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial,sans-serif}
 
-    .container {
-      max-width: 800px;
-      margin: 40px auto;
-      background: var(--card-bg);
-      padding: 35px;
-      border-radius: 12px;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    }
+body{
+background:#0f172a;
+color:#fff;
+min-height:100vh;
+}
 
-    .header {
-      text-align: center;
-      border-bottom: 2px solid var(--border-color);
-      padding-bottom: 20px;
-      margin-bottom: 30px;
-    }
+.login-page{
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+padding:20px;
+}
 
-    .header h1 {
-      color: var(--primary-color);
-      margin-bottom: 5px;
-      font-size: 26px;
-      text-transform: uppercase;
-    }
+.card{
+width:100%;
+max-width:420px;
+background:#fff;
+color:#111827;
+border-radius:18px;
+padding:35px;
+box-shadow:0 20px 60px rgba(0,0,0,.4);
+text-align:center;
+}
 
-    .header p {
-      color: #64748b;
-      font-size: 14px;
-      margin: 3px 0;
-    }
+.logo{
+font-size:26px;
+font-weight:bold;
+color:#0f172a;
+}
 
-    /* Form Password Style */
-    .auth-box {
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      padding: 20px;
-      border-radius: 8px;
-      text-align: center;
-      margin-bottom: 25px;
-    }
+.sub{
+margin-top:8px;
+color:#b45309;
+font-size:13px;
+letter-spacing:2px;
+font-weight:bold;
+}
 
-    .auth-box input[type="password"] {
-      padding: 10px 14px;
-      font-size: 15px;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      width: 220px;
-      margin-right: 8px;
-    }
+input{
+width:100%;
+padding:15px;
+margin-top:25px;
+border:2px solid #d1d5db;
+border-radius:10px;
+font-size:17px;
+text-align:center;
+}
 
-    .auth-box button {
-      padding: 10px 20px;
-      font-size: 15px;
-      font-weight: bold;
-      background-color: var(--secondary-color);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
+button{
+width:100%;
+padding:15px;
+margin-top:18px;
+background:#d97706;
+color:white;
+border:none;
+border-radius:10px;
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
+transition:.3s;
+}
 
-    .auth-box button:hover {
-      background-color: #1d4ed8;
-    }
+button:hover{
+background:#b45309;
+}
 
-    .error-msg {
-      color: #dc2626;
-      font-size: 13px;
-      margin-top: 8px;
-      font-weight: 600;
-    }
+#error{
+margin-top:15px;
+color:red;
+font-weight:bold;
+}
 
-    /* Menu Navigation Grid */
-    .menu-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 15px;
-      margin-top: 20px;
-    }
+.dashboard{
+display:none;
+}
 
-    .menu-card {
-      display: block;
-      padding: 18px 20px;
-      background: #ffffff;
-      border: 1px solid var(--border-color);
-      border-left: 5px solid var(--secondary-color);
-      border-radius: 8px;
-      text-decoration: none;
-      color: var(--text-color);
-      transition: all 0.2s ease;
-    }
+header{
+background:#111827;
+padding:18px 30px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-bottom:4px solid #d97706;
+}
 
-    .menu-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      border-color: var(--secondary-color);
-    }
+.title{
+font-size:23px;
+font-weight:bold;
+}
 
-    .menu-card h3 {
-      margin: 0 0 5px 0;
-      color: var(--primary-color);
-      font-size: 18px;
-    }
+.logout{
+background:#dc2626;
+padding:10px 18px;
+width:auto;
+margin:0;
+}
 
-    .menu-card p {
-      margin: 0;
-      font-size: 13px;
-      color: #64748b;
-    }
+.container{
+max-width:1200px;
+margin:auto;
+padding:40px 20px;
+}
 
-    .badge {
-      display: inline-block;
-      padding: 3px 8px;
-      font-size: 11px;
-      font-weight: bold;
-      border-radius: 4px;
-      color: white;
-      margin-bottom: 6px;
-    }
-    .badge-easy { background-color: #0284c7; }
-    .badge-medium { background-color: #d97706; }
-    .badge-hots { background-color: #0f172a; }
-    .badge-general { background-color: #10b981; }
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+gap:25px;
+}
 
-    .hidden {
-      display: none !important;
-    }
+.menu{
+background:white;
+color:#111827;
+padding:25px;
+border-radius:15px;
+text-decoration:none;
+transition:.25s;
+box-shadow:0 8px 20px rgba(0,0,0,.2);
+}
 
-    .footer {
-      margin-top: 40px;
-      text-align: center;
-      font-size: 13px;
-      color: #94a3b8;
-      border-top: 1px solid var(--border-color);
-      padding-top: 15px;
-    }
-  </style>
+.menu:hover{
+transform:translateY(-6px);
+}
+
+.menu h2{
+color:#0f172a;
+font-size:22px;
+margin-bottom:10px;
+}
+
+.menu p{
+color:#6b7280;
+font-size:15px;
+line-height:1.6;
+}
+
+footer{
+margin-top:60px;
+text-align:center;
+padding:20px;
+color:#cbd5e1;
+}
+
+.expired{
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+text-align:center;
+font-size:30px;
+font-weight:bold;
+padding:20px;
+}
+</style>
+
 </head>
+
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>PORTAL UJIAN ONLINE</h1>
-      <p><strong>Persona Research & Consulting</strong> | WA: 0877 425 5786</p>
-      <p>Pilih modul ujian analogi kata di bawah ini untuk memulai latihan.</p>
-    </div>
 
-    <!-- Proteksi Password -->
-    <div id="authContainer" class="auth-box">
-      <p style="margin-top:0; font-weight:600;">Masukkan Password untuk Mengakses Menu Quiz:</p>
-      <input type="password" id="passInput" placeholder="Masukkan Password..." />
-      <button onclick="checkPassword()">Buka Akses</button>
-      <div id="errorMsg" class="error-msg hidden">Password salah! Silakan coba lagi.</div>
-    </div>
+<div id="expired" class="expired" style="display:none;">
+<div>
+<h1>AKSES TELAH BERAKHIR</h1>
+<br>
+<p>Hubungi Persona Research & Consulting</p>
+</div>
+</div>
 
-    <!-- Area Menu Quiz (Hidden Sebelum Login) -->
-    <div id="menuContainer" class="menu-grid hidden">
-      
-      <a href="analogi-mudah.html" class="menu-card">
-        <span class="badge badge-easy">LEVEL MUDAH</span>
-        <h3>Analogi 3 Kata - Level Mudah</h3>
-        <p>⏱ Waktu: 40 Menit | 50 Soal Hubungan Kata Dasar</p>
-      </a>
+<div id="login" class="login-page">
 
-      <a href="analogi-sedang.html" class="menu-card">
-        <span class="badge badge-medium">LEVEL SEDANG</span>
-        <h3>Analogi 3 Kata - Level Sedang</h3>
-        <p>⏱ Waktu: 40 Menit | 50 Soal Hubungan Logika & Fungsional</p>
-      </a>
+<div class="card">
 
-      <a href="analogi-hots.html" class="menu-card">
-        <span class="badge badge-hots">LEVEL HOTS</span>
-        <h3>Analogi 3 Kata - Level HOTS</h3>
-        <p>⏱ Waktu: 40 Menit | 50 Soal Abstrak & Konseptual Tinggi</p>
-      </a>
+<div class="logo">
+PERSONA RESEARCH
+</div>
 
-      <a href="analogi-interaktif.html" class="menu-card">
-        <span class="badge badge-general">VERBAL GENERAL</span>
-        <h3>Tes Analogi 3 Kata Interaktif</h3>
-        <p>⏱ Waktu: Standar | 50 Soal Latihan Logika Verbal</p>
-      </a>
+<div class="sub">
+ONLINE TEST CENTER
+</div>
 
-    </div>
+<input
+type="password"
+id="password"
+placeholder="Masukkan Password">
 
-    <div class="footer">
-      &copy; 2026 Persona Research & Consulting. All rights reserved.
-    </div>
-  </div>
+<button onclick="login()">
+MASUK
+</button>
 
-  <script>
-    function checkPassword() {
-      const input = document.getElementById("passInput").value;
-      const errorMsg = document.getElementById("errorMsg");
-      const authBox = document.getElementById("authContainer");
-      const menuBox = document.getElementById("menuContainer");
+<div id="error"></div>
 
-      if (input === "persona05") {
-        authBox.classList.add("hidden");
-        menuBox.classList.remove("hidden");
-      } else {
-        errorMsg.classList.remove("hidden");
-      }
-    }
+</div>
 
-    // Memungkinkan submit password menggunakan tombol Enter
-    document.getElementById("passInput").addEventListener("keypress", function(event) {
-      if (event.key === "Enter") {
-        checkPassword();
-      }
-    });
-  </script>
+</div>
+
+<div id="dashboard" class="dashboard">
+
+<header>
+
+<div class="title">
+PERSONA RESEARCH & CONSULTING
+</div>
+
+<button class="logout" onclick="logout()">
+Logout
+</button>
+
+</header>
+
+<div class="container">
+
+<div class="grid">
+
+<a class="menu" href="analogi_3_kata_level_mudah.html">
+<h2>Analogi 3 Kata Level Mudah</h2>
+<p>50 Soal Analogi Verbal Level Dasar.</p>
+</a>
+
+<a class="menu" href="analogi_3_kata_level_sedang.html">
+<h2>Analogi 3 Kata Level Sedang</h2>
+<p>50 Soal Analogi Verbal Level Menengah.</p>
+</a>
+
+<a class="menu" href="tes_analogi_3_kata_50_soal.html">
+<h2>Tes Analogi 3 Kata</h2>
+<p>50 Soal Lengkap.</p>
+</a>
+
+<a class="menu" href="tes_analogi_3_kata_hots_40menit.html">
+<h2>Tes HOTS 40 Menit</h2>
+<p>Higher Order Thinking Skills.</p>
+</a>
+
+<a class="menu" href="analogi_hots_evaluasi.html">
+<h2>Evaluasi HOTS</h2>
+<p>Laporan Evaluasi dan Pembahasan.</p>
+</a>
+
+</div>
+
+</div>
+
+<footer>
+
+© 2026 Persona Research & Consulting
+
+</footer>
+
+</div>
+
+<script>
+
+const PASSWORD="persona05";
+
+const EXPIRED=new Date("2027-02-05T23:59:59");
+
+if(new Date()>EXPIRED){
+document.getElementById("login").style.display="none";
+document.getElementById("expired").style.display="flex";
+}
+
+if(localStorage.getItem("persona_login")=="ok"){
+showDashboard();
+}
+
+function login(){
+
+let p=document.getElementById("password").value.trim();
+
+if(p===PASSWORD){
+
+localStorage.setItem("persona_login","ok");
+
+showDashboard();
+
+}else{
+
+document.getElementById("error").innerHTML="Password Salah";
+
+}
+
+}
+
+function showDashboard(){
+
+document.getElementById("login").style.display="none";
+document.getElementById("dashboard").style.display="block";
+
+}
+
+function logout(){
+
+localStorage.removeItem("persona_login");
+
+location.reload();
+
+}
+
+document.addEventListener("contextmenu",e=>e.preventDefault());
+
+document.addEventListener("keydown",function(e){
+
+if(e.keyCode==123)e.preventDefault();
+
+if(e.ctrlKey&&(e.key=="u"||e.key=="U"))e.preventDefault();
+
+if(e.ctrlKey&&(e.key=="s"||e.key=="S"))e.preventDefault();
+
+if(e.ctrlKey&&(e.key=="c"||e.key=="C"))e.preventDefault();
+
+});
+
+</script>
+
 </body>
 </html>
