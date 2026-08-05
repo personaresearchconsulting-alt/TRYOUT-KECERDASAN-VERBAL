@@ -255,10 +255,22 @@
     }
 
     function pick(val) {
-        userSelections[currentIdx] = val; 
-        render();
-        // Auto-next dengan sedikit jeda agar animasi klik terlihat
-        setTimeout(() => { if(currentIdx < 49) { currentIdx++; render(); } }, 300);
+        userSelections[currentIdx] = val;
+
+        const options = document.querySelectorAll(".option");
+        options.forEach(opt => opt.classList.remove("active"));
+
+        const clicked = [...options].find(o => o.dataset.value === val);
+        if (clicked) clicked.classList.add("active");
+
+        updateGrid();
+
+        setTimeout(() => {
+            if (currentIdx < questions.length - 1) {
+                currentIdx++;
+            }
+            render();
+        },250);
     }
 
     function updateGrid() {
