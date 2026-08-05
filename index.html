@@ -1,325 +1,301 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PERSONA RESEARCH & CONSULTING</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TES KECERDASAN VERBAL - Persona Research & Consulting</title>
+  <style>
+    :root {
+      --primary-color: #0f172a;
+      --secondary-color: #2563eb;
+      --accent-color: #10b981;
+      --danger-color: #dc2626;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-color: #1e293b;
+      --border-color: #cbd5e1;
+    }
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial,sans-serif}
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
 
-body{
-background:#0f172a;
-color:#fff;
-min-height:100vh;
-}
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: var(--card-bg);
+      padding: 35px;
+      border-radius: 12px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
 
-.login-page{
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-padding:20px;
-}
+    .header {
+      text-align: center;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
 
-.card{
-width:100%;
-max-width:420px;
-background:#fff;
-color:#111827;
-border-radius:18px;
-padding:35px;
-box-shadow:0 20px 60px rgba(0,0,0,.4);
-text-align:center;
-}
+    .header h1 {
+      color: var(--primary-color);
+      margin-bottom: 5px;
+      font-size: 26px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
 
-.logo{
-font-size:26px;
-font-weight:bold;
-color:#0f172a;
-}
+    .header p {
+      color: #64748b;
+      font-size: 14px;
+      margin: 3px 0;
+    }
 
-.sub{
-margin-top:8px;
-color:#b45309;
-font-size:13px;
-letter-spacing:2px;
-font-weight:bold;
-}
+    .auth-section {
+      background: #f1f5f9;
+      padding: 25px;
+      border-radius: 8px;
+      border-left: 4px solid var(--secondary-color);
+      margin-bottom: 30px;
+      text-align: center;
+    }
 
-input{
-width:100%;
-padding:15px;
-margin-top:25px;
-border:2px solid #d1d5db;
-border-radius:10px;
-font-size:17px;
-text-align:center;
-}
+    .auth-section h3 {
+      margin-top: 0;
+      color: var(--primary-color);
+    }
 
-button{
-width:100%;
-padding:15px;
-margin-top:18px;
-background:#d97706;
-color:white;
-border:none;
-border-radius:10px;
-font-size:17px;
-font-weight:bold;
-cursor:pointer;
-transition:.3s;
-}
+    .input-group {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 15px;
+    }
 
-button:hover{
-background:#b45309;
-}
+    input[type="password"] {
+      padding: 12px 16px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 16px;
+      width: 60%;
+      outline: none;
+    }
 
-#error{
-margin-top:15px;
-color:red;
-font-weight:bold;
-}
+    input[type="password"]:focus {
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+    }
 
-.dashboard{
-display:none;
-}
+    .btn-auth {
+      padding: 12px 24px;
+      background-color: var(--secondary-color);
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
 
-header{
-background:#111827;
-padding:18px 30px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-border-bottom:4px solid #d97706;
-}
+    .btn-auth:hover {
+      background-color: #1d4ed8;
+    }
 
-.title{
-font-size:23px;
-font-weight:bold;
-}
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+      margin-top: 20px;
+    }
 
-.logout{
-background:#dc2626;
-padding:10px 18px;
-width:auto;
-margin:0;
-}
+    .menu-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+      text-decoration: none;
+      color: var(--text-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s ease;
+    }
 
-.container{
-max-width:1200px;
-margin:auto;
-padding:40px 20px;
-}
+    .menu-card:hover {
+      border-color: var(--secondary-color);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
 
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
-gap:25px;
-}
+    .menu-info h3 {
+      margin: 0 0 5px 0;
+      color: var(--secondary-color);
+      font-size: 18px;
+    }
 
-.menu{
-background:white;
-color:#111827;
-padding:25px;
-border-radius:15px;
-text-decoration:none;
-transition:.25s;
-box-shadow:0 8px 20px rgba(0,0,0,.2);
-}
+    .menu-info p {
+      margin: 0;
+      font-size: 13px;
+      color: #64748b;
+    }
 
-.menu:hover{
-transform:translateY(-6px);
-}
+    .badge {
+      background-color: #e0f2fe;
+      color: #0369a1;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+    }
 
-.menu h2{
-color:#0f172a;
-font-size:22px;
-margin-bottom:10px;
-}
+    .hidden {
+      display: none !important;
+    }
 
-.menu p{
-color:#6b7280;
-font-size:15px;
-line-height:1.6;
-}
+    .expired-screen, .error-msg {
+      text-align: center;
+      color: var(--danger-color);
+    }
 
-footer{
-margin-top:60px;
-text-align:center;
-padding:20px;
-color:#cbd5e1;
-}
+    .error-msg {
+      margin-top: 10px;
+      font-size: 14px;
+      font-weight: 600;
+    }
 
-.expired{
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-text-align:center;
-font-size:30px;
-font-weight:bold;
-padding:20px;
-}
-</style>
-
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 13px;
+      color: #94a3b8;
+      border-top: 1px solid var(--border-color);
+      padding-top: 15px;
+    }
+  </style>
 </head>
-
 <body>
+  <div class="container" id="mainContainer">
+    <div class="header">
+      <h1>TES KECERDASAN VERBAL</h1>
+      <p><strong>Persona Research & Consulting</strong> | WA: 0877 4251 5786</p>
+      <p>Portal Ujian Online & Modul Evaluasi Kecerdasan Verbal</p>
+    </div>
 
-<div id="expired" class="expired" style="display:none;">
-<div>
-<h1>AKSES TELAH BERAKHIR</h1>
-<br>
-<p>Hubungi Persona Research & Consulting</p>
-</div>
-</div>
+    <!-- Verifikasi Akses Password -->
+    <div id="authSection" class="auth-section">
+      <h3>🔒 Masukkan Password Akses</h3>
+      <p style="font-size: 13px; color: #64748b; margin-bottom: 0;">Silakan masukkan password resmi untuk membuka menu modul kuis.</p>
+      <div class="input-group">
+        <input type="password" id="passInput" placeholder="Ketik Password..." onkeypress="checkEnter(event)" />
+        <button class="btn-auth" onclick="validatePassword()">Buka Akses</button>
+      </div>
+      <div id="errorMsg" class="error-msg hidden">Password salah! Silakan coba lagi.</div>
+    </div>
 
-<div id="login" class="login-page">
+    <!-- Menu Portal Modul Kuis (Tersembunyi sebelum login) -->
+    <div id="menuSection" class="hidden">
+      <h3 style="color: var(--primary-color); border-bottom: 2px solid var(--border-color); padding-bottom: 8px;">Pilih Modul Ujian (5 Modul):</h3>
+      <div class="menu-grid">
+        
+        <!-- Modul 1 -->
+        <a href="analogi_3_kata_level_mudah.html" class="menu-card">
+          <div class="menu-info">
+            <h3>1. Analogi 3 Kata - Level Mudah</h3>
+            <p>Latihan Dasar Analogi 3 Kata</p>
+          </div>
+          <span class="badge">Level Mudah</span>
+        </a>
 
-<div class="card">
+        <!-- Modul 2 -->
+        <a href="analogi_3_kata_level_sedang.html" class="menu-card">
+          <div class="menu-info">
+            <h3>2. Analogi 3 Kata - Level Sedang</h3>
+            <p>Latihan Menengah Analogi 3 Kata</p>
+          </div>
+          <span class="badge">Level Sedang</span>
+        </a>
 
-<div class="logo">
-PERSONA RESEARCH
-</div>
+        <!-- Modul 3 -->
+        <a href="tes_analogi_3_kata_50_soal.html" class="menu-card">
+          <div class="menu-info">
+            <h3>3. Tes Analogi 3 Kata (50 Soal)</h3>
+            <p>Ujian Analogi 3 Kata - 50 Soal</p>
+          </div>
+          <span class="badge">50 Soal</span>
+        </a>
 
-<div class="sub">
-ONLINE TEST CENTER
-</div>
+        <!-- Modul 4 -->
+        <a href="tes_analogi_3_kata_hots_40menit.html" class="menu-card">
+          <div class="menu-info">
+            <h3>4. Tes Analogi 3 Kata HOTS (40 Menit)</h3>
+            <p>Ujian Penalaran Tingkat Tinggi - Durasi 40 Menit</p>
+          </div>
+          <span class="badge">HOTS 40m</span>
+        </a>
 
-<input
-type="password"
-id="password"
-placeholder="Masukkan Password">
+        <!-- Modul 5 -->
+        <a href="analogi_hots_evaluasi.html" class="menu-card">
+          <div class="menu-info">
+            <h3>5. Analogi HOTS - Evaluasi</h3>
+            <p>Modul Evaluasi & Pembahasan Analogi HOTS</p>
+          </div>
+          <span class="badge">Evaluasi</span>
+        </a>
 
-<button onclick="login()">
-MASUK
-</button>
+      </div>
+    </div>
 
-<div id="error"></div>
+    <div class="footer">
+      &copy; 2026 Persona Research & Consulting. All rights reserved.
+    </div>
+  </div>
 
-</div>
+  <script>
+    // 1. Check Masa Kadaluarsa (Expired Exactly 1 Year: 2027-08-05)
+    const expiryDate = new Date("2027-08-05T23:59:59");
+    if (new Date() > expiryDate) {
+      document.getElementById("mainContainer").innerHTML = `
+        <div class="expired-screen">
+          <h2>Portal Ujian Telah Kadaluarsa!</h2>
+          <p>Masa berlaku portal kuis ini telah berakhir. Silakan hubungi <strong>Persona Research & Consulting</strong> (WA: 0877 425 5786) untuk perpanjangan masa akses.</p>
+        </div>
+      `;
+    }
 
-</div>
+    // 2. Anti-AI / Anti-Copy Protocols
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('keydown', e => {
+      if (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 's' || e.key === 'a')) {
+        e.preventDefault();
+      }
+    });
 
-<div id="dashboard" class="dashboard">
+    // 3. Password Validation System
+    function validatePassword() {
+      const input = document.getElementById("passInput").value;
+      const errorMsg = document.getElementById("errorMsg");
+      
+      if (input === "persona05") {
+        document.getElementById("authSection").classList.add("hidden");
+        document.getElementById("menuSection").classList.remove("hidden");
+      } else {
+        errorMsg.classList.remove("hidden");
+      }
+    }
 
-<header>
-
-<div class="title">
-PERSONA RESEARCH & CONSULTING
-</div>
-
-<button class="logout" onclick="logout()">
-Logout
-</button>
-
-</header>
-
-<div class="container">
-
-<div class="grid">
-
-<a class="menu" href="analogi_3_kata_level_mudah.html">
-<h2>Analogi 3 Kata Level Mudah</h2>
-<p>50 Soal Analogi Verbal Level Dasar.</p>
-</a>
-
-<a class="menu" href="analogi_3_kata_level_sedang.html">
-<h2>Analogi 3 Kata Level Sedang</h2>
-<p>50 Soal Analogi Verbal Level Menengah.</p>
-</a>
-
-<a class="menu" href="tes_analogi_3_kata_50_soal.html">
-<h2>Tes Analogi 3 Kata</h2>
-<p>50 Soal Lengkap.</p>
-</a>
-
-<a class="menu" href="tes_analogi_3_kata_hots_40menit.html">
-<h2>Tes HOTS 40 Menit</h2>
-<p>Higher Order Thinking Skills.</p>
-</a>
-
-<a class="menu" href="analogi_hots_evaluasi.html">
-<h2>Evaluasi HOTS</h2>
-<p>Laporan Evaluasi dan Pembahasan.</p>
-</a>
-
-</div>
-
-</div>
-
-<footer>
-
-© 2026 Persona Research & Consulting
-
-</footer>
-
-</div>
-
-<script>
-
-const PASSWORD="persona05";
-
-const EXPIRED=new Date("2027-02-05T23:59:59");
-
-if(new Date()>EXPIRED){
-document.getElementById("login").style.display="none";
-document.getElementById("expired").style.display="flex";
-}
-
-if(localStorage.getItem("persona_login")=="ok"){
-showDashboard();
-}
-
-function login(){
-
-let p=document.getElementById("password").value.trim();
-
-if(p===PASSWORD){
-
-localStorage.setItem("persona_login","ok");
-
-showDashboard();
-
-}else{
-
-document.getElementById("error").innerHTML="Password Salah";
-
-}
-
-}
-
-function showDashboard(){
-
-document.getElementById("login").style.display="none";
-document.getElementById("dashboard").style.display="block";
-
-}
-
-function logout(){
-
-localStorage.removeItem("persona_login");
-
-location.reload();
-
-}
-
-document.addEventListener("contextmenu",e=>e.preventDefault());
-
-document.addEventListener("keydown",function(e){
-
-if(e.keyCode==123)e.preventDefault();
-
-if(e.ctrlKey&&(e.key=="u"||e.key=="U"))e.preventDefault();
-
-if(e.ctrlKey&&(e.key=="s"||e.key=="S"))e.preventDefault();
-
-if(e.ctrlKey&&(e.key=="c"||e.key=="C"))e.preventDefault();
-
-});
-
-</script>
-
+    function checkEnter(event) {
+      if (event.key === "Enter") {
+        validatePassword();
+      }
+    }
+  </script>
 </body>
 </html>
