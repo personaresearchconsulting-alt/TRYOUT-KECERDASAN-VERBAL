@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tes Kecerdasan - Persona Research And Consulting</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root { --primary: #1a4a7a; --bg: #f0f2f5; --accent: #1e4b82; }
+        body { 
+            font-family: 'Arial', sans-serif; 
+            margin: 0; 
+            background: var(--bg); 
+            color: #333; 
+            user-select: none; 
+        }
+        .app-header { background: white; padding: 15px 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .brand-title { font-size: 20px; font-weight: bold; color: var(--primary); }
+        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+        .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .btn { background: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 6px; font-size: 16px; cursor: pointer; font-weight: bold; }
+        .btn:hover { background: var(--accent); }
+        .form-control { width: 100%; padding: 12px; margin: 15px 0 25px 0; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 16px; }
+        .quiz-layout { display: grid; grid-template-columns: 1fr 300px; gap: 20px; }
+        .option-item { display: flex; align-items: center; padding: 15px; border: 2px solid #e0e0e0; border-radius: 8px; margin-bottom: 12px; cursor: pointer; transition: 0.2s; }
+        .option-item:hover { border-color: var(--primary); background: #f7f9fc; }
+        .option-item.selected { border-color: var(--primary); background: #e8f0fe; font-weight: bold; }
+        .option-prefix { width: 30px; height: 30px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-weight: bold; }
+        .option-item.selected .option-prefix { background: var(--primary); color: white; }
+        .nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; max-height: 400px; overflow-y: auto; padding-right: 5px; }
+        .nav-grid-item { background: white; border: 2px solid #dcdcdc; border-radius: 6px; text-align: center; padding: 10px 0; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .nav-grid-item.answered { background: #e2f0d9; border-color: #70ad47; color: #385723; }
+        .nav-grid-item.active { border-color: var(--primary); background: #e8f0fe; color: var(--primary); box-shadow: 0 0 8px rgba(26,74,122,0.3); }
+        .progress-container { background: #eee; border-radius: 10px; height: 8px; margin-bottom: 25px; overflow: hidden; }
+        .progress-bar { background: var(--primary); height: 100%; width: 0%; transition: 0.3s; }
+        .teach-box { background: #f9fbfd; border-left: 5px solid var(--primary); padding: 20px; margin-top: 20px; border-radius: 0 8px 8px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        .teach-text { background: #fff; padding: 15px; border-radius: 6px; border: 1px solid #e1e8ed; margin-top: 15px; line-height: 1.6; }
+        .correct-label { display: inline-block; background: #e2f0d9; color: #385723; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 14px; }
+    </style>
+</head>
+<body oncontextmenu="return false;" oncopy="return false;" oncut="return false;" onpaste="return false;">
+
+    <header class="app-header">
+        <div class="brand-title">PERSONA RESEARCH & CONSULTING</div>
+        <div id="clock" style="font-weight: bold; font-size: 18px; color: #c00000;"></div>
+    </header>
+
+    <main class="container">
+        <div id="login-section" class="card" style="max-width: 500px; margin: 40px auto;">
+            <h2>TES KECERDASAN VERBAL CAMPURAN</h2>
+            <p>Silakan masukkan nama untuk memulai ujian.</p>
+            <label><b>Nama:</b></label>
+            <input type="text" id="inName" class="form-control" placeholder="Contoh: Ahmad Subarjo">
+            <button class="btn" onclick="startUjian()">Mulai Ujian Sekarang</button>
+        </div>
+
+        <div id="quiz-section" style="display: none;">
+            <div class="progress-container">
+                <div id="p-bar" class="progress-bar"></div>
+            </div>
+            <div class="quiz-layout">
+                <div>
+                    <div class="card">
+                        <h3 id="soal-title" style="margin-top:0; color: var(--primary);">Soal</h3>
+                        <p id="q-text" style="font-size: 18px; line-height: 1.6; margin-bottom: 25px;"></p>
+                        <div id="opt-container"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <button class="btn" style="background:#6c757d;" onclick="prevSoal()">Kembali</button>
+                        <button class="btn" style="background:#28a745;" onclick="konfirmasiSelesai()">Selesai & Kirim</button>
+                        <button class="btn" onclick="nextSoal()">Berikutnya</button>
+                    </div>
+                </div>
+                <div>
+                    <div class="card" style="padding: 20px;">
+                        <h4 style="margin-top:0; margin-bottom:15px; text-align:center;">Navigasi Soal</h4>
+                        <div id="grid-container" class="nav-grid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="result-section" style="display: none;">
+            <div class="card" style="text-align: center; border-top: 6px solid #28a745;">
+                <h1 style="color:#28a745; margin-bottom: 5px;">Ujian Selesai!</h1>
+                <p>Terima kasih telah mengikuti evaluasi kecerdasan ini.</p>
+                <div id="score-big" style="font-size: 48px; font-weight: bold; margin: 20px 0; color: var(--primary);">SKOR: 0</div>
+                <button class="btn" onclick="downloadPDF()">Unduh Hasil Berformat PDF</button>
+            </div>
+            <div id="pdf-content" class="card">
+                <h2>Laporan Hasil Evaluasi Kecerdasan</h2>
+                <div id="user-info" style="line-height: 1.8; margin-bottom: 30px; background: #f8f9fa; padding: 15px; border-radius: 6px;"></div>
+                <hr>
+                <h3 style="color: var(--primary); margin-top:30px;">Koreksi Lengkap & Pembahasan Soal:</h3>
+                <div id="discussion-list"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // DATABASE BANK SOAL - TES KECERDASAN VERBAL (100 SOAL LEVEL MUDAH)
+        const bank = [
+            // A. SINONIM (1-15)
+            { q: "1. SINONIM: PROTEKSI = ...", o: ["Ancaman", "Perlindungan", "Penyerangan", "Pengawasan"], a: 1, h: "<b>Makna Kata:</b> Proteksi berarti hal yang melindungi atau perlindungan.<br><b>Analisis:</b> 'Perlindungan' adalah kata yang paling tepat sebagai sinonim. Pilihan 'Ancaman' dan 'Penyerangan' justru berlawanan, sedangkan 'Pengawasan' berbeda makna.<br><b>Tips:</b> Hubungkan kata serapan bahasa Inggris 'protection' yang berarti perlindungan." },
+            { q: "2. SINONIM: OTENTIK = ...", o: ["Asli", "Palsu", "Tiruan", "Mirip"], a: 0, h: "<b>Makna Kata:</b> Otentik menurut KBBI berarti sah, dapat dipercaya, atau asli.<br><b>Analisis:</b> 'Asli' merupakan padanan yang tepat. Pilihan 'Palsu' dan 'Tiruan' adalah antonimnya. 'Mirip' belum tentu asli.<br><b>Tips:</b> Jika menemukan opsi yang maknanya saling bertolak belakang (Asli vs Palsu), biasanya jawaban yang benar adalah salah satu dari keduanya." },
+            { q: "3. SINONIM: INOVASI = ...", o: ["Peninggalan", "Tradisi", "Pembaruan", "Kebiasaan"], a: 2, h: "<b>Makna Kata:</b> Inovasi adalah pemasukan atau pengenalan hal-hal yang baru (pembaruan).<br><b>Analisis:</b> 'Pembaruan' memiliki makna terdekat. Opsi lain (Tradisi, Kebiasaan, Peninggalan) lebih merujuk pada hal yang bersifat lama/kuno.<br><b>Tips:</b> Ingat kata 'inovatif' yang bermakna menciptakan sesuatu yang baru." },
+            { q: "4. SINONIM: KOMPLEKS = ...", o: ["Sederhana", "Rumit", "Mudah", "Tunggal"], a: 1, h: "<b>Makna Kata:</b> Kompleks berarti mengandung beberapa unsur yang pelik atau rumit.<br><b>Analisis:</b> 'Rumit' adalah persamaan kata yang tepat. Sederhana, Mudah, dan Tunggal adalah lawan katanya.<br><b>Tips:</b> Suatu 'masalah yang kompleks' berarti 'masalah yang rumit'." },
+            { q: "5. SINONIM: SIGNIFIKAN = ...", o: ["Penting", "Sepele", "Kecil", "Biasa"], a: 0, h: "<b>Makna Kata:</b> Signifikan berarti penting atau berarti.<br><b>Analisis:</b> Pilihan 'Penting' paling tepat. Sepele, Kecil, dan Biasa adalah antonim dari signifikan.<br><b>Tips:</b> Kata ini sering muncul dalam berita akademik, misal 'perubahan signifikan' berarti perubahan yang penting/besar." },
+            { q: "6. SINONIM: KLARIFIKASI = ...", o: ["Penjelasan", "Penyembunyian", "Kebohongan", "Pertanyaan"], a: 0, h: "<b>Makna Kata:</b> Klarifikasi adalah penjernihan, penjelasan, atau pengembalian pada kenyataan yang sebenarnya.<br><b>Analisis:</b> 'Penjelasan' adalah sinonim langsung. Opsi lainnya tidak relevan.<br><b>Tips:</b> Saat seseorang diminta melakukan klarifikasi, artinya ia diminta untuk 'menjelaskan'." },
+            { q: "7. SINONIM: EFEKTIF = ...", o: ["Gagal", "Tepat guna", "Berantakan", "Lama"], a: 1, h: "<b>Makna Kata:</b> Efektif berarti ada efeknya (akibatnya, pengaruhnya, kesannya) atau manjur/tepat guna.<br><b>Analisis:</b> 'Tepat guna' adalah sinonim yang pas. Gagal, Berantakan, dan Lama tidak memiliki hubungan kemiripan arti.<br><b>Tips:</b> Efektif = tepat guna (berhasil). Efisien = tepat waktu/hemat." },
+            { q: "8. SINONIM: HARMONI = ...", o: ["Kekacauan", "Konflik", "Keselarasan", "Keributan"], a: 2, h: "<b>Makna Kata:</b> Harmoni merujuk pada pernyataan rasa, aksi, gagasan, dan minat; keselarasan.<br><b>Analisis:</b> Keselarasan memiliki arti yang persis sama. Opsi lainnya (Kekacauan, Konflik, Keributan) merupakan antonim.<br><b>Tips:</b> Harmoni sering dikaitkan dengan nada yang 'selaras'." },
+            { q: "9. SINONIM: ADAPTASI = ...", o: ["Penolakan", "Penyesuaian", "Perlawanan", "Pengabaian"], a: 1, h: "<b>Makna Kata:</b> Adaptasi adalah penyesuaian diri dengan kondisi lingkungan yang baru.<br><b>Analisis:</b> Penyesuaian adalah jawaban yang benar. Tiga opsi lainnya menunjukkan sikap menolak atau tidak peduli.<br><b>Tips:</b> Makhluk hidup beradaptasi = makhluk hidup menyesuaikan diri." },
+            { q: "10. SINONIM: IDENTIK = ...", o: ["Berbeda", "Sama persis", "Berlawanan", "Bervariasi"], a: 1, h: "<b>Makna Kata:</b> Identik berarti sama benar; tidak ada bedanya.<br><b>Analisis:</b> 'Sama persis' adalah makna yang paling tepat. Opsi yang lain menunjukkan adanya perbedaan.<br><b>Tips:</b> Anak kembar 'identik' berarti anak kembar yang wajahnya 'sama persis'." },
+            { q: "11. SINONIM: REALITAS = ...", o: ["Kenyataan", "Khayalan", "Mimpi", "Fiksi"], a: 0, h: "<b>Makna Kata:</b> Realitas adalah hal yang nyata; kenyataan.<br><b>Analisis:</b> Kenyataan adalah sinonimnya. Khayalan, Mimpi, dan Fiksi merujuk pada sesuatu yang tidak nyata.<br><b>Tips:</b> Realitas berasal dari kata dasar 'real' yang artinya nyata." },
+            { q: "12. SINONIM: MAYORITAS = ...", o: ["Sebagian kecil", "Bagian terbesar", "Sedikit", "Langka"], a: 1, h: "<b>Makna Kata:</b> Mayoritas berarti jumlah orang atau hal yang terbanyak (lebih dari separuh).<br><b>Analisis:</b> 'Bagian terbesar' adalah arti yang paling sesuai. Opsi lainnya justru merujuk pada minoritas.<br><b>Tips:</b> Mayor = besar/banyak. Minor = kecil/sedikit." },
+            { q: "13. SINONIM: OTORITAS = ...", o: ["Ketidakberdayaan", "Kelemahan", "Wewenang", "Kewajiban"], a: 2, h: "<b>Makna Kata:</b> Otoritas berarti hak untuk bertindak; kekuasaan atau wewenang.<br><b>Analisis:</b> Wewenang adalah padanan kata yang tepat. Kewajiban berbeda makna (tugas), sedangkan Kelemahan adalah lawan makna.<br><b>Tips:</b> Orang yang memiliki 'otoritas' adalah orang yang 'berwenang'." },
+            { q: "14. SINONIM: PRIORITAS = ...", o: ["Diabaikan", "Diusahakan", "Diutamakan", "Ditinggalkan"], a: 2, h: "<b>Makna Kata:</b> Prioritas adalah hal yang didahulukan dan diutamakan daripada yang lain.<br><b>Analisis:</b> 'Diutamakan' adalah jawaban yang benar berdasarkan definisi KBBI.<br><b>Tips:</b> Menjadikan sesuatu prioritas berarti mengutamakan hal tersebut." },
+            { q: "15. SINONIM: GLOBAL = ...", o: ["Lokal", "Daerah", "Menyeluruh", "Terbatas"], a: 2, h: "<b>Makna Kata:</b> Global berarti bersangkut paut, mengenai, meliputi seluruh dunia (menyeluruh).<br><b>Analisis:</b> 'Menyeluruh' merupakan padanan yang tepat. Lokal dan Daerah memiliki cakupan yang kecil.<br><b>Tips:</b> Isu global berarti isu yang menyeluruh." },
+
+            // B. ANTONIM (16-30)
+            { q: "16. ANTONIM: AKTIF >< ...", o: ["Pasif", "Cepat", "Rajin", "Dinamis"], a: 0, h: "<b>Makna Kata:</b> Aktif berarti giat, rajin, atau terus bekerja. Lawan makna (antonim) yang paling tepat adalah Pasif (tidak giat, menerima saja).<br><b>Analisis:</b> Dinamis dan Rajin justru memiliki kedekatan makna (sinonim) dengan Aktif.<br><b>Tips:</b> Ingat pasangan kata 'kalimat aktif' dan 'kalimat pasif'." },
+            { q: "17. ANTONIM: OPTIMIS >< ...", o: ["Yakin", "Pesimis", "Gembira", "Berani"], a: 1, h: "<b>Makna Kata:</b> Optimis adalah pandangan selalu penuh harapan (melihat sisi baik). Lawan katanya adalah Pesimis (selalu khawatir/melihat sisi buruk).<br><b>Analisis:</b> Yakin adalah sifat optimis, jadi salah. Gembira dan Berani bukan lawan kata langsung dari optimis.<br><b>Tips:</b> Optimis berpasangan langsung dengan pesimis." },
+            { q: "18. ANTONIM: TRADISIONAL >< ...", o: ["Kuno", "Modern", "Lama", "Budaya"], a: 1, h: "<b>Makna Kata:</b> Tradisional berhubungan dengan tradisi (cara lama). Lawan katanya adalah Modern (sikap dan cara berpikir yang menyesuaikan tuntutan zaman baru).<br><b>Analisis:</b> Kuno dan Lama adalah sinonimnya. Budaya adalah kata benda, bukan lawan kata sifat.<br><b>Tips:</b> Tradisional merujuk ke masa lalu, modern merujuk ke masa kini/depan." },
+            { q: "19. ANTONIM: SUBJEKTIF >< ...", o: ["Adil", "Objektif", "Egois", "Pribadi"], a: 1, h: "<b>Makna Kata:</b> Subjektif berarti berdasarkan pandangan/perasaan sendiri. Lawan kata mutlaknya adalah Objektif (berdasarkan fakta sebenarnya, tanpa dipengaruhi pendapat pribadi).<br><b>Analisis:</b> Pribadi adalah sinonim subjektif. Adil adalah akibat dari bersikap objektif, namun objektif adalah antonim langsungnya.<br><b>Tips:</b> Subjektif (subjek/diri sendiri) >< Objektif (objek/fakta)." },
+            { q: "20. ANTONIM: FIKTIF >< ...", o: ["Nyata", "Palsu", "Khayalan", "Dongeng"], a: 0, h: "<b>Makna Kata:</b> Fiktif berarti bersifat fiksi atau khayalan. Lawan katanya adalah Nyata.<br><b>Analisis:</b> Palsu, Khayalan, dan Dongeng merupakan kelompok kata yang semakna dengan fiktif.<br><b>Tips:</b> Cerita fiktif berarti cerita yang tidak nyata." },
+            { q: "21. ANTONIM: STABIL >< ...", o: ["Tetap", "Kuat", "Labil", "Tenang"], a: 2, h: "<b>Makna Kata:</b> Stabil berarti mantap, kukuh, dan tidak goyah. Lawan katanya adalah Labil (mudah berubah, goyah).<br><b>Analisis:</b> Tetap dan Kuat adalah persamaan kata dari stabil.<br><b>Tips:</b> Jika keadaan tidak stabil, berarti keadaan tersebut sedang labil." },
+            { q: "22. ANTONIM: AMATIR >< ...", o: ["Pemula", "Biasa", "Profesional", "Canggung"], a: 2, h: "<b>Makna Kata:</b> Amatir berarti kegiatan yang dilakukan atas dasar kesenangan, bukan sebagai pekerjaan (belum ahli). Lawan katanya adalah Profesional (ahli yang dibayar).<br><b>Analisis:</b> Pemula adalah sinonim amatir.<br><b>Tips:</b> Dalam olahraga, pemain yang belum ahli disebut amatir, yang sudah dibayar disebut profesional." },
+            { q: "23. ANTONIM: TENGGELAM >< ...", o: ["Terapung", "Jatuh", "Basah", "Karam"], a: 0, h: "<b>Makna Kata:</b> Tenggelam berarti terbenam ke dalam air. Lawan kondisinya adalah Terapung (berada di permukaan air).<br><b>Analisis:</b> Karam bersinonim dengan tenggelam. Jatuh dan Basah tidak berlawanan langsung.<br><b>Tips:</b> Benda di air hanya punya dua kondisi ekstrem: tenggelam di dasar atau terapung di atas." },
+            { q: "24. ANTONIM: ABADI >< ...", o: ["Kekal", "Sementara", "Lestari", "Panjang"], a: 1, h: "<b>Makna Kata:</b> Abadi berarti kekal, tidak berkesudahan. Lawan katanya adalah Sementara (ada batas waktunya).<br><b>Analisis:</b> Kekal dan Lestari merupakan sinonim dari abadi.<br><b>Tips:</b> Dunia ini sementara, bukan abadi." },
+            { q: "25. ANTONIM: APATIS >< ...", o: ["Acuh tak acuh", "Pasif", "Peduli", "Dingin"], a: 2, h: "<b>Makna Kata:</b> Apatis berarti tidak peduli, acuh tak acuh, masa bodoh. Lawan katanya adalah Peduli (memperhatikan).<br><b>Analisis:</b> Acuh tak acuh, Pasif, dan Dingin merupakan sikap-sikap yang menunjukkan keapatisan.<br><b>Tips:</b> Orang apatis adalah orang yang cuek. Lawan cuek adalah peduli." },
+            { q: "26. ANTONIM: PROLOG >< ...", o: ["Dialog", "Monolog", "Epilog", "Narasi"], a: 2, h: "<b>Makna Kata:</b> Prolog adalah pembukaan atau peristiwa pendahuluan dalam sastra/drama. Lawan posisinya adalah Epilog (bagian penutup cerita).<br><b>Analisis:</b> Dialog dan monolog adalah cara berbicara, bukan posisi struktur cerita.<br><b>Tips:</b> Pro (sebelum/awal) >< Epi (setelah/akhir)." },
+            { q: "27. ANTONIM: KENDUR >< ...", o: ["Kencang", "Lemas", "Longgar", "Lepas"], a: 0, h: "<b>Makna Kata:</b> Kendur berarti tidak tegang, longgar. Lawan katanya adalah Kencang (tegang, tidak longgar).<br><b>Analisis:</b> Lemas dan Longgar adalah persamaan makna.<br><b>Tips:</b> Tali yang tidak kendur adalah tali yang kencang." },
+            { q: "28. ANTONIM: BERSIMPATI >< ...", o: ["Kasihan", "Antipati", "Empati", "Mendukung"], a: 1, h: "<b>Makna Kata:</b> Simpati adalah rasa kasih/setuju terhadap pihak lain. Lawan rasanya adalah Antipati (rasa penolakan/ketidaksukaan).<br><b>Analisis:</b> Kasihan, Empati, dan Mendukung adalah bentuk-bentuk perasaan simpati.<br><b>Tips:</b> Awalan 'Anti-' selalu menunjukkan pertentangan atau penolakan." },
+            { q: "29. ANTONIM: LEBAR >< ...", o: ["Sempit", "Luas", "Besar", "Panjang"], a: 0, h: "<b>Makna Kata:</b> Lebar menunjukkan ukuran ruang yang lapang. Lawan konsep ukurannya adalah Sempit.<br><b>Analisis:</b> Luas adalah sinonim. Panjang dan Besar merupakan dimensi ukuran lain.<br><b>Tips:</b> Jalan yang tidak lebar disebut jalan sempit." },
+            { q: "30. ANTONIM: ASLI >< ...", o: ["Tulen", "Palsu", "Murni", "Baru"], a: 1, h: "<b>Makna Kata:</b> Asli berarti murni, tulen, bukan tiruan. Lawan katanya adalah Palsu (tiruan).<br><b>Analisis:</b> Tulen dan Murni merupakan persamaan kata asli.<br><b>Tips:</b> Barang KW (tiruan) adalah kebalikan dari barang asli (palsu)." },
+
+            // C. ANALOGI VERBAL (31-50)
+            { q: "31. ANALOGI: GURU : SEKOLAH = DOKTER : ...", o: ["Pasien", "Obat", "Rumah Sakit", "Suntikan"], a: 2, h: "<b>Hubungan Pasangan 1:</b> GURU bekerja di lingkungan SEKOLAH (Profesi : Tempat Kerja).<br><b>Analisis:</b> Hubungan tersebut diterapkan pada pasangan kedua: DOKTER bekerja di RUMAH SAKIT. Pasien adalah subjek yang ditangani, bukan tempat kerjanya.<br><b>Tips:</b> Rumuskan kalimat pendek: '[Kata 1] bekerja di [Kata 2]'." },
+            { q: "32. ANALOGI: MATA : MELIHAT = TELINGA : ...", o: ["Mendengar", "Suara", "Kacamata", "Tuli"], a: 0, h: "<b>Hubungan Pasangan 1:</b> Organ MATA berfungsi untuk MELIHAT (Organ : Fungsi).<br><b>Analisis:</b> Organ TELINGA berfungsi untuk MENDENGAR.<br><b>Tips:</b> Temukan fungsi dasar dari organ yang disebutkan. Suara adalah objeknya, bukan fungsinya." },
+            { q: "33. ANALOGI: SAPI : RUMPUT = HARIMAU : ...", o: ["Hutan", "Daging", "Lari", "Buas"], a: 1, h: "<b>Hubungan Pasangan 1:</b> SAPI memakan RUMPUT (Hewan : Jenis Makanan).<br><b>Analisis:</b> HARIMAU memakan DAGING. Hutan adalah tempat tinggal, Buas adalah sifat.<br><b>Tips:</b> Perhatikan kategori (makanan, tempat, alat). Rumput adalah makanan, maka cari makanan untuk harimau." },
+            { q: "34. ANALOGI: SIANG : MATAHARI = MALAM : ...", o: ["Gelap", "Bulan", "Tidur", "Bintang"], a: 1, h: "<b>Hubungan Pasangan 1:</b> Waktu SIANG ditandai oleh benda langit MATAHARI (Waktu : Benda Langit Utama).<br><b>Analisis:</b> Waktu MALAM ditandai oleh benda langit BULAN. Gelap adalah suasana, bukan benda langit spesifik.<br><b>Tips:</b> Matahari adalah benda langit yang memancarkan cahaya (atau terlihat) siang hari, padanannya adalah Bulan di malam hari." },
+            { q: "35. ANALOGI: KAYU : MEJA = KAIN : ...", o: ["Kapas", "Baju", "Jahit", "Benang"], a: 1, h: "<b>Hubungan Pasangan 1:</b> Bahan baku KAYU diolah menjadi produk MEJA (Bahan Baku : Produk Jadi).<br><b>Analisis:</b> Bahan baku KAIN diolah menjadi produk BAJU. Kapas dan Benang justru bahan pembuat kain.<br><b>Tips:</b> Baca dari kiri ke kanan. [Kata 1] dibuat menjadi [Kata 2]." },
+            { q: "36. ANALOGI: LAPAR : MAKAN = HAUS : ...", o: ["Air", "Minum", "Gelas", "Dahaga"], a: 1, h: "<b>Hubungan Pasangan 1:</b> Jika merasa LAPAR, solusi tindakannya adalah MAKAN (Kondisi : Tindakan Solusi).<br><b>Analisis:</b> Jika merasa HAUS, tindakannya adalah MINUM. Air adalah objeknya, bukan tindakannya.<br><b>Tips:</b> Karena 'Makan' adalah kata kerja (aksi), maka jawaban juga harus kata kerja (Minum)." },
+            { q: "37. ANALOGI: NELAYAN : LAUT = PETANI : ...", o: ["Cangkul", "Sawah", "Padi", "Panen"], a: 1, h: "<b>Hubungan Pasangan 1:</b> NELAYAN bekerja mencari hasil di LAUT (Profesi : Tempat Kerja Utama).<br><b>Analisis:</b> PETANI bekerja mencari hasil di SAWAH. Padi adalah hasil, Cangkul adalah alat.<br><b>Tips:</b> Laut adalah lokasi tempat bekerja, cari opsi yang merujuk ke lokasi." },
+            { q: "38. ANALOGI: BURUNG : BULU = IKAN : ...", o: ["Air", "Sirip", "Sisik", "Insang"], a: 2, h: "<b>Hubungan Pasangan 1:</b> Kulit luar BURUNG ditutupi oleh BULU (Hewan : Penutup Tubuh).<br><b>Analisis:</b> Kulit luar IKAN ditutupi oleh SISIK. Insang adalah alat pernapasan, Sirip adalah alat gerak.<br><b>Tips:</b> Jangan terjebak dengan sirip/insang, perhatikan sifat pelindung luar tubuhnya." },
+            { q: "39. ANALOGI: MOBIL : BENSIN = MANUSIA : ...", o: ["Oksigen", "Makanan", "Rumah", "Pakaian"], a: 1, h: "<b>Hubungan Pasangan 1:</b> MOBIL membutuhkan BENSIN sebagai sumber energi utama (Mesin : Bahan Bakar/Energi).<br><b>Analisis:</b> MANUSIA membutuhkan MAKANAN sebagai sumber energi utama untuk beraktivitas.<br><b>Tips:</b> Bensin masuk ke perut mobil untuk tenaga, makanan masuk ke perut manusia untuk tenaga." },
+            { q: "40. ANALOGI: PELUKIS : KUAS = PENULIS : ...", o: ["Buku", "Kertas", "Pena", "Ide"], a: 2, h: "<b>Hubungan Pasangan 1:</b> PELUKIS menggunakan alat utama KUAS (Profesi : Alat Kerja).<br><b>Analisis:</b> PENULIS menggunakan alat utama PENA. Buku dan Kertas adalah media, bukan alat untuk menggoreskan karya.<br><b>Tips:</b> Kuas dipegang dengan tangan untuk melukis, pena dipegang dengan tangan untuk menulis." },
+            { q: "41. ANALOGI: RUMAH : ATAP = KEPALA : ...", o: ["Rambut", "Topi", "Mata", "Otak"], a: 1, h: "<b>Hubungan Pasangan 1:</b> Bagian teratas yang melindungi struktur RUMAH adalah ATAP (Benda : Pelindung Bagian Atas).<br><b>Analisis:</b> Bagian yang melindungi struktur KEPALA adalah TOPI. (Benda tambahan pelindung luar).<br><b>Tips:</b> Jika analogi mengarah ke 'benda buatan/pelindung', pilihlah benda buatan pelindung (Topi), bukan bagian anatomi (Rambut)." },
+            { q: "42. ANALOGI: GUNTING : KERTAS = GERGAJI : ...", o: ["Palu", "Kayu", "Besi", "Paku"], a: 1, h: "<b>Hubungan Pasangan 1:</b> Alat GUNTING digunakan untuk memotong KERTAS (Alat : Objek yang dipotong).<br><b>Analisis:</b> Alat GERGAJI digunakan untuk memotong KAYU. Palu dan Paku adalah alat/benda lain.<br><b>Tips:</b> Sesuaikan objek umum dari alat tersebut. Gergaji lazimnya untuk kayu." },
+            { q: "43. ANALOGI: AYAM : BERTELUR = SAPI : ...", o: ["Beranak", "Susu", "Daging", "Merumput"], a: 0, h: "<b>Hubungan Pasangan 1:</b> AYAM berkembang biak dengan cara BERTELUR (Hewan : Cara Berkembang Biak).<br><b>Analisis:</b> SAPI berkembang biak dengan cara BERANAK. Susu dan Daging adalah produk sapi.<br><b>Tips:</b> Bertelur adalah kata kerja perkembangbiakan, jadi carilah kata kerja yang setara." },
+            { q: "44. ANALOGI: BARAT : TIMUR = UTARA : ...", o: ["Selatan", "Tenggara", "Barat Daya", "Atas"], a: 0, h: "<b>Hubungan Pasangan 1:</b> Arah BARAT berlawanan 180 derajat dengan TIMUR (Arah : Lawan Arah).<br><b>Analisis:</b> Arah UTARA berlawanan dengan SELATAN.<br><b>Tips:</b> Hafalkan kompas dasar (Utara >< Selatan, Barat >< Timur)." },
+            { q: "45. ANALOGI: BUKU : PERPUSTAKAAN = OBAT : ...", o: ["Dokter", "Pasien", "Apotek", "Sakit"], a: 2, h: "<b>Hubungan Pasangan 1:</b> Kumpulan BUKU banyak ditemukan dan disimpan di PERPUSTAKAAN (Benda : Tempat Penyimpanan/Distribusi).<br><b>Analisis:</b> OBAT ditemukan dan dikelola di APOTEK.<br><b>Tips:</b> Cari tempat yang didedikasikan secara khusus untuk menampung benda tersebut." },
+            { q: "46. ANALOGI: GELAP : CAHAYA = KERING : ...", o: ["Matahari", "Air", "Gurun", "Panas"], a: 1, h: "<b>Hubungan Pasangan 1:</b> Kondisi GELAP terjadi karena tidak ada CAHAYA (Kondisi : Sesuatu yang Menghilangkan Kondisi Tersebut).<br><b>Analisis:</b> Kondisi KERING terjadi karena tidak ada AIR. Air adalah hal yang menyembuhkan/menghilangkan kekeringan.<br><b>Tips:</b> Cahaya mengatasi kegelapan, Air mengatasi kekeringan." },
+            { q: "47. ANALOGI: MENGANTUK : TIDUR = BINGUNG : ...", o: ["Menangis", "Bertanya", "Berpikir", "Tersesat"], a: 1, h: "<b>Hubungan Pasangan 1:</b> Jika MENGANTUK, solusi alamiahnya adalah TIDUR (Kondisi : Solusi).<br><b>Analisis:</b> Jika BINGUNG, solusi alamiahnya adalah BERTANYA (atau mencari tahu). Menangis bukan solusi penyelesaian kebingungan.<br><b>Tips:</b> Pikirkan tindakan proaktif yang menyelesaikan masalah di kata pertama." },
+            { q: "48. ANALOGI: TULANG : TUBUH = RANGKA : ...", o: ["Semen", "Atap", "Bangunan", "Pintu"], a: 2, h: "<b>Hubungan Pasangan 1:</b> TULANG merupakan penopang berdirinya TUBUH (Penopang : Keseluruhan).<br><b>Analisis:</b> RANGKA merupakan penopang berdirinya BANGUNAN.<br><b>Tips:</b> Tulang adalah struktur internal makhluk hidup. Rangka adalah struktur internal benda mati (bangunan)." },
+            { q: "49. ANALOGI: GULA : MANIS = GARAM : ...", o: ["Asin", "Pedas", "Asam", "Pahit"], a: 0, h: "<b>Hubungan Pasangan 1:</b> Bumbu GULA memberikan rasa mutlak MANIS (Benda : Sifat Rasa).<br><b>Analisis:</b> Bumbu GARAM memberikan rasa mutlak ASIN.<br><b>Tips:</b> Ini analogi sifat paling dasar. Jangan berfikir terlalu rumit." },
+            { q: "50. ANALOGI: KAMERA : FOTO = PRINTER : ...", o: ["Kertas", "Tinta", "Dokumen", "Mengetik"], a: 2, h: "<b>Hubungan Pasangan 1:</b> Alat KAMERA menghasilkan output berupa FOTO (Alat : Hasil Produk).<br><b>Analisis:</b> Alat PRINTER menghasilkan output berupa DOKUMEN/Cetakan. Kertas dan Tinta adalah bahannya.<br><b>Tips:</b> Fokus pada produk akhir yang dihasilkan oleh mesin tersebut." },
+
+            // D. KLASIFIKASI KATA (51-60)
+            { q: "51. KLASIFIKASI: Manakah kata yang TIDAK termasuk dalam kelompoknya?", o: ["Apel", "Jeruk", "Bayam", "Pisang"], a: 2, h: "<b>Kategori Utama:</b> Nama-nama Buah.<br><b>Analisis:</b> Apel, Jeruk, dan Pisang adalah buah-buahan. Bayam berbeda sendiri karena masuk kategori sayur-sayuran.<br><b>Tips:</b> Kelompokkan berdasarkan jenis pangan biologisnya." },
+            { q: "52. KLASIFIKASI: Pilihlah kata yang memiliki perbedaan kategori!", o: ["Mobil", "Motor", "Bus", "Pesawat"], a: 3, h: "<b>Kategori Utama:</b> Transportasi Darat.<br><b>Analisis:</b> Mobil, Motor, dan Bus beroperasi di darat (jalan raya). Pesawat beroperasi di udara, sehingga berbeda kategori.<br><b>Tips:</b> Perhatikan tempat beroperasinya (Darat, Air, Udara)." },
+            { q: "53. KLASIFIKASI: Kata mana yang berbeda dari ketiga kata lainnya?", o: ["Buku", "Majalah", "Koran", "Sepatu"], a: 3, h: "<b>Kategori Utama:</b> Media Cetak / Bacaan.<br><b>Analisis:</b> Buku, Majalah, dan Koran ditujukan untuk dibaca. Sepatu adalah benda sandang/aksesoris pakaian.<br><b>Tips:</b> Kelompokkan berdasarkan fungsi dasar bendanya (untuk dibaca vs untuk dipakai)." },
+            { q: "54. KLASIFIKASI: Tentukan kata yang tidak sekelompok!", o: ["Merah", "Kuning", "Cerah", "Hijau"], a: 2, h: "<b>Kategori Utama:</b> Nama-nama Warna.<br><b>Analisis:</b> Merah, Kuning, dan Hijau adalah nama spesifik sebuah warna. Cerah adalah sifat/intensitas cahaya, bukan nama warna khusus.<br><b>Tips:</b> Jangan terkecoh dengan kata sifat yang berhubungan dengan visual (seperti cerah/gelap)." },
+            { q: "55. KLASIFIKASI: Mana yang TIDAK setipe dengan yang lain?", o: ["Kucing", "Anjing", "Harimau", "Hiu"], a: 3, h: "<b>Kategori Utama:</b> Hewan Mamalia Darat.<br><b>Analisis:</b> Kucing, Anjing, dan Harimau hidup di darat berkaki empat. Hiu hidup di air laut (ikan bertulang rawan).<br><b>Tips:</b> Kelompokkan hewan berdasarkan habitatnya atau klasifikasi biologisnya (darat vs air)." },
+            { q: "56. KLASIFIKASI: Kata mana yang berbeda cara kerjanya?", o: ["Gitar", "Biola", "Kecapi", "Suling"], a: 3, h: "<b>Kategori Utama:</b> Alat Musik Berdawai/Senar.<br><b>Analisis:</b> Gitar, Biola, dan Kecapi dimainkan dengan memanfaatkan getaran senar (dipetik/digesek). Suling berbeda karena dimainkan dengan cara ditiup.<br><b>Tips:</b> Untuk alat musik, bedakan berdasarkan cara memainkannya (tiup, petik, pukul, gesek)." },
+            { q: "57. KLASIFIKASI: Tentukan benda yang beda fungsinya!", o: ["Meja", "Kursi", "Lemari", "Piring"], a: 3, h: "<b>Kategori Utama:</b> Perabotan/Mebel (Furniture).<br><b>Analisis:</b> Meja, Kursi, dan Lemari tergolong mebel ruangan. Piring adalah alat makan (pecah belah).<br><b>Tips:</b> Perhatikan kategori di toko. Piring berada di bagian alat dapur, mebel di bagian ruang tamu/kamar." },
+            { q: "58. KLASIFIKASI: Manakah kata yang sifatnya tidak sama dengan yang lain?", o: ["Sedih", "Gembira", "Marah", "Berlari"], a: 3, h: "<b>Kategori Utama:</b> Kata Sifat / Emosi.<br><b>Analisis:</b> Sedih, Gembira, dan Marah adalah perasaan/emosi (abstrak). Berlari adalah kata kerja tindakan fisik yang nyata.<br><b>Tips:</b> Pisahkan antara perasaan (di dalam hati) dan tindakan fisik badan." },
+            { q: "59. KLASIFIKASI: Pilihlah organ yang berada pada kelompok berbeda!", o: ["Mata", "Hidung", "Telinga", "Jantung"], a: 3, h: "<b>Kategori Utama:</b> Organ Panca Indera Luar.<br><b>Analisis:</b> Mata, Hidung, dan Telinga terletak di wajah luar untuk mengindra lingkungan luar. Jantung adalah organ vital dalam tubuh yang tidak berinteraksi langsung dengan luar.<br><b>Tips:</b> Pisahkan antara organ luar (tampak) dan organ dalam (tidak tampak)." },
+            { q: "60. KLASIFIKASI: Kata mana yang berbeda secara sumber bahan?", o: ["Beras", "Gandum", "Jagung", "Daging"], a: 3, h: "<b>Kategori Utama:</b> Bahan Pangan Nabati (Tumbuhan).<br><b>Analisis:</b> Beras, Gandum, dan Jagung adalah karbohidrat pokok yang berasal dari tumbuhan. Daging berasal dari hewan (protein hewani).<br><b>Tips:</b> Kelompokkan berdasarkan asal organisme: Nabati (tanaman) vs Hewani (binatang)." },
+
+            // E. MELENGKAPI KALIMAT (61-70)
+            { q: "61. KALIMAT: Anak yang rajin belajar biasanya akan mendapatkan nilai yang ....", o: ["Buruk", "Baik", "Jelek", "Biasa"], a: 1, h: "<b>Konteks Kalimat:</b> Hubungan sebab-akibat yang positif.<br><b>Analisis:</b> 'Rajin belajar' (sebab positif) akan menghasilkan akibat yang positif pula. Kata yang tepat adalah 'Baik'.<br><b>Tips:</b> Lihat kata kunci 'rajin'. Sesuatu yang rajin bernilai positif." },
+            { q: "62. KALIMAT: Karena cuaca sangat panas, Budi merasa sangat .... sehingga ia banyak minum air.", o: ["Kedinginan", "Haus", "Lapar", "Kenyang"], a: 1, h: "<b>Konteks Kalimat:</b> Dampak cuaca panas dan solusi 'minum air'.<br><b>Analisis:</b> Cuaca panas menyebabkan cairan tubuh berkurang. Tindakan 'banyak minum air' mengonfirmasi bahwa Budi merasa 'Haus'.<br><b>Tips:</b> Cari kata kunci solusi (minum air), yang menandakan kondisi haus." },
+            { q: "63. KALIMAT: Obat keras tersebut hanya boleh dibeli di apotek dengan .... dokter.", o: ["Perintah", "Kwitansi", "Resep", "Izin"], a: 2, h: "<b>Konteks Kalimat:</b> Prosedur legal pembelian obat di apotek.<br><b>Analisis:</b> Istilah medis untuk dokumen tertulis dari dokter yang digunakan menebus obat adalah 'Resep'. Izin dan perintah terlalu umum.<br><b>Tips:</b> Gunakan istilah khusus yang lazim digunakan dalam bidang terkait (kesehatan/farmasi)." },
+            { q: "64. KALIMAT: Meskipun timnya kalah telak dalam pertandingan itu, sang kapten tetap berjiwa .... dengan menyalami lawan.", o: ["Besar", "Kecil", "Keras", "Muda"], a: 0, h: "<b>Konteks Kalimat:</b> Sikap sportif menerima kekalahan.<br><b>Analisis:</b> Idiom 'berjiwa besar' berarti sabar, lapang dada, dan sportif menerima kenyataan yang tidak mengenakkan.<br><b>Tips:</b> Pahami idiom bahasa Indonesia. Berjiwa besar = sportif/lapang dada." },
+            { q: "65. KALIMAT: Untuk mencapai kesuksesan yang diimpikan, dibutuhkan kerja keras dan sikap pantang ....", o: ["Mundur", "Menyerah", "Berhenti", "Pulang"], a: 1, h: "<b>Konteks Kalimat:</b> Syarat sikap mental untuk sukses.<br><b>Analisis:</b> Ungkapan baku dalam bahasa Indonesia adalah 'pantang menyerah', yang berarti tidak mudah putus asa.<br><b>Tips:</b> Idiom 'pantang menyerah' adalah pasangan kata majemuk yang baku." },
+            { q: "66. KALIMAT: Para relawan PMI mendistribusikan .... berupa makanan dan selimut kepada korban gempa bumi.", o: ["Bantuan", "Tugas", "Uang", "Pakaian"], a: 0, h: "<b>Konteks Kalimat:</b> Kegiatan menolong korban bencana.<br><b>Analisis:</b> 'Makanan dan selimut' dikategorikan sebagai 'Bantuan' secara umum. Uang dan pakaian tidak mencakup makanan, sehingga kurang tepat menjadi kategori payung.<br><b>Tips:</b> Pilih kata yang maknanya dapat merangkum benda-benda yang disebutkan (makanan & selimut)." },
+            { q: "67. KALIMAT: Tumbuhan hijau memerlukan air dan .... untuk melakukan proses fotosintesis.", o: ["Bulan", "Cahaya matahari", "Batu", "Hewan"], a: 1, h: "<b>Konteks Kalimat:</b> Syarat biologis fotosintesis tumbuhan.<br><b>Analisis:</b> Fotosintesis (foto = cahaya) mutlak membutuhkan energi dari Cahaya matahari.<br><b>Tips:</b> Gunakan pengetahuan umum sains dasar. Tumbuhan butuh air dan cahaya." },
+            { q: "68. KALIMAT: Setiap pengemudi kendaraan wajib mematuhi .... lalu lintas demi keselamatan bersama di jalan raya.", o: ["Lampu", "Rambu", "Polisi", "Marka"], a: 1, h: "<b>Konteks Kalimat:</b> Aturan tertulis/visual di jalan raya.<br><b>Analisis:</b> 'Rambu lalu lintas' adalah istilah baku yang mencakup lampu lalu lintas, tanda larangan, dsb. 'Rambu' lebih komprehensif.<br><b>Tips:</b> Gunakan frasa yang paling lazim dan mencakup aturan luas, yaitu 'rambu lalu lintas'." },
+            { q: "69. KALIMAT: Gedung perpustakaan kota dirancang senyaman mungkin karena merupakan tempat yang tepat untuk membaca ....", o: ["Majalah", "Buku", "Situasi", "Pikiran"], a: 1, h: "<b>Konteks Kalimat:</b> Fungsi utama perpustakaan.<br><b>Analisis:</b> Benda utama yang diasosiasikan dengan perpustakaan adalah 'Buku'. 'Membaca situasi/pikiran' adalah majas yang tidak sesuai konteks gedung fisik.<br><b>Tips:</b> Analisis berdasarkan tempat (perpustakaan) dan kegiatan inti (membaca buku)." },
+            { q: "70. KALIMAT: Karena tidur terlalu larut malam, Andi bangun kesiangan sehingga ia .... tiba di sekolah.", o: ["Lebih cepat", "Terlambat", "Tepat waktu", "Bolos"], a: 1, h: "<b>Konteks Kalimat:</b> Akibat dari bangun kesiangan.<br><b>Analisis:</b> Bangun kesiangan otomatis membuat waktu perjalanan berkurang, yang berakibat 'Terlambat' sampai tujuan.<br><b>Tips:</b> Pahami urutan sebab (tidur larut) -> akibat (bangun siang) -> dampak akhir (terlambat)." },
+
+            // F. PEMAHAMAN WACANA (71-80)
+            { q: "71. WACANA 1:<br><i>Hutan memiliki peran penting dalam menjaga keseimbangan ekosistem bumi. Pohon-pohon menyerap karbon dioksida dan menghasilkan oksigen. Selain itu, hutan juga mencegah banjir dan tanah longsor.</i><br><br>Ide pokok dari teks di atas adalah...", o: ["Bahaya karbon dioksida", "Cara mencegah tanah longsor", "Pentingnya peran hutan", "Proses menghasilkan oksigen"], a: 2, h: "<b>Informasi Teks:</b> Teks menjelaskan manfaat hutan seperti menyerap CO2, menghasilkan oksigen, dan mencegah bencana.<br><b>Analisis:</b> Kalimat pertama 'Hutan memiliki peran penting...' adalah gagasan utamanya (ide pokok). Kalimat lainnya adalah penjelas.<br><b>Tips:</b> Ide pokok seringkali berada pada kalimat pertama atau merangkum seluruh isi paragraf." },
+            { q: "72. WACANA 1 (Lanjutan):<br>Berdasarkan teks, zat yang diserap oleh pohon-pohon di hutan adalah...", o: ["Air hujan", "Oksigen", "Karbon dioksida", "Tanah longsor"], a: 2, h: "<b>Informasi Teks:</b> Kalimat kedua menyatakan 'Pohon-pohon menyerap karbon dioksida dan menghasilkan oksigen.'<br><b>Analisis:</b> Jawaban secara eksplisit (tersurat) tertulis jelas pada teks, yaitu 'Karbon dioksida'.<br><b>Tips:</b> Jangan tertukar antara yang diserap (CO2) dengan yang dihasilkan (Oksigen)." },
+            { q: "73. WACANA 2:<br><i>Bersepeda secara rutin dapat meningkatkan kesehatan organ jantung dan paru-paru. Olahraga ini juga sangat direkomendasikan karena ramah lingkungan, tidak menggunakan bahan bakar minyak yang menyebabkan polusi udara.</i><br><br>Apa manfaat utama bersepeda bagi tubuh berdasarkan teks?", o: ["Mengurangi polusi udara", "Meningkatkan kesehatan jantung dan paru-paru", "Menghemat bahan bakar minyak", "Menjaga kebersihan lingkungan"], a: 1, h: "<b>Informasi Teks:</b> Teks menyebutkan dua jenis manfaat: bagi kesehatan tubuh dan bagi lingkungan.<br><b>Analisis:</b> Pertanyaan menanyakan manfaat spesifik 'bagi tubuh'. Maka jawabannya adalah meningkatkan kesehatan jantung dan paru-paru.<br><b>Tips:</b> Selalu perhatikan batasan dalam pertanyaan. Mengurangi polusi memang benar, tapi itu manfaat bagi lingkungan, bukan tubuh." },
+            { q: "74. WACANA 2 (Lanjutan):<br>Mengapa bersepeda disebut sebagai olahraga yang ramah lingkungan?", o: ["Karena dilakukan di taman terbuka", "Karena tidak menghasilkan keringat berlebih", "Karena sepeda terbuat dari bahan daur ulang", "Karena tidak menyebabkan polusi udara"], a: 3, h: "<b>Informasi Teks:</b> Kalimat kedua menjelaskan: '...ramah lingkungan, tidak menggunakan bahan bakar minyak yang menyebabkan polusi udara.'<br><b>Analisis:</b> Jawaban yang paling sesuai dengan teks adalah karena tidak menyebabkan polusi udara.<br><b>Tips:</b> Jangan memasukkan informasi atau opini dari luar teks. Gunakan hanya alasan yang tertulis." },
+            { q: "75. WACANA 3:<br><i>Sarapan sangat penting untuk memberikan energi awal bagi tubuh setelah berpuasa semalaman saat tidur. Orang yang melewatkan sarapan cenderung lebih sulit berkonsentrasi saat belajar atau bekerja di pagi hari.</i><br><br>Akibat langsung dari melewatkan sarapan menurut teks adalah...", o: ["Tubuh menjadi lebih kurus", "Sulit tidur di malam hari", "Sulit berkonsentrasi", "Penyakit lambung"], a: 2, h: "<b>Informasi Teks:</b> Kalimat kedua berbunyi: 'Orang yang melewatkan sarapan cenderung lebih sulit berkonsentrasi...'<br><b>Analisis:</b> Teks tidak membahas berat badan, pola tidur, atau sakit lambung. Jawaban eksplisit adalah 'sulit berkonsentrasi'.<br><b>Tips:</b> Temukan kata kunci pada soal (akibat melewatkan sarapan), lalu cari kata tersebut di dalam teks." },
+            { q: "76. WACANA 3 (Lanjutan):<br>Menurut wacana tersebut, apa fungsi utama dari sarapan?", o: ["Memberikan energi awal bagi tubuh", "Mencegah rasa haus", "Mengisi waktu luang di pagi hari", "Sebagai syarat untuk bekerja"], a: 0, h: "<b>Informasi Teks:</b> Kalimat pertama menyebutkan 'Sarapan sangat penting untuk memberikan energi awal bagi tubuh...'<br><b>Analisis:</b> Pilihan 'Memberikan energi awal bagi tubuh' menyalin fakta persis seperti teks.<br><b>Tips:</b> Fakta dasar dalam teks pendek biasanya terletak di awal kalimat sebelum penjelasan dampaknya." },
+            { q: "77. WACANA 4:<br><i>Indonesia memiliki keanekaragaman hayati yang sangat tinggi di dunia. Banyak spesies flora dan fauna endemik yang hanya bisa ditemukan hidup alami di negara ini, misalnya Komodo dan Bunga Rafflesia.</i><br><br>Berdasarkan konteks kalimat, kata 'endemik' memiliki arti...", o: ["Berbahaya bagi manusia", "Hanya terdapat di wilayah tertentu (khas)", "Mudah dikembangbiakkan", "Berasal dari luar negeri"], a: 1, h: "<b>Informasi Teks:</b> Teks memberi petunjuk konteks untuk kata endemik, yaitu: 'yang hanya bisa ditemukan hidup alami di negara ini'.<br><b>Analisis:</b> Ini menjelaskan bahwa endemik bermakna spesies tersebut bersifat khas atau terbatas penyebarannya di wilayah tertentu saja.<br><b>Tips:</b> Makna kata seringkali dijelaskan secara tidak langsung oleh kalimat yang mengikutinya." },
+            { q: "78. WACANA 4 (Lanjutan):<br>Informasi apa yang secara eksplisit (tersurat) disampaikan dalam paragraf tersebut?", o: ["Indonesia kurang menjaga kekayaan alamnya", "Keanekaragaman hayati Indonesia sangat tinggi", "Komodo terancam punah di habitatnya", "Bunga Rafflesia bisa ditanam di rumah"], a: 1, h: "<b>Informasi Teks:</b> Kalimat pertama menyatakan dengan jelas: 'Indonesia memiliki keanekaragaman hayati yang sangat tinggi di dunia.'<br><b>Analisis:</b> Pilihan lain tidak disebutkan sama sekali di dalam wacana. Eksplisit artinya langsung tertulis secara huruf.<br><b>Tips:</b> Hindari pilihan yang sifatnya opini atau menebak-nebak kondisi di luar teks." },
+            { q: "79. WACANA 5:<br><i>Membaca buku fiksi ternyata tidak sekadar memberi hiburan semata. Selain itu, membaca karya fiksi terbukti secara psikologis mampu melatih kemampuan empati, karena pembaca diajak merasakan sudut pandang tokoh dalam cerita.</i><br><br>Selain menghibur, manfaat apa lagi yang didapat dari membaca buku fiksi?", o: ["Mempelajari sejarah dunia", "Mendapatkan uang", "Melatih kemampuan empati", "Meningkatkan kemampuan matematika"], a: 2, h: "<b>Informasi Teks:</b> '...membaca karya fiksi terbukti secara psikologis mampu melatih kemampuan empati...'<br><b>Analisis:</b> Teks dengan jelas menyoroti 'melatih kemampuan empati' sebagai manfaat kedua. Opsi lain tidak relevan.<br><b>Tips:</b> Cari kata penghubung tambahan (Selain itu...) untuk menemukan manfaat kedua." },
+            { q: "80. WACANA 5 (Lanjutan):<br>Bagaimana cara buku fiksi melatih empati menurut teks tersebut?", o: ["Melalui pembelian buku di toko", "Dengan memaksa otak menghafal nama tokoh", "Mengajak pembaca merasakan sudut pandang tokoh cerita", "Dengan memecahkan teka-teki misteri di buku"], a: 2, h: "<b>Informasi Teks:</b> '...karena pembaca diajak merasakan sudut pandang tokoh dalam cerita.'<br><b>Analisis:</b> Kata 'karena' dalam teks merupakan jawaban atas pertanyaan 'bagaimana/mengapa'. Jawabannya tertulis eksplisit.<br><b>Tips:</b> Pertanyaan 'bagaimana' atau 'mengapa' biasanya dijawab oleh klausa setelah kata sambung 'karena' atau 'sebab'." },
+
+            // G. PENALARAN VERBAL (81-90)
+            { q: "81. PENALARAN: Jika saklar dinyalakan, maka lampu menyala dan ruangan menjadi terang. Saat ini, ruangan sedang gelap gulita.<br>Kesimpulan logisnya adalah...", o: ["Lampu rusak", "Saklar tidak dinyalakan (mati)", "Listrik sedang padam", "Ruangan tidak memiliki lampu"], a: 1, h: "<b>Proses Berpikir:</b> Hukum Modus Tollens. Jika A (saklar nyala), maka B (ruang terang). Kondisi saat ini: tidak B (ruang gelap). Kesimpulan: Pasti tidak A (saklar tidak nyala).<br><b>Analisis:</b> Meskipun lampu rusak atau mati lampu bisa benar di dunia nyata, dalam penalaran logis ketat kita HANYA boleh berpatokan pada premis yang diberikan.<br><b>Tips:</b> Jangan membawa asumsi dari luar (seperti konslet/mati lampu) ke dalam logika dasar." },
+            { q: "82. PENALARAN: Andi lebih tinggi dari Budi. Budi lebih tinggi dari Cici. Siapakah yang memiliki tinggi badan paling pendek?", o: ["Andi", "Budi", "Cici", "Tidak dapat ditentukan"], a: 2, h: "<b>Proses Berpikir:</b> Susun urutan dari yang paling tinggi ke yang terpendek.<br>Pernyataan 1: Andi > Budi.<br>Pernyataan 2: Budi > Cici.<br>Gabungan: Andi > Budi > Cici.<br><b>Analisis:</b> Posisi terbawah dalam deret tersebut adalah Cici, maka ia paling pendek.<br><b>Tips:</b> Gunakan simbol matematika 'Lebih dari (>)' di kertas coretan untuk memudahkan urutan." },
+            { q: "83. PENALARAN: Jika hujan deras melanda, maka jalanan protokol menjadi macet. Sore ini hujan turun dengan deras.<br>Kesimpulan yang pasti adalah...", o: ["Banyak kecelakaan mobil", "Jalanan protokol lancar", "Jalanan protokol macet", "Orang-orang berteduh"], a: 2, h: "<b>Proses Berpikir:</b> Hukum Modus Ponens. Jika P, maka Q. Terjadi P (hujan deras). Maka pasti terjadi Q (jalanan protokol macet).<br><b>Analisis:</b> Karena syarat pertama (hujan deras) terpenuhi, maka akibatnya pasti mengikuti.<br><b>Tips:</b> Ini penalaran sebab-akibat langsung paling sederhana." },
+            { q: "84. PENALARAN: Logam besi akan memuai jika dipanaskan dengan suhu tinggi. Sebatang logam besi A bentuknya tidak memuai sama sekali.<br>Kesimpulannya adalah...", o: ["Logam besi A palsu", "Logam besi A dibekukan", "Logam besi A dipanaskan dengan suhu rendah", "Logam besi A tidak dipanaskan dengan suhu tinggi"], a: 3, h: "<b>Proses Berpikir:</b> Modus Tollens. Jika P (panas suhu tinggi), maka Q (memuai). Faktanya adalah tidak Q (tidak memuai). Maka kesimpulannya tidak P.<br><b>Analisis:</b> Besi A 'tidak dipanaskan dengan suhu tinggi'.<br><b>Tips:</b> Negasikan/lawankan kondisi syaratnya jika akibatnya tidak terjadi." },
+            { q: "85. PENALARAN: Dina rutin pergi berenang setiap hari Minggu. Hari ini Dina pergi berenang.<br>Kesimpulannya...", o: ["Hari ini pasti hari Minggu", "Dina menyukai olahraga renang", "Hari ini mungkin hari Minggu", "Dina atlet renang"], a: 2, h: "<b>Proses Berpikir:</b> Awas jebakan. Jika hari Minggu -> Dina berenang. Hari ini Dina berenang. Apakah pasti hari Minggu?<br><b>Analisis:</b> Belum tentu! Dina bisa saja berenang juga di hari Senin atau Selasa. Premis hanya mewajibkan dia berenang di hari Minggu, namun tidak melarang dia berenang di hari lain. Kesimpulannya, hari ini 'mungkin' hari Minggu.<br><b>Tips:</b> 'Jika P maka Q' tidak sama dengan 'Jika Q maka P' (Kesalahan Menegaskan Akibat/Fallacy of Affirming the Consequent)." },
+            { q: "86. PENALARAN: Budi berlari lebih cepat daripada Iwan, namun Budi berlari lebih lambat daripada Rio.<br>Siapakah yang berlari paling cepat?", o: ["Budi", "Iwan", "Rio", "Budi dan Rio seimbang"], a: 2, h: "<b>Proses Berpikir:</b> Susun urutan kecepatan lari.<br>Fakta 1: Budi > Iwan.<br>Fakta 2: Rio > Budi (karena Budi lebih lambat dari Rio).<br>Urutan utuh: Rio > Budi > Iwan.<br><b>Analisis:</b> Rio berada di urutan teratas, sehingga ia yang tercepat.<br><b>Tips:</b> Selalu konversi kalimat perbandingan (lebih lambat) menjadi posisi hierarki untuk visualisasi." },
+            { q: "87. PENALARAN: Sebuah toko memberikan bonus piring cantik jika pembeli belanja lebih dari Rp500.000. Ibu berbelanja senilai Rp250.000.<br>Kesimpulannya adalah...", o: ["Ibu mendapat piring cantik", "Ibu harus membayar Rp500.000", "Ibu tidak mendapat piring cantik", "Toko kehabisan piring cantik"], a: 2, h: "<b>Proses Berpikir:</b> Syarat dapat bonus (Q) adalah nilai belanja > 500rb (P). Fakta: Belanja Ibu (250rb) < 500rb (Tidak P).<br><b>Analisis:</b> Karena syarat batas minimal tidak terpenuhi, maka Ibu otomatis 'tidak mendapat piring cantik' (Tidak Q).<br><b>Tips:</b> Cek angka batas syaratnya dengan angka realitas yang terjadi." },
+            { q: "88. PENALARAN: Mobil jenis SUV harganya lebih mahal dari sedan. Mobil sedan harganya lebih mahal dari mobil LCGC.<br>Kesimpulan yang benar adalah...", o: ["Mobil LCGC lebih mahal dari SUV", "Mobil SUV harganya lebih murah dari sedan", "Mobil SUV lebih mahal dari mobil LCGC", "Harga mobil Sedan dan LCGC sama"], a: 2, h: "<b>Proses Berpikir:</b> Transitivitas matematika. Jika A > B, dan B > C, maka pasti A > C.<br><b>Analisis:</b> SUV > Sedan, dan Sedan > LCGC. Maka SUV > LCGC (SUV lebih mahal dari LCGC).<br><b>Tips:</b> Sifat hierarki selalu berlanjut dari atas sampai elemen terbawah." },
+            { q: "89. PENALARAN: Jika jalanan licin karena es, maka pengendara harus berhati-hati. Pagi ini pengendara sepeda motor melaju dengan sangat ugal-ugalan dan tidak berhati-hati.<br>Kesimpulannya adalah...", o: ["Jalanan licin karena es", "Jalanan tidak licin karena es", "Polisi menilang pengendara", "Terjadi kecelakaan"], a: 1, h: "<b>Proses Berpikir:</b> Aturan Modus Tollens lagi. Jika Licin (P), wajib Hati-hati (Q). Kenyataannya pengemudi Tidak Hati-hati (Tidak Q).<br><b>Analisis:</b> Artinya syarat pertama batal/tidak terjadi, yaitu 'Jalanan tidak licin karena es'. (Seandainya licin, logikanya dia akan berhati-hati sesuai aturan premis).<br><b>Tips:</b> Jangan memilih jawaban emosional seperti 'Terjadi kecelakaan' jika tidak ada di premis awal." },
+            { q: "90. PENALARAN: Semua kue buatan Ibu rasanya manis. Kue bolu cokelat ini rasanya pahit dan getir.<br>Kesimpulan yang tepat adalah...", o: ["Ibu gagal membuat kue bolu", "Kue bolu cokelat ini bukan buatan Ibu", "Kue buatan ibu sebagian pahit", "Kue bolu cokelat bahan dasarnya rusak"], a: 1, h: "<b>Proses Berpikir:</b> Syarat mutlak (Semua): Buatan Ibu (P) pasti Manis (Q). Kenyataannya kue X ini Pahit (Tidak Q).<br><b>Analisis:</b> Karena sifat mutlak 'manis' tidak ada, dipastikan kue tersebut 'bukan buatan Ibu'.<br><b>Tips:</b> Jika ada kata 'Semua', itu berarti tidak ada pengecualian (100% berlaku)." },
+
+            // H. SILOGISME VERBAL (91-100)
+            { q: "91. SILOGISME: Premis 1: Semua siswa sekolah dasar wajib memakai seragam merah putih.<br>Premis 2: Budi adalah siswa sekolah dasar.<br>Kesimpulan...", o: ["Budi tidak suka memakai seragam", "Budi mungkin memakai seragam merah putih", "Budi wajib memakai seragam merah putih", "Budi wajib memakai seragam pramuka"], a: 2, h: "<b>Premis:</b> Subjek himpunan besar = Semua siswa SD. Syarat mutlak = wajib seragam merah putih. Budi adalah anggota himpunan siswa SD.<br><b>Analisis:</b> Karena Budi tergabung utuh dalam kelompok tersebut, ia pasti terkena syarat yang sama, yaitu wajib memakai seragam merah putih.<br><b>Tips:</b> Format Silogisme Kategorik Dasar (Semua A adalah B. C adalah A. Maka C adalah B)." },
+            { q: "92. SILOGISME: Premis 1: Tidak ada manusia yang bisa hidup abadi.<br>Premis 2: Aristoteles adalah seorang manusia.<br>Kesimpulan...", o: ["Aristoteles bisa hidup abadi", "Aristoteles tidak bisa hidup abadi", "Aristoteles adalah dewa", "Aristoteles mungkin abadi"], a: 1, h: "<b>Premis:</b> Himpunan besar 'manusia' memiliki sifat mutlak 'tidak abadi' (negatif). Aristoteles masuk kelompok manusia.<br><b>Analisis:</b> Ia harus mewarisi sifat kelompoknya, yaitu 'tidak bisa hidup abadi'.<br><b>Tips:</b> Jika premis utama bersifat negatif mutlak ('Tidak ada...'), maka kesimpulannya harus bermakna negatif mutlak." },
+            { q: "93. SILOGISME: Premis 1: Sebagian karyawan mengambil cuti di akhir tahun.<br>Premis 2: Pak Andi adalah karyawan.<br>Kesimpulan...", o: ["Pak Andi pasti mengambil cuti akhir tahun", "Pak Andi tidak mengambil cuti akhir tahun", "Pak Andi mungkin mengambil cuti akhir tahun", "Semua karyawan mengambil cuti bersama Pak Andi"], a: 2, h: "<b>Premis:</b> Kata 'Sebagian' berarti peluang/tidak 100%. Pak Andi masuk ke himpunan karyawan.<br><b>Analisis:</b> Karena aturannya tidak mengikat 100% ('Sebagian' karyawan), kita tidak tahu pasti apakah Pak Andi masuk kelompok sebagian yang cuti, atau sebagian yang tidak. Oleh karenanya, kesimpulan paling logis adalah kata peluang, yaitu 'mungkin' mengambil cuti.<br><b>Tips:</b> Jika himpunannya 'Sebagian/Beberapa', kesimpulan spesifik individu menjadi 'mungkin/belum pasti'." },
+            { q: "94. SILOGISME: Premis 1: Semua hewan mamalia bernapas dengan paru-paru.<br>Premis 2: Kucing adalah hewan mamalia.<br>Kesimpulan...", o: ["Kucing bernapas dengan insang", "Sebagian kucing bernapas dengan paru-paru", "Kucing mungkin bernapas dengan paru-paru", "Kucing bernapas dengan paru-paru"], a: 3, h: "<b>Premis:</b> Himpunan A (Mamalia) = Sifat B (Paru-paru). Individu C (Kucing) = Himpunan A.<br><b>Analisis:</b> Kesimpulan mutlak Individu C memiliki Sifat B. Jadi, Kucing pasti bernapas dengan paru-paru.<br><b>Tips:</b> Hindari opsi berawalan 'sebagian/mungkin' jika kedua premis bersifat pasti (Semua dan Fakta Individu)." },
+            { q: "95. SILOGISME: Premis 1: Sebagian murid rajin membaca.<br>Premis 2: Semua murid yang rajin membaca memiliki wawasan luas.<br>Kesimpulan...", o: ["Semua murid memiliki wawasan luas", "Sebagian murid memiliki wawasan luas", "Tidak ada murid yang berwawasan luas", "Semua murid rajin membaca"], a: 1, h: "<b>Premis:</b> Kelompok (Sebagian murid) -> (Rajin membaca). Aturan mutlak -> Yang rajin pasti (Wawasan luas).<br><b>Analisis:</b> Menggabungkan keduanya menghasilkan: Sebagian murid tersebut memiliki wawasan luas.<br><b>Tips:</b> Jika premis mayor menggunakan 'Sebagian' dan premis minor 'Semua', maka kesimpulan gabungannya harus diturunkan derajatnya menjadi 'Sebagian'." },
+            { q: "96. SILOGISME: Premis 1: Semua peserta seminar menerima sertifikat.<br>Premis 2: Sebagian mahasiswa adalah peserta seminar.<br>Kesimpulan...", o: ["Semua mahasiswa menerima sertifikat", "Tidak ada mahasiswa yang menerima sertifikat", "Sebagian mahasiswa menerima sertifikat", "Sertifikat hanya untuk mahasiswa"], a: 2, h: "<b>Premis:</b> (Semua peserta seminar) = (Dapat sertifikat). (Sebagian mahasiswa) = (Peserta seminar).<br><b>Analisis:</b> Hanya sebagian mahasiswa yang ikut seminar, maka hanya sebagian mahasiswa itulah yang menerima sertifikat.<br><b>Tips:</b> Tarik irisan antara kelompok 'mahasiswa' dan 'peserta seminar', lalu berikan sifatnya pada irisan tersebut (sebagian)." },
+            { q: "97. SILOGISME: Premis 1: Semua kendaraan bermotor di jalan raya wajib memiliki plat nomor.<br>Premis 2: Sepeda balap milik Tono tidak memiliki plat nomor.<br>Kesimpulan...", o: ["Sepeda balap Tono ditilang polisi", "Sepeda balap Tono bukan kendaraan bermotor", "Sepeda balap Tono hilang", "Sepeda balap Tono wajib masuk garasi"], a: 1, h: "<b>Premis:</b> Syarat mutlak Kendaraan bermotor (P) = Plat nomor (Q). Fakta sepeda Tono = Tidak punya plat nomor (Tidak Q).<br><b>Analisis:</b> Modus Tollens (Silogisme Hipotetis), sehingga disimpulkan sepedanya (Tidak P) alias bukan kendaraan bermotor.<br><b>Tips:</b> Jika individu tidak memenuhi ciri mutlak sebuah kategori, berarti individu itu bukan bagian dari kategori tersebut." },
+            { q: "98. SILOGISME: Premis 1: Tidak ada pejabat yang kebal hukum.<br>Premis 2: Pak Broto adalah seorang pejabat tinggi.<br>Kesimpulan...", o: ["Pak Broto kebal terhadap hukum", "Pak Broto tidak kebal hukum", "Pak Broto mungkin kebal hukum", "Hukum kebal terhadap Pak Broto"], a: 1, h: "<b>Premis:</b> Aturan universal negatif: 'Tidak ada' pejabat = kebal hukum. Pak Broto terikat dalam kelompok 'pejabat'.<br><b>Analisis:</b> Pak Broto pasti terikat aturan universal tersebut, sehingga ia pasti 'tidak kebal hukum'.<br><b>Tips:</b> Jabatan struktural (tinggi, rendah) tidak menganulir kategori awal (pejabat), sifat universalnya tetap berlaku utuh." },
+            { q: "99. SILOGISME: Premis 1: Semua koruptor merugikan keuangan negara.<br>Premis 2: Sebagian aparat pemerintahan terbukti sebagai koruptor.<br>Kesimpulan...", o: ["Semua aparat pemerintahan merugikan keuangan negara", "Sebagian aparat pemerintahan merugikan keuangan negara", "Tidak ada koruptor yang menjadi aparat pemerintahan", "Sebagian koruptor adalah orang baik"], a: 1, h: "<b>Premis:</b> (Koruptor) = mutlak (Merugikan negara). (Sebagian aparat) = (Koruptor).<br><b>Analisis:</b> Karena hanya sebagian aparat yang koruptor, maka merekalah ('Sebagian aparat') yang terbukti merugikan keuangan negara.<br><b>Tips:</b> Jika salah satu premis menggunakan 'sebagian/beberapa', kesimpulan akhirnya wajib diawali dengan kata 'sebagian/beberapa'." },
+            { q: "100. SILOGISME: Premis 1: Jika cuaca cerah di hari libur, keluarga Dodi pergi ke pantai.<br>Premis 2: Jika keluarga Dodi pergi ke pantai, mereka membawa bekal piknik.<br>Kesimpulan...", o: ["Jika cuaca cerah di hari libur, mereka membawa bekal piknik", "Jika cuaca buruk, mereka tidak makan siang", "Jika cuaca cerah, keluarga Dodi berteduh", "Keluarga Dodi selalu membawa bekal piknik setiap hari"], a: 0, h: "<b>Premis:</b> Silogisme berantai (Silogisme Hipotesis Murni). Jika A maka B. Jika B maka C.<br><b>Analisis:</b> Rantai logikanya ditarik langsung dari ujung ke ujung, sehingga disimpulkan: Jika A maka C (Jika cuaca cerah di hari libur, mereka membawa bekal piknik).<br><b>Tips:</b> Hapus bagian yang menjadi penghubung di tengah (yaitu: keluarga Dodi pergi ke pantai), sambungkan kondisi awal dengan akibat akhir." }
+        ];
+
+        // Logika Pengendali Aplikasi HTML Kuis
+        let currentIdx = 0;
+        let userAns = new Array(bank.length).fill(null);
+        let sisaWaktu = 45 * 60; // Set durasi ujian 45 menit
+        let timerId = null;
+
+        window.startUjian = function() {
+            // [Protokol Keamanan]: Pengecekan Expiration Date.
+            const expDate = new Date("2026-12-31");
+            const now = new Date();
+            if(now > expDate) {
+                alert("Akses Evaluasi Kecerdasan telah kedaluwarsa. Silakan hubungi admin Persona Research And Consulting.");
+                return;
+            }
+
+            const nama = document.getElementById('inName').value.trim();
+            if(!nama) {
+                alert("Silakan masukkan nama lengkap Anda terlebih dahulu!");
+                return;
+            }
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('quiz-section').style.display = 'block';
+            
+            initGrid();
+            renderSoal();
+            startTimer();
+        };
+
+        function initGrid() {
+            const container = document.getElementById('grid-container');
+            container.innerHTML = "";
+            bank.forEach((_, i) => {
+                const item = document.createElement('div');
+                item.className = 'nav-grid-item';
+                item.id = `grid-no-${i}`;
+                item.innerText = i + 1;
+                item.onclick = () => lompatSoal(i);
+                container.appendChild(item);
+            });
+            updateGridState();
+        }
+
+        function updateGridState() {
+            bank.forEach((_, i) => {
+                const item = document.getElementById(`grid-no-${i}`);
+                if(!item) return;
+                item.className = 'nav-grid-item';
+                if(userAns[i] !== null) item.classList.add('answered');
+                if(i === currentIdx) item.classList.add('active');
+            });
+        }
+
+        function renderSoal() {
+            if(currentIdx < 0 || currentIdx >= bank.length) return;
+            
+            const data = bank[currentIdx];
+            document.getElementById('soal-title').innerText = `Soal No: ${currentIdx + 1} dari ${bank.length}`;
+            document.getElementById('q-text').innerHTML = data.q;
+            
+            const optContainer = document.getElementById('opt-container');
+            optContainer.innerHTML = "";
+            
+            data.o.forEach((opsi, index) => {
+                const letter = String.fromCharCode(65 + index);
+                const div = document.createElement('div');
+                div.className = 'option-item';
+                if(userAns[currentIdx] === index) div.classList.add('selected');
+                
+                div.onclick = () => pilihJawaban(index);
+                div.innerHTML = `<div class="option-prefix">${letter}</div> <div>${opsi}</div>`;
+                optContainer.appendChild(div);
+            });
+
+            const progressPercent = ((currentIdx + 1) / bank.length) * 100;
+            document.getElementById('p-bar').style.width = `${progressPercent}%`;
+            
+            updateGridState();
+        }
+
+        function pilihJawaban(optIdx) {
+            userAns[currentIdx] = optIdx;
+            renderSoal();
+            
+            setTimeout(() => {
+                if(currentIdx < bank.length - 1) {
+                    currentIdx++;
+                    renderSoal();
+                }
+            }, 350);
+        }
+
+        window.prevSoal = function() {
+            if(currentIdx > 0) {
+                currentIdx--;
+                renderSoal();
+            }
+        };
+
+        window.nextSoal = function() {
+            if(currentIdx < bank.length - 1) {
+                currentIdx++;
+                renderSoal();
+            }
+        };
+
+        function lompatSoal(idx) {
+            currentIdx = idx;
+            renderSoal();
+        }
+
+        function startTimer() {
+            timerId = setInterval(() => {
+                if(sisaWaktu <= 0) {
+                    clearInterval(timerId);
+                    alert("Waktu ujian telah berakhir!");
+                    hitungSkorDanSelesai();
+                } else {
+                    sisaWaktu--;
+                    const menit = Math.floor(sisaWaktu / 60);
+                    const detik = sisaWaktu % 60;
+                    document.getElementById('clock').innerText = `Sisa Waktu: ${menit.toString().padStart(2, '0')}:${detik.toString().padStart(2, '0')}`;
+                }
+            }, 1000);
+        }
+
+        window.konfirmasiSelesai = function() {
+            const belumDijawab = userAns.filter(x => x === null).length;
+            let pesan = "Apakah Anda yakin ingin menyelesaikan dan mengirim jawaban?";
+            if(belumDijawab > 0) pesan = `Ada ${belumDijawab} soal belum diisi. ` + pesan;
+            
+            if(confirm(pesan)) {
+                clearInterval(timerId);
+                hitungSkorDanSelesai();
+            }
+        };
+
+        function hitungSkorDanSelesai() {
+            document.getElementById('quiz-section').style.display = 'none';
+            document.getElementById('result-section').style.display = 'block';
+            
+            let benar = 0;
+            let dHtml = "";
+            
+            bank.forEach((s, i) => {
+                if(userAns[i] === s.a) benar++;
+                
+                const statusKoreksi = (userAns[i] === s.a)
+                    ? `<span class="correct-label">Jawaban Anda Benar (Skor +1)</span>`
+                    : `<span class="correct-label" style="background:#f8d7da; color:#721c24;">Jawaban Anda: ${userAns[i] !== null ? String.fromCharCode(65 + userAns[i]) : 'Kosong'} (Salah)</span>`;
+
+                dHtml += `
+                    <div class="teach-box">
+                        <p><b>SOAL NO ${i + 1}</b></p>
+                        <p style="font-size:18px; margin-bottom:12px;">${s.q}</p>
+                        <div style="margin-bottom:10px;">${statusKoreksi}</div>
+                        <span class="correct-label" style="background:#e2f0d9; color:#385723;">Kunci Jawaban Benar: ${String.fromCharCode(65 + s.a)}</span>
+                        <div class="teach-text"><b>Pembahasan:</b><br>${s.h}</div>
+                    </div>
+                `;
+            });
+            
+            const tgl = new Date();
+            document.getElementById('user-info').innerHTML = `
+                <b>Nama Peserta:</b> ${document.getElementById('inName').value}<br>
+                <b>Tanggal Pengerjaan:</b> ${tgl.toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'})}<br>
+                <b>Waktu Selesai:</b> ${tgl.toLocaleTimeString('id-ID')} WIB
+            `;
+            
+            const nilaiAkhir = Math.round((benar / bank.length) * 100);
+            document.getElementById('score-big').innerText = "SKOR: " + nilaiAkhir;
+            document.getElementById('discussion-list').innerHTML = dHtml;
+            window.scrollTo(0, 0);
+        }
+
+        window.downloadPDF = function() {
+            const element = document.getElementById('pdf-content');
+            const opt = {
+                margin:       10,
+                filename:     'Hasil_Evaluasi_Kecerdasan_Verbal.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        };
+    </script>
+</body>
+</html>

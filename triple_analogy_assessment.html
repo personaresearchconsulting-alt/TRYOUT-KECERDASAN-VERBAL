@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Persona Research & Consulting - Triple Analogy Assessment (Level Mudah ke Sedang)</title>
+    <style>
+        :root {
+            --midnight: #0a192f;
+            --gold: #c5a059;
+            --ivory: #fdfcf9;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #0f172a;
+            --green: #059669;
+            --red: #dc2626;
+        }
+
+        /* SECURITY & BASE */
+        * { box-sizing: border-box; transition: all 0.2s ease; -webkit-user-select: none; user-select: none; }
+        body { background-color: var(--ivory); color: var(--text-main); font-family: 'Inter', system-ui, -apple-system, sans-serif; margin: 0; padding: 0; }
+
+        /* AUTH SECTION */
+        .auth-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: radial-gradient(circle, #112240 0%, #0a192f 100%); }
+        .auth-card { background: var(--white); padding: 40px; border-radius: 16px; text-align: center; width: 100%; max-width: 450px; border-top: 10px solid var(--gold); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        .brand-full { font-size: 20px; font-weight: 800; color: var(--midnight); text-transform: uppercase; letter-spacing: 1px; }
+        .brand-sub { font-size: 11px; letter-spacing: 3px; color: var(--gold); margin-bottom: 30px; font-weight: 600; }
+        input { width: 100%; padding: 15px; margin-bottom: 15px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 16px; outline: none; -webkit-user-select: text; user-select: text; }
+        .btn-gold { width: 100%; padding: 16px; background: var(--gold); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; }
+        .btn-gold:hover { background: #b08d48; }
+
+        /* HEADER */
+        header { background: var(--midnight); padding: 15px 25px; border-bottom: 3px solid var(--gold); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; color: white; }
+        .header-brand { font-weight: 800; letter-spacing: 1px; font-size: 16px; }
+
+        /* QUIZ LAYOUT */
+        .container { max-width: 1200px; margin: 25px auto; display: flex; flex-wrap: wrap; gap: 20px; padding: 0 15px; }
+        .quiz-box { flex: 1; min-width: 320px; background: var(--white); padding: 35px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .q-label { color: var(--gold); font-size: 11px; font-weight: 800; margin-bottom: 10px; letter-spacing: 2px; }
+        .q-text { font-size: 22px; font-weight: 700; margin-bottom: 30px; color: var(--midnight); text-transform: uppercase; line-height: 1.4; }
+
+        .option { padding: 16px 20px; border: 1.5px solid var(--border); margin-bottom: 12px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; font-weight: 600; }
+        .option:hover { border-color: var(--gold); background: #fafafa; }
+        .opt-label { width: 30px; height: 30px; background: #f1f5f9; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-weight: 800; font-size: 12px; border: 1px solid var(--border); flex-shrink: 0; }
+        .option.active { background: var(--midnight); color: var(--gold); border-color: var(--gold); transform: translateX(5px); }
+        .option.active .opt-label { background: var(--gold); color: var(--midnight); }
+
+        /* SIDEBAR NAV */
+        .sidebar { width: 100%; max-width: 320px; }
+        .nav-panel { background: var(--white); padding: 25px; border-radius: 12px; border: 1px solid var(--border); }
+        .grid-50 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+        .dot { height: 38px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); font-size: 11px; cursor: pointer; border-radius: 6px; font-weight: 700; }
+        .dot.current { background: var(--gold); color: white; border: none; }
+        .dot.filled { background: #f1f5f9; color: var(--midnight); border-color: var(--midnight); }
+
+        /* RESULT AREA */
+        #page-res { display: none; background: var(--white); max-width: 900px; margin: 30px auto; padding: 40px 20px; text-align: center; border-radius: 20px; border: 1px solid var(--border); }
+        .score-box { background: #f8fafc; padding: 30px; border-radius: 20px; margin-bottom: 30px; display: inline-block; min-width: 320px; border: 1px solid var(--border); }
+        .score-big { font-size: 90px; font-weight: 900; color: var(--midnight); line-height: 1; }
+        .pembahasan-card { text-align: left; background: #f8fafc; padding: 20px; margin-bottom: 15px; border-left: 5px solid var(--midnight); border-radius: 8px; font-size: 14px; line-height: 1.5; }
+        .pembahasan-card.correct { border-left-color: var(--green); }
+        .pembahasan-card.wrong { border-left-color: var(--red); }
+
+        @media (max-width: 768px) { .container { flex-direction: column; } .sidebar { max-width: 100%; } }
+        @media print { 
+            .no-print { display: none !important; } 
+            header { display: none !important; }
+            #page-res { border: none; padding: 0; margin: 0; width: 100%; max-width: 100%; }
+            body { background: white; }
+            .pembahasan-card { page-break-inside: avoid; border: 1px solid #ccc; border-left: 5px solid var(--midnight); }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;" onkeydown="return (event.keyCode != 123)">
+
+<div id="view-auth" class="auth-wrapper">
+    <div class="auth-card">
+        <div class="brand-full">Persona Research & Consulting</div>
+        <div class="brand-sub">Triple Analogy Assessment (50 Soal - Timer 40 Menit)</div>
+        <input type="text" id="userName" placeholder="NAMA LENGKAP PESERTA">
+        <button class="btn-gold" onclick="startTest()">MULAI TES</button>
+    </div>
+</div>
+
+<div id="view-test" style="display:none;">
+    <header>
+        <div class="header-brand">PERSONA RESEARCH & CONSULTING</div>
+        <div id="timer" style="font-size: 24px; font-weight: 800; color: var(--gold);">40:00</div>
+    </header>
+    <div class="container">
+        <div class="quiz-box">
+            <div id="q-label" class="q-label"></div>
+            <div id="q-body" class="q-text"></div>
+            <div id="q-options"></div>
+        </div>
+        <div class="sidebar">
+            <div class="nav-panel">
+                <p style="font-size: 10px; font-weight: 800; margin-bottom: 15px;">STATUS JAWABAN (50)</p>
+                <div id="nav-dots" class="grid-50"></div>
+                <button class="btn-gold no-print" style="margin-top: 25px; background: var(--midnight);" onclick="finalize()">SUBMIT FINISH</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="page-res">
+    <div class="brand-full">Persona Research & Consulting</div>
+    <div class="brand-sub">Analytical Report - Analogi Deret 3 (50 Soal)</div>
+    <div class="score-box">
+        <span class="score-big" id="final-score">0</span><span style="font-size:30px; color:var(--gold); font-weight:700;">/100</span>
+        <div id="score-raw" style="font-weight:700; margin-top:10px; color:#64748b;"></div>
+    </div>
+    <br>
+    <p id="res-name" style="font-size: 22px; font-weight: 800; text-transform: uppercase; color: var(--midnight); border-bottom: 2px solid var(--gold); display: inline-block; padding-bottom: 5px;"></p>
+    
+    <div style="margin-top: 20px;" class="no-print">
+        <button class="btn-gold" style="width:280px" onclick="window.print()">UNDUH LAPORAN (PDF)</button>
+    </div>
+
+    <div id="discussion-list" style="margin-top: 30px; text-align: left; padding: 0 10px;"></div>
+</div>
+
+<script>
+    let currentIdx = 0, userSelections = {}, questions = [];
+    const labels = ['A', 'B', 'C', 'D', 'E'];
+
+    // 50 Soal baru dengan tingkat kesulitan bertahap (mudah -> sedang)
+    const pool = [
+        // Level Mudah (1-15): Hubungan konkret, sehari-hari, fungsi sederhana
+        { q: "AIR : HAUS : MINUM =", a: "Makanan : Lapar : Makan", o: ["Obat : Sakit : Dokter", "Lampu : Gelap : Terang", "Baju : Dingin : Pakai", "Buku : Bodoh : Baca"], r: "Pola: [Objek Pemenuh] : [Kondisi Kebutuhan] : [Tindakan Pemenuhan]. Air meredakan haus dengan cara diminum; Makanan meredakan lapar dengan cara dimakan." },
+        { q: "KEDELAI : TEMPE : GORENG =", a: "Padi : Beras : Tanak", o: ["Pisang : Keripik : Makan", "Kapas : Benang : Tenun", "Tepung : Roti : Panggang", "Daging : Bakso : Rebus"], r: "Pola: [Bahan Baku Utama] : [Produk Olahan Intermediate/Bahan] : [Metode Pengolahan Akhir]. Kedelai diolah jadi tempe lalu digoreng; Tepung diolah jadi roti lalu dipanggang." },
+        { q: "SAPI : SUSU : PERAH =", a: "Ayam : Telur : Erang", o: ["Madu : Lebah : Ternak", "Kambing : Daging : Potong", "Pohon : Buah : Petik", "Kapas : Kain : Pintal"], r: "Pola: [Sumber Hewan/Tumbuhan] : [Hasil Produk] : [Metode Pengambilan]. Sapi menghasilkan susu dengan cara diperah; Pohon menghasilkan buah dengan cara dipetik." },
+        { q: "SIANG : MATAHARI : TERANG =", a: "Malam : Bulan : Remang", o: ["Hujan : Awan : Basah", "Api : Panas : Hangat", "Lampu : Listrik : Silau", "Pagi : Embun : Segar"], r: "Pola: [Waktu/Kondisi] : [Benda/Sumber Utamanya] : [Dampak Lingkungan]. Siang ditandai matahari yang membuat terang; Malam ditandai bulan yang membuat remang." },
+        { q: "PISAU : TAJAM : POTONG =", a: "Gunting : Tajam : Pangkas", o: ["Jarum : Runcing : Tusuk", "Pena : Tinta : Tulis", "Sapu : Bersih : Sapu", "Palu : Keras : Pukul"], r: "Pola: [Alat Utuh] : [Sifat Fisik Utama] : [Fungsi Kerja Organik]. Pisau harus tajam untuk memotong; Jarum harus runcing untuk menusuk." },
+        { q: "KAPAL : NAKHODA : LAUT =", a: "Pesawat : Pilot : Udara", o: ["Mobil : Sopir : Jalan", "Kereta : Masinis : Rel", "Bus : Kondektur : Terminal", "Sepeda : Pesepeda : Trotoar"], r: "Pola: [Mode Transportasi] : [Pengemudi/Operator] : [Medium/Jalur Operasi]. Kapal dikemudikan nakhoda di laut; Pesawat dikemudikan pilot di udara." },
+        { q: "SEKOLAH : GURU : MURID =", a: "Rumah Sakit : Dokter : Pasien", o: ["Pasar : Pedagang : Pembeli", "Kantor : Direktur : Karyawan", "Lapangan : Pelatih : Atlet", "Pengadilan : Hakim : Terdakwa"], r: "Pola: [Institusi/Tempat] : [Pemberi Layanan/Profesi Utama] : [Penerima Layanan/Subjek]. Sekolah ada guru mengajar murid; Rumah sakit ada dokter merawat pasien." },
+        { q: "Sendok : Makan : Piring =", a: "Pensil : Tulis : Kertas", o: ["Sapu : Bersih : Lantai", "Cangkul : Gali : Tanah", "Gunting : Potong : Kain", "Gelas : Minum : Air"], r: "Pola: [Alat Kerja Operasional] : [Aktivitas Utama] : [Media/Wadah Tempat Beraktivitas]. Sendok digunakan makan di atas piring; Pensil digunakan menulis di atas kertas." },
+        { q: "BUMI : GLOBE : PETA =", a: "Bangunan : Maket : Denah", o: ["Kota : Wayang : Gambar", "Manusia : Patung : Foto", "Pohon : Fosil : Sketsa", "Mobil : Miniatur : Cetak"], r: "Pola: [Objek Asli 3D] : [Model Tiruan 3D] : [Representasi Visual 2D]. Bumi ditirukan globe (3D) dan peta (2D); Bangunan ditirukan maket (3D) dan denah (2D)." },
+        { q: "UANG : DOMPET : SAKU =", a: "Pakaian : Lemari : Kamar", o: ["Buku : Tas : Sekolah", "Surat : Amplop : Kotak", "Sepatu : Rak : Dapur", "Kunci : Gantungan : Pintu"], r: "Pola: [Benda Utama] : [Wadah Penyimpanan Pertama] : [Lokasi Wadah Berada]. Uang disimpan di dompet, dompet ditaruh di saku; Pakaian disimpan di lemari, lemari ditaruh di kamar." },
+        { q: "IKAN : INSANG : AIR =", a: "Paru-paru : Manusia : Darah", o: ["Burung : Paru-paru : Udara", "Cacing : Kulit : Tanah", "Katak : Kulit : Darat", "Belalang : Trakea : Udara"], r: "Pola: [Organisme] : [Organ Respirasi Utama] : [Medium Lingkungan Hidup]. Ikan bernapas dengan insang di air; Burung bernapas dengan paru-paru di udara." },
+        { q: "MATA : KACAMATA : LIHAT =", a: "Telinga : Alat Bantu Dengar : Dengar", o: ["Kaki : Sepatu : Jalan", "Tangan : Sarung Tangan : Hangat", "Hidung : Masker : Cium", "Gigi : Behel : Kunyah"], r: "Pola: [Organ Indra] : [Alat Bantu Korektif/Fungsi] : [Aktivitas Sensing]. Kacamata membantu mata untuk melihat; Alat bantu dengar membantu telinga untuk mendengar." },
+        { q: "PAYUNG : HUJAN : BASAH =", a: "Topi : Panas : Silau", o: ["Selimut : Dingin : Menggigil", "Helm : Benturan : Luka", "Jaket : Angin : Masuk Angin", "Kacamata : Terik : Keringat"], r: "Pola: [Pelindung] : [Ancaman Lingkungan] : [Dampak Buruk yang Dicegah]. Payung melindungi dari hujan agar tidak basah; Helm melindungi dari benturan agar tidak luka." },
+        { q: "PADI : PETANI : SAWAH =", a: "Ikan : Nelayan : Laut", o: ["Teh : Pemetik : Kebun", "Sayur : Pedagang : Pasar", "Kain : Penjahit : Bengkel", "Buku : Penulis : Kamar"], r: "Pola: [Hasil Prodak Komoditas] : [Profesi Produsen Utama] : [Lokasi Produksi Alam]. Padi dihasilkan petani di sawah; Ikan dihasilkan nelayan di laut." },
+        { q: "KAYU : GERGAJI : MEJA =", a: "Kain : Gunting : Baju", o: ["Besi : Las : Pagar", "Batu : Pahat : Patung", "Tanah Liat : Cetakan : Pot", "Kertas : Cutter : Kotak"], r: "Pola: [Bahan Mentah] : [Alat Pemotong/Bentuk] : [Hasil Jadi Mebel/Pakaian]. Kayu dipotong gergaji jadi meja; Kain dipotong gunting jadi baju." },
+
+        // Level Sedang awal (16-30): Hubungan konseptual, sains dasar, hirarki terstruktur
+        { q: "ULAT : KEPOMPONG : KUPU-KUPU =", a: "Telur : Berudu : Katak", o: ["Tunas : Pohon : Buah", "Bayi : Remaja : Dewasa", "Biji : Kecambah : Pohon", "Larva : Nyamuk : Telur"], r: "Pola: [Fase Awal Metamorfosis] : [Fase Transisi/Kepompong-Larva] : [Fase Dewasa Imago]. Ulat -> kepompong -> kupu-kupu; Berudu -> katak muda -> katak (atau Telur -> Berudu -> Katak)." },
+        { q: "GITAR : PETIK : DAWAI =", a: "Piano : Tekan : Tuts", o: ["Drum : Pukul : Stik", "Biola : Gesek : Senar", "Seruling : Tiup : Lubang", "Gong : Pukul : Pemukul"], r: "Pola: [Alat Musik] : [Cara Aksion Interaksi] : [Komponen Inti Pembentuk Nada]. Gitar dipetik pada dawai; Piano ditekan pada tuts." },
+        { q: "BENSI : MOBIL : GERAK =", a: "Makanan : Manusia : Energi", o: ["Listrik : Kipas : Angin", "Baterai : Senter : Cahaya", "Air : Tumbuhan : Tumbuh", "Pulsa : HP : Sinyal"], r: "Pola: [Sumber Daya Input] : [Sistem Penerima] : [Output Hasil Kerja/Aktivitas]. Bensin memberikan mobil daya gerak; Makanan memberikan manusia energi." },
+        { q: "MASINIS : KERETA : REL =", a: "Pilot : Pesawat : Jalur Udara", o: ["Sopir : Bus : Jalan Raya", "Nakhoda : Kapal : Alur Pelayaran", "Pembalap : Motor : Sirkuit", "Kuis : Peserta : Layar"], r: "Pola: [Pengemudi Profesi] : [Kendaraan Spesifik] : [Lintasan Terikat Khusus]. Masinis mengendalikan kereta di atas rel; Pilot mengendalikan pesawat di jalur udara." },
+        { q: "MERAH : BERHENTI : RAMBU =", a: "Hijau : Jalan : Sinyal", o: ["Kuning : Hati-hati : Lampu", "Putih : Suci : Bendera", "Hitam : Duka : Pakaian", "Biru : Tenang : Laut"], r: "Pola: [Warna Visual] : [Instruksi Makna Simbolis] : [Medium Komunikasi Sinyal]. Warna merah berarti berhenti pada rambu; Warna hijau berarti jalan pada sinyal/rambu." },
+        { q: "DETIK : MENIT : JAM =", a: "Hari : Bulan : Tahun", o: ["Gram : Kilogram : Ton", "Meter : Kilometer : Mil", "Centimeter : Meter : Kilometer", "Lusin : Kodi : Gross"], r: "Pola: [Satuan Ukur Waktu Terkecil] : [Satuan Menengah (1/60)] : [Satuan Besar]. Detik membentuk menit, menit membentuk jam; Hari membentuk bulan, bulan membentuk tahun." },
+        { q: "KOMPUTER : PROSESOR : OTAK =", a: "Mobil : Mesin : Jantung", o: ["Kamera : Lensa : Mata", "Radio : Antena : Telinga", "Lampu : Filamen : Saraf", "Robot : Baterai : Darah"], r: "Pola: [Sistem Buatan] : [Pusat Pemproses/Penggerak Sistem] : [Analogi Organ Biologis Utama]. Prosesor adalah otak komputer; Mesin adalah jantung mobil." },
+        { q: "REPTIL : ULAR : MELATA =", a: "Aves : Burung : Terbang", o: ["Mamalia : Paus : Renang", "Amfibi : Katak : Melompat", "Ikan : Hiu : Berenang", "Serangga : Semut : Merayap"], r: "Pola: [Taksonomi Kelas] : [Spesies Spesifik] : [Lomotion / Cara Bergerak Dominan]. Reptil contohnya ular bergerak melata; Aves contohnya burung bergerak terbang." },
+        { q: "GANDUM : ROTI : OVEN =", a: "Tanah Liat : Keramik : Tanur", o: ["Beras : Nasi : Rice Cooker", "Daging : Steak : Griller", "Kayu : Kursi : Ampelas", "Besi : Pedang : Tungku"], r: "Pola: [Bahan Baku] : [Produk Akhir] : [Alat Pengolah Panas Khusus/Oven Pabrikasi]. Gandum diolah jadi roti di oven; Tanah liat diolah jadi keramik di tanur (furnace)." },
+        { q: "MASAKAN : KOKI : RESTORAN =", a: "Lukisan : Pelukis : Galeri", o: ["Buku : Penulis : Perpustakaan", "Pakaian : Penjahit : Butik", "Obat : Apoteker : Apotek", "Film : Sutradara : Bioskop"], r: "Pola: [Hasil Karya Produk] : [Kreator/Profesi] : [Eksibisi/Tempat Distribusi Resmi]. Masakan dibuat koki disajikan di restoran; Lukisan dibuat pelukis dipajang di galeri." },
+        { q: "SUTRA : ULAT : KAIN =", a: "Susu : Sapi : Keju", o: ["Madu : Lebah : Obat", "Daging : Ayam : Nugget", "Minyak : Kelapa : Sabun", "Wol : Domba : Sweter"], r: "Pola: [Bahan Mentah Spesifik] : [Organisme Penghasil] : [Produk Turunan Manufaktur]. Sutra diekstrak dari ulat lalu ditenun jadi kain; Wol diekstrak dari domba diolah jadi sweter." },
+        { q: "KAMUS : KATA : ARTI =", a: "Peta : Wilayah : Lokasi", o: ["Buku : Halaman : Cerita", "Jadwal : Kegiatan : Waktu", "Resep : Bahan : Takran", "Ensiklopedia : Topik : Informasi"], r: "Pola: [Buku Referensi] : [Entitas Unit Data] : [Penjelasan/Properti Output]. Kamus memuat kata untuk mencari arti; Peta memuat wilayah untuk mencari lokasi." },
+        { q: "BUMI : PLANET : TATA SURYA =", a: "Matahari : Bintang : Galaksi", o: ["Jawa : Pulau : Indonesia", "Bulan : Satelit : Angkasa", "Emas : Logam : Tambang", "Oksigen : Gas : Atmosfer"], r: "Pola: [Objek Spesifik] : [Kategori Hirarki] : [Sistem Makro Induk]. Bumi adalah planet dalam Tata Surya; Matahari adalah bintang dalam Galaksi." },
+        { q: "SENAPAN : BURU : HUTAN =", a: "Jaring : Tangkap : Laut", o: ["Kamera : Potret : Studio", "Cangkul : Tanam : Kebun", "Pena : Tulis : Kantor", "Pisau : Potong : Dapur"], r: "Pola: [Instrumen Tipe Ekstrem] : [Tujuan Tindakan Utama] : [Ekosistem/Lokasi Lapangan]. Senapan untuk berburu di hutan; Jaring untuk menangkap (ikan) di laut." },
+        { q: "SEMEN : BANGUNAN : KOKOH =", a: "Pondasi : Rumah : Stabil", o: ["Otot : Tubuh : Kuat", "Baja : Jembatan : Kokoh", "Cat : Dinding : Indah", "Kaca : Jendela : Bening"], r: "Pola: [Elemen Material Pengikat] : [Struktur Objek] : [Karakteristik Fisik Target]. Semen membuat bangunan kokoh; Otot membuat tubuh kuat." },
+
+        // Level Sedang Pertengahan (31-50): Hubungan implikasi, abstrak, sains terikat
+        { q: "AKAR : POHON : TANAH =", a: "Sauh : Kapal : Dasar Laut", o: ["Pondasi : Gedung : Bumi", "Rambut : Kepala : Kulit", "Paku : Kayu : Dinding", "Tiang : Bendera : Tanam"], r: "Pola: [Organ/Alat Penambat] : [Objek Utama yang Ditambat] : [Medium Tempat Menancap]. Akar menambat pohon pada tanah; Sauh (jangkar) menambat kapal pada dasar laut." },
+        { q: "KONTRAK : KERJA : TANDA TANGAN =", a: "Undang-Undang : Hukum : Pengesahan", o: ["Janji : Pernikahan : Ijab", "Surat : Pengiriman : Stempel", "Kuitansi : Pembayaran : Materai", "Perjanjian : Damai : Ratifikasi"], r: "Pola: [Dokumen Legalisasi] : [Domain/Aktivitas] : [Tindakan Validasi Akhir]. Kontrak kerja disahkan dengan tanda tangan; Undang-undang hukum disahkan dengan pengesahan/ratifikasi." },
+        { q: "MENDUNG : HUJAN : BASAH =", a: "Lapar : Makan : Kenyang", o: ["Haus : Minum : Segar", "Gelap : Lampu : Terang", "Belajar : Ujian : Lulus", "Api : Kebakaran : Hangus"], r: "Pola: [Sinyal Indikator Awal] : [Kejadian Proses Utama] : [Dampak Akhir Kondisional]. Mendung menandai hujan yang membuat basah; Lapar mendorong makan yang membuat kenyang." },
+        { q: "SINYAL : TELEPON : KOMUNIKASI =", a: "Oksigen : Paru-paru : Respirasi", o: ["Listrik : Lampu : Penerangan", "Bensin : Mobil : Transportasi", "Air : Irigasi : Pertanian", "Uang : Transaksi : Perdagangan"], r: "Pola: [Medium Gelombang/Bahan] : [Alat/Organ Pemproses] : [Fungsi Sistem Akhir]. Sinyal diproses telepon untuk komunikasi; Oksigen diproses paru-paru untuk respirasi." },
+        { q: "TELESKOP : BINTANG : JAUH =", a: "Mikroskop : Bakteri : Kecil", o: ["Kacamata : Tulisan : Kabur", "Kamera : Objek : Dekat", "Lensa : Cahaya : Fokus", "Kompas : Arah : Tersesat"], r: "Pola: [Instrumen Optik] : [Target Pengamatan] : [Karakteristik Fisik Spesifik Objek]. Teleskop mengamati bintang yang jauh; Mikroskop mengamati bakteri yang kecil." },
+        { q: "KERTAS : BUKU : RAK =", a: "Pakaian : Lemari : Kamar", o: ["Uang : Dompet : Saku", "Baju : Gantungan : Toko", "Sepatu : Kotak : Gudang", "Piring : Rak : Dapur"], r: "Pola: [Unit Material Terkecil] : [Benda Kompilasi/Bundel] : [Tempat Penyimpanan Terstruktur]. Kertas disusun jadi buku ditaruh di rak; Pakaian ditaruh di lemari di kamar." },
+        { q: "SINGA : DAGING : KARNIVORA =", a: "Sapi : Rumput : Herbivora", o: ["Ayam : Biji : Omnivora", "Ular : Tikus : Reptil", "Kambing : Daun : Mamalia", "Harimau : Hutan : Predator"], r: "Pola: [Spesies Hewan] : [Jenis Makanan Utama] : [Kategori Klasifikasi Makanan]. Singa makan daging tergolong karnivora; Sapi makan rumput tergolong herbivora." },
+        { q: "KERINGAT : OLAHRAGA : LELAH =", a: "Luka : Jatuh : Sakit", o: ["Ngantuk : Begadang : Lemas", "Pintar : Belajar : Ujian", "Kenyang : Makan : Nikmat", "Basah : Berenang : Segar"], r: "Pola: [Produk Ekskresi/Kondisi Tubuh] : [Pemicu Aktivitas] : [Sensasi Sensori Tubuh]. Keringat timbul saat olahraga yang menyebabkan lelah; Luka timbul saat jatuh yang menyebabkan sakit." },
+        { q: "INDONESIA : JAKARTA : RUPIAH =", a: "Jepang : Tokyo : Yen", o: ["Inggris : London : Dollar", "Malaysia : Kuala Lumpur : Ringgit", "Prancis : Paris : Euro", "Amerika Serikat : Washington : Dollar"], r: "Pola: [Negara Berdaulat] : [Ibu Kota Negara] : [Mata Uang Resmi]. Indonesia beribu kota Jakarta ber-uang Rupiah; Jepang beribu kota Tokyo ber-uang Yen." },
+        { q: "SENTER : BATERAI : CAHAYA =", a: "Mobil : Bensin : Gerak", o: ["Radio : Listrik : Suara", "Kipas : Angin : Dingin", "Makanan : Manusia : Energi", "Telepon : Pulsa : Sinyal"], r: "Pola: [Perangkat Utuh] : [Sumber Energi Dalam] : [Hasil Radiasi/Output Utama]. Senter diisi baterai menghasilkan cahaya; Mobil diisi bensin menghasilkan gerak." },
+        { q: "PELUKIS : KUAS : KANVAS =", a: "Petani : Cangkul : Sawah", o: ["Sopir : Mobil : Jalan", "Guru : Buku : Murid", "Dokter : Pasien : Obat", "Penulis : Ide : Kertas"], r: "Pola: [Profesi Seni/Subjek] : [Alat Kerja Utama] : [Media Tempat Menorehkan Hasil]. Pelukis mengayunkan kuas pada kanvas; Petani mengayunkan cangkul pada sawah." },
+        { q: "SISWA : BUKU : PERPUSTAKAAN =", a: "Nasabah : Uang : Bank", o: ["Dokter : Obat : Apotek", "Pedagang : Barang : Pasar", "Karyawan : Gaji : Kantor", "Suster : Pasien : Bangsal"], r: "Pola: [Subjek Utama] : [Objek Transaksi/Studi] : [Fasilitas Penyedia Resmi]. Siswa menggunakan buku di perpustakaan; Nasabah menggunakan uang di bank." },
+        { q: "HUJAN : DINGIN : JAKET =", a: "Panas : Terik : Topi", o: ["Lapar : Lemas : Makan", "Haus : Kering : Air", "Sakit : Dokter : Obat", "Malam : Gelap : Lampu"], r: "Pola: [Fenomena Cuaca] : [Sensasi Fisik Suhu] : [Pakaian Protektif]. Hujan membuat dingin sehingga pakai jaket; Panas membuat terik sehingga pakai topi." },
+        { q: "TELINGA : ANTING : PERHIASAN =", a: "Jari : Cincin : Aksesoris", o: ["Kaki : Sepatu : Alas", "Leher : Kalung : Emas", "Tangan : Jam : Waktu", "Hidung : Kacamata : Alat"], r: "Pola: [Organ Tubuh] : [Benda Aksesoris Spesifik] : [Kategori Umum Benda]. Telinga dipasangi anting yang tergolong perhiasan; Jari dipasangi cincin yang tergolong aksesoris." },
+        { q: "POHON : BUAH : MANIS =", a: "Cabai : Biji : Pedas", o: ["Bunga : Wangi : Taman", "Akar : Kuat : Tanah", "Daun : Hijau : Klorofil", "Air : Jernih : Haus"], r: "Pola: [Tumbuhan Induk] : [Organ Hasil Reproduksi/Makan] : [Sensasi Rasa Utama]. Pohon menghasilkan buah yang manis; Cabai menghasilkan biji/buah yang pedas." },
+        { q: "PIANO : TEKAN : MUSIK =", a: "Gitar : Petik : Lagu", o: ["Drum : Pukul : Suara", "Biola : Gesek : Nada", "Seruling : Tiup : Udara", "Harmonika : Hisap : Bunyi"], r: "Pola: [Alat Musik] : [Aksi Mekanis] : [Karya Seni Suara Terstruktur]. Piano ditekan menghasilkan musik; Gitar dipetik menghasilkan lagu." },
+        { q: "MATAHARI : TERIK : SIANG =", a: "Bulan : Dingin : Malam", o: ["Lampu : Terang : Gelap", "Bintang : Jauh : Langit", "Hujan : Basah : Mendung", "Api : Panas : Bakar"], r: "Pola: [Benda Langit Utama] : [Intensitas Sifat] : [Kurun Waktu Terjadinya]. Matahari memancarkan terik di siang hari; Bulan memancarkan dingin/cahaya redup di malam hari." },
+        { q: "GURU : MURID : KELAS =", a: "Dokter : Pasien : Klinik", o: ["Penjual : Pembeli : Toko", "Mandor : Buruh : Proyek", "Pelatih : Atlet : Lapangan", "Komandan : Prajurit : Markas"], r: "Pola: [Subjek Edukasi/Layanan] : [Klien/Penerima] : [Ruang Interaksi Tertutup]. Guru berinteraksi dengan murid di kelas; Dokter berinteraksi dengan pasien di klinik." },
+        { q: "KULIT : RABA : PANAS =", a: "Lidah : Kecap : Pahit", o: ["Hidung : Cium : Bau", "Mata : Pandang : Jauh", "Telinga : Dengar : Bising", "Tangan : Pegang : Kasar"], r: "Pola: [Organ Indra] : [Mekanisme Kerja Sensory] : [Stimulus/Rasa Spesifik]. Kulit meraba rasa panas; Lidah mengecap rasa pahit." },
+        { q: "PAHAT : PATUNG : SENIMAN =", a: "Jarum : Baju : Penjahit", o: ["Pena : Tulisan : Penulis", "Gergaji : Kursi : Tukang", "Sutil : Masakan : Koki", "Cangkul : Kebun : Petani"], r: "Pola: [Alat Tangan Spesifik] : [Objek Hasil Kreasi 3D] : [Sebutan Profesi Seniman/Kreator]. Pahat membuat patung oleh seniman; Jarum membuat baju oleh penjahit." }
+    ];
+
+    function startTest() {
+        const nameVal = document.getElementById('userName').value.trim();
+        if(nameVal.length >= 2) {
+            // Acak opsi jawaban tetapi pertahankan kunci jawaban yang benar
+            questions = pool.map(q => {
+                const allOpts = [q.a, ...q.o];
+                const shuffled = allOpts.sort(() => Math.random() - 0.5);
+                return {
+                    q: q.q,
+                    a: q.a,
+                    r: q.r,
+                    shuffled: shuffled
+                };
+            });
+            
+            document.getElementById('view-auth').style.display = 'none';
+            document.getElementById('view-test').style.display = 'block';
+            render(); 
+            startTimer(2400); // 40 menit = 2400 detik
+        } else { 
+            alert("Silakan masukkan nama lengkap Anda terlebih dahulu."); 
+        }
+    }
+
+    function render() {
+        const q = questions[currentIdx];
+        document.getElementById('q-label').innerText = `ITEM TRIPLE LOGIC ${currentIdx + 1} / 50`;
+        document.getElementById('q-body').innerText = q.q;
+        let h = "";
+        q.shuffled.forEach((opt, i) => {
+            const isActive = userSelections[currentIdx] === opt ? 'active' : '';
+            h += `<div class="option ${isActive}" onclick="pick('${opt.replace(/'/g, "\'")}')">
+                    <div class="opt-label">${labels[i]}</div>
+                    <div>${opt}</div>
+                  </div>`;
+        });
+        document.getElementById('q-options').innerHTML = h;
+        updateGrid();
+    }
+
+    function pick(val) {
+        userSelections[currentIdx] = val;
+        render();
+        
+        // Auto Next dengan delay halus 300ms
+        setTimeout(() => {
+            if(currentIdx < 49) {
+                currentIdx++;
+                render();
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }
+        }, 300);
+    }
+
+    function updateGrid() {
+        let h = "";
+        questions.forEach((_, i) => { 
+            const isCurr = currentIdx === i ? 'current' : '';
+            const isFilled = userSelections[i] ? 'filled' : '';
+            h += `<div class="dot ${isCurr} ${isFilled}" onclick="goToQuestion(${i})">${i+1}</div>`; 
+        });
+        document.getElementById('nav-dots').innerHTML = h;
+    }
+
+    function goToQuestion(idx) {
+        currentIdx = idx;
+        render();
+    }
+
+    let timerInterval = null;
+    function startTimer(sec) {
+        const t = document.getElementById('timer');
+        timerInterval = setInterval(() => {
+            sec--; 
+            let m = Math.floor(sec/60);
+            let s = sec % 60;
+            t.innerText = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+            
+            if(sec <= 300) { // 5 menit terakhir warna merah
+                t.style.color = '#dc2626';
+            }
+            
+            if(sec <= 0) { 
+                clearInterval(timerInterval); 
+                alert("Waktu 40 menit telah habis! Jawaban Anda akan otomatis dikirim.");
+                finalize(); 
+            }
+        }, 1000);
+    }
+
+    function finalize() {
+        if(timerInterval) clearInterval(timerInterval);
+        
+        document.getElementById('view-test').style.display = 'none';
+        document.getElementById('page-res').style.display = 'block';
+        
+        let correct = 0;
+        let dHtml = "";
+        
+        questions.forEach((q, i) => {
+            const userAns = userSelections[i];
+            const isOk = userAns === q.a;
+            if(isOk) correct++;
+            
+            const cardClass = isOk ? 'correct' : 'wrong';
+            const statusBadge = isOk ? 
+                '<span style="color:var(--green); font-weight:bold;">[BENAR]</span>' : 
+                '<span style="color:var(--red); font-weight:bold;">[SALAH]</span>';
+            
+            dHtml += `<div class="pembahasan-card ${cardClass}">
+                <div style="font-weight:800; font-size:15px; margin-bottom:6px; color:var(--midnight);">
+                    SOAL ${i+1}: ${q.q} ${statusBadge}
+                </div>
+                <div style="margin-bottom:4px;">
+                    <strong>Jawaban Anda:</strong> ${userAns ? userAns : '<span style="color:var(--red)">Tidak Diisi</span>'}
+                </div>
+                <div style="margin-bottom:8px;">
+                    <strong>Kunci Jawaban:</strong> <span style="color:var(--green); font-weight:bold;">${q.a}</span>
+                </div>
+                <div style="color:#475569; font-size:13px; border-top:1px dashed #cbd5e1; padding-top:8px; margin-top:6px;">
+                    <strong>Analisis Logic:</strong> ${q.r}
+                </div>
+            </div>`;
+        });
+
+        const finalScore = Math.round((correct / 50) * 100);
+        document.getElementById('final-score').innerText = finalScore;
+        document.getElementById('score-raw').innerText = `HASIL AKHIR: ${correct} BENAR DARI 50 SOAL (${finalScore}%)`;
+        document.getElementById('res-name').innerText = "PESERTA: " + document.getElementById('userName').value;
+        document.getElementById('discussion-list').innerHTML = dHtml;
+        window.scrollTo(0,0);
+    }
+</script>
+</body>
+</html>

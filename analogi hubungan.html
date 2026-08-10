@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Persona Research & Consulting - Tes Analogi Pasangan Kata (50 Soal)</title>
+    <style>
+        :root {
+            --midnight: #0a192f;
+            --gold: #c5a059;
+            --ivory: #fdfcf9;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #0f172a;
+            --green: #059669;
+            --red: #dc2626;
+        }
+
+        /* SECURITY & BASE */
+        * { box-sizing: border-box; transition: all 0.2s ease; -webkit-user-select: none; user-select: none; }
+        body { background-color: var(--ivory); color: var(--text-main); font-family: 'Inter', system-ui, -apple-system, sans-serif; margin: 0; padding: 0; }
+
+        /* AUTH SECTION */
+        .auth-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: radial-gradient(circle, #112240 0%, #0a192f 100%); }
+        .auth-card { background: var(--white); padding: 40px; border-radius: 16px; text-align: center; width: 100%; max-width: 450px; border-top: 10px solid var(--gold); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        .brand-full { font-size: 20px; font-weight: 800; color: var(--midnight); text-transform: uppercase; letter-spacing: 1px; }
+        .brand-sub { font-size: 11px; letter-spacing: 2px; color: var(--gold); margin-bottom: 30px; font-weight: 600; text-transform: uppercase; }
+        input { width: 100%; padding: 15px; margin-bottom: 15px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 16px; outline: none; -webkit-user-select: text; user-select: text; }
+        .btn-gold { width: 100%; padding: 16px; background: var(--gold); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; }
+        .btn-gold:hover { background: #b08d48; }
+
+        /* HEADER */
+        header { background: var(--midnight); padding: 15px 25px; border-bottom: 3px solid var(--gold); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; color: white; }
+        .header-brand { font-weight: 800; letter-spacing: 1px; font-size: 16px; }
+
+        /* QUIZ LAYOUT */
+        .container { max-width: 1200px; margin: 25px auto; display: flex; flex-wrap: wrap; gap: 20px; padding: 0 15px; }
+        .quiz-box { flex: 1; min-width: 320px; background: var(--white); padding: 35px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .q-label { color: var(--gold); font-size: 11px; font-weight: 800; margin-bottom: 10px; letter-spacing: 2px; }
+        .q-text { font-size: 22px; font-weight: 700; margin-bottom: 30px; color: var(--midnight); text-transform: uppercase; line-height: 1.4; }
+
+        .option { padding: 16px 20px; border: 1.5px solid var(--border); margin-bottom: 12px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; font-weight: 600; }
+        .option:hover { border-color: var(--gold); background: #fafafa; }
+        .opt-label { width: 30px; height: 30px; background: #f1f5f9; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-weight: 800; font-size: 12px; border: 1px solid var(--border); flex-shrink: 0; }
+        .option.active { background: var(--midnight); color: var(--gold); border-color: var(--gold); transform: translateX(5px); }
+        .option.active .opt-label { background: var(--gold); color: var(--midnight); }
+
+        /* SIDEBAR NAV */
+        .sidebar { width: 100%; max-width: 320px; }
+        .nav-panel { background: var(--white); padding: 25px; border-radius: 12px; border: 1px solid var(--border); }
+        .grid-50 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+        .dot { height: 38px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); font-size: 11px; cursor: pointer; border-radius: 6px; font-weight: 700; }
+        .dot.current { background: var(--gold); color: white; border: none; }
+        .dot.filled { background: #f1f5f9; color: var(--midnight); border-color: var(--midnight); }
+
+        /* RESULT AREA */
+        #page-res { display: none; background: var(--white); max-width: 900px; margin: 30px auto; padding: 40px 20px; text-align: center; border-radius: 20px; border: 1px solid var(--border); }
+        .score-box { background: #f8fafc; padding: 30px; border-radius: 20px; margin-bottom: 30px; display: inline-block; min-width: 320px; border: 1px solid var(--border); }
+        .score-big { font-size: 90px; font-weight: 900; color: var(--midnight); line-height: 1; }
+        .pembahasan-card { text-align: left; background: #f8fafc; padding: 20px; margin-bottom: 15px; border-left: 5px solid var(--midnight); border-radius: 8px; font-size: 14px; line-height: 1.5; }
+        .pembahasan-card.correct { border-left-color: var(--green); }
+        .pembahasan-card.wrong { border-left-color: var(--red); }
+
+        @media (max-width: 768px) { .container { flex-direction: column; } .sidebar { max-width: 100%; } }
+        @media print { 
+            .no-print { display: none !important; } 
+            header { display: none !important; }
+            #page-res { border: none; padding: 0; margin: 0; width: 100%; max-width: 100%; }
+            body { background: white; }
+            .pembahasan-card { page-break-inside: avoid; border: 1px solid #ccc; border-left: 5px solid var(--midnight); }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;" onkeydown="return (event.keyCode != 123)">
+
+<div id="view-auth" class="auth-wrapper">
+    <div class="auth-card">
+        <div class="brand-full">Persona Research & Consulting</div>
+        <div class="brand-sub">Tes Analogi Pasangan Kata (50 Soal - Timer 40 Menit)</div>
+        <input type="text" id="userName" placeholder="NAMA LENGKAP PESERTA">
+        <button class="btn-gold" onclick="startTest()">MULAI TES</button>
+    </div>
+</div>
+
+<div id="view-test" style="display:none;">
+    <header>
+        <div class="header-brand">PERSONA RESEARCH & CONSULTING</div>
+        <div id="timer" style="font-size: 24px; font-weight: 800; color: var(--gold);">40:00</div>
+    </header>
+    <div class="container">
+        <div class="quiz-box">
+            <div id="q-label" class="q-label"></div>
+            <div id="q-body" class="q-text"></div>
+            <div id="q-options"></div>
+        </div>
+        <div class="sidebar">
+            <div class="nav-panel">
+                <p style="font-size: 10px; font-weight: 800; margin-bottom: 15px; text-transform: uppercase;">STATUS JAWABAN (50)</p>
+                <div id="nav-dots" class="grid-50"></div>
+                <button class="btn-gold no-print" style="margin-top: 25px; background: var(--midnight);" onclick="finalize()">SUBMIT FINISH</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="page-res">
+    <div class="brand-full">Persona Research & Consulting</div>
+    <div class="brand-sub">Analytical Report - Analogi Pasangan Kata (50 Soal)</div>
+    <div class="score-box">
+        <span class="score-big" id="final-score">0</span><span style="font-size:30px; color:var(--gold); font-weight:700;">/100</span>
+        <div id="score-raw" style="font-weight:700; margin-top:10px; color:#64748b;"></div>
+    </div>
+    <br>
+    <p id="res-name" style="font-size: 22px; font-weight: 800; text-transform: uppercase; color: var(--midnight); border-bottom: 2px solid var(--gold); display: inline-block; padding-bottom: 5px;"></p>
+    
+    <div style="margin-top: 20px;" class="no-print">
+        <button class="btn-gold" style="width:280px" onclick="window.print()">UNDUH LAPORAN (PDF)</button>
+    </div>
+
+    <div id="discussion-list" style="margin-top: 30px; text-align: left; padding: 0 10px;"></div>
+</div>
+
+<script>
+    const EXPIRATION_DATE = "2026-12-31"; 
+
+    let currentIdx = 0, userSelections = {}, questions = [];
+    const labels = ['A', 'B', 'C', 'D'];
+
+    // 50 Soal Analogi Pasangan Kata (Tingkat Mudah ke Sedang)
+    const pool = [
+        { q: "TANGAN : SARUNG TANGAN = ..... : .....", a: "Kaki : Kaos Kaki", o: ["Kepala : Topi", "Mata : Kacamata", "Baju : Celana"], r: "Sarung tangan adalah pelindung/penutup yang khusus membalut tangan secara langsung, seperti kaos kaki membalut kaki." },
+        { q: "MATA : MELIHAT = ..... : .....", a: "Telinga : Mendengar", o: ["Hidung : Bernapas", "Mulut : Mengunyah", "Kaki : Berjalan"], r: "Hubungan organ tubuh dan fungsi utama sensoris indra utamanya." },
+        { q: "GULA : MANIS = ..... : .....", a: "Garam : Asin", o: ["Cabai : Merah", "Es : Dingin", "Air : Jernih"], r: "Hubungan benda/bahan makanan dan sifat rasa dasarnya." },
+        { q: "MOBIL : BENSIN = ..... : .....", a: "Lampu : Listrik", o: ["Sepeda : Roda", "Kompor : Api", "Manusia : Makanan"], r: "Hubungan perangkat dan sumber energi utama agar berfungsi." },
+        { q: "GURU : SEKOLAH = ..... : .....", a: "Dokter : Rumah Sakit", o: ["Petani : Padi", "Polisi : Pistol", "Sopir : Mobil"], r: "Hubungan profesi dan lokasi tempat kerja resminya." },
+        { q: "SENDOK : MAKAN = ..... : .....", a: "Pisau : Memotong", o: ["Cangkir : Minum", "Sapu : Menyapu", "Peniti : Baju"], r: "Hubungan alat genggam dan fungsi tindakan utamanya." },
+        { q: "KUCING : MENGEJAR = ..... : .....", a: "Burung : Terbang", o: ["Anjing : Menggonggong", "Ikan : Berenang", "Sapi : Lenguh"], r: "Hubungan hewan dan aksi metode gerak fisik utamanya." },
+        { q: "SIANG : MALAM = ..... : .....", a: "Panas : Dingin", o: ["Pagi : Sore", "Gelap : Terang", "Terbit : Tenggelam"], r: "Hubungan antonim (lawan kata) dari kondisi alamiah." },
+        { q: "AIR : HAUS = ..... : .....", a: "Makanan : Lapar", o: ["Obat : Sembuh", "Tidur : Mengantuk", "Pakaian : Dingin"], r: "Hubungan zat pemenuh untuk meredakan kondisi kebutuhan tubuh." },
+        { q: "BUKU : PERPUSTAKAAN = ..... : .....", a: "Bunga : Taman", o: ["Luas : Lapangan", "Pohon : Hutan", "Baju : Lemari"], r: "Hubungan objek dan tempat penataan yang sengaja dikelola publik." },
+        { q: "PENA : MENULIS = ..... : .....", a: "Gunting : Memotong", o: ["Kertas : Menggambar", "Pensil : Menghapus", "Penggaris : Mengukur"], r: "Hubungan alat tulis/kerja dengan fungsi utama pengoperasiannya." },
+        { q: "PAYUNG : HUJAN = ..... : .....", a: "Helm : Benturan", o: ["Jaket : Segar", "Kacamata : Gelap", "Topi : Rambut"], r: "Hubungan alat pelindung terhadap ancaman/bahaya lingkungan luar." },
+        { q: "SAPI : DAGING = ..... : .....", a: "Pohon : Buah", o: ["Ayam : Bulu", "Kambing : Rumput", "Ikan : Sisik"], r: "Hubungan sumber organisme dan produk hasil konsumsi utamanya." },
+        { q: "KAPAL : NAKHODA = ..... : .....", a: "Pesawat : Pilot", o: ["Mobil : Jalan", "Kereta : Stasiun", "Bus : Kondektur"], r: "Hubungan kendaraan dan pengemudi profesionalnya." },
+        { q: "CANGKUL : PETANI = ..... : .....", a: "Kuas : Pelukis", o: ["Pisau : Koki", "Gergaji : Kayu", "Jarum : Kain"], r: "Hubungan alat kerja utama dan profesi pelakunya." },
+        { q: "HAUS : MINUM = ..... : .....", a: "Lapar : Makan", o: ["Mengantuk : Tidur", "Sakit : Obat", "Lelah : Istirahat"], r: "Hubungan dorongan fisik alami dan tindakan pemenuhannya." },
+        { q: "SINGA : HUTAN = ..... : .....", a: "Ikan : Laut", o: ["Burung : Sangkar", "Sapi : Kandang", "Kuda : Rumput"], r: "Hubungan hewan liar dan habitat alami dominannya." },
+        { q: "MATAHARI : TERANG = ..... : .....", a: "Api : Panas", o: ["Awan : Hujan", "Lampu : Listrik", "Es : Cair"], r: "Hubungan sumber energi/benda langit dan dampak sensoris utamanya." },
+        { q: "SEPATU : KAKI = ..... : .....", a: "Cincin : Jari", o: ["Topi : Rambut", "Baju : Badu", "Gesper : Celana"], r: "Hubungan barang yang dikenakan dan bagian tubuh spesifik tempatnya." },
+        { q: "SENTER : BATERAI = ..... : .....", a: "HP : Charger", o: ["Mobil : Bensin", "Kipas : Angin", "Lampu : Sakelar"], r: "Hubungan perangkat portabel dan media daya penyimpan energinya." },
+        { q: "DETIK : MENIT = ..... : .....", a: "Hari : Bulan", o: ["Jam : Hari", "Minggu : Tahun", "Bulan : Tahun"], r: "Hubungan hirarki satuan waktu dari skala terkecil ke tingkat berikutnya." },
+        { q: "DINGIN : SELIMUT = ..... : .....", a: "Panas : Kipas", o: ["Basah : Lap", "Gelap : Lampu", "Lapar : Piring"], r: "Hubungan kondisi fisik lingkungan dan alat penetral kenyamanannya." },
+        { q: "GIGI : MENGUNYAH = ..... : .....", a: "Hidung : Mencium", o: ["Telinga : Mendengar", "Kulit : Meraba", "Lidah : Perasa"], r: "Hubungan organ tubuh dan aktivitas mekanis/mekanisme kerjanya." },
+        { q: "BUMI : GLOBE = ..... : .....", a: "Bangunan : Maket", o: ["Peta : Gambar", "Manusia : Foto", "Kota : Denah"], r: "Hubungan objek nyata 3 dimensi dan bentuk miniatur/tiruan 3D-nya." },
+        { q: "KAYU : MEJA = ..... : .....", a: "Kain : Baju", o: ["Besi : Pagar", "Tanah Liat : Pot", "Kertas : Buku"], r: "Hubungan bahan baku mentah dan produk akhir kerajinan/mabelnya." },
+        { q: "REPTIL : ULAR = ..... : .....", a: "Aves : Burung", o: ["Mamalia : Paus", "Serangga : Semut", "Amfibi : Katak"], r: "Hubungan klasifikasi taksonomi hewan dan contoh spesiesnya." },
+        { q: "KAMPUS : MAHASISWA = ..... : .....", a: "Sekolah : Murid", o: ["Rumah Sakit : Pasien", "Pasar : Pembeli", "Penjara : Narapidana"], r: "Hubungan tempat pendidikan tinggi/institusi dan subjek pembelajarnya." },
+        { q: "KOMPUTER : PROSESOR = ..... : .....", a: "Mobil : Mesin", o: ["Manusia : Jantung", "Kamera : Lensa", "Radio : Antena"], r: "Hubungan perangkat buatan dan unit inti pusat penggeraknya." },
+        { q: "MENDUNG : HUJAN = ..... : .....", a: "Lapar : Makan", o: ["Mengantuk : Tidur", "Belajar : Lulus", "Api : Kebakaran"], r: "Hubungan indikator sinyal awal dan peristiwa alamiah yang menyertainya." },
+        { q: "UANG : DOMPET = ..... : .....", a: "Pakaian : Lemari", o: ["Buku : Tas", "Surat : Amplop", "Sepatu : Rak"], r: "Hubungan benda berharga/komoditas dan tempat penyimpanan khususnya." },
+        { q: "AKAR : POHON = ..... : .....", a: "Pondasi : Rumah", o: ["Rambut : Kepala", "Paku : Dinding", "Sauh : Kapal"], r: "Hubungan bagian penopang terbawah dan bangunan/organisme di atasnya." },
+        { q: "TELESKOP : BINTANG = ..... : .....", a: "Mikroskop : Bakteri", o: ["Kacamata : Buku", "Kamera : Pemandangan", "Lensa : Cahaya"], r: "Hubungan alat bantu optik penglihat dan target pengamatan skala ekstremnya." },
+        { q: "KAMUS : KATA = ..... : .....", a: "Peta : Wilayah", o: ["Buku : Halaman", "Jadwal : Waktu", "Resep : Bahan"], r: "Hubungan buku referensi cetak dan unit entitas informasi yang dimuatnya." },
+        { q: "MERAH : BERHENTI = ..... : .....", a: "Hijau : Jalan", o: ["Kuning : Hati-hati", "Putih : Suci", "Hitam : Duka"], r: "Hubungan warna pada sinyal lalu lintas dan makna instruksi aksi perintahnya." },
+        { q: "GANDUM : ROTI = ..... : .....", a: "Beras : Nasi", o: ["Kedelai : Tempe", "Kayu : Kursi", "Daging : Bakso"], r: "Hubungan bahan pangan mentah dasar dan olahan pokok makanan jasminya." },
+        { q: "SUTRA : ULAT = ..... : .....", a: "Wol : Domba", o: ["Madu : Lebah", "Susu : Sapi", "Minyak : Kelapa"], r: "Hubungan serat alami pembuat kain dan hewan produsen utamanya." },
+        { q: "INDONESIA : JAKARTA = ..... : .....", a: "Jepang : Tokyo", o: ["Inggris : London", "Malaysia : Kuala Lumpur", "Prancis : Paris"], r: "Hubungan negara kedaulatan dan ibu kota pemerintahannya." },
+        { q: "MASINIS : KERETA = ..... : .....", a: "Sopir : Bus", o: ["Pilot : Pesawat", "Nakhoda : Kapal", "Pembalap : Motor"], r: "Hubungan profesi operator pengemudi dan moda transportasi darat berel." },
+        { q: "PELUKIS : KANVAS = ..... : .....", a: "Penulis : Kertas", o: ["Koki : Wajan", "Petani : Sawah", "Penjahit : Kain"], r: "Hubungan profesi kreator seni dan media tempat ia menuangkan karyanya." },
+        { q: "SERANGGA : SEMUT = ..... : .....", a: "Ikan : Gurame", o: ["Burung : Merpati", "Reptil : Cicak", "Mamalia : Kucing"], r: "Hubungan kelas filum hewan invertebrata dan anggota spesies spesifiknya." },
+        { q: "HUJAN : BASAH = ..... : .....", a: "Api : Hangus", o: ["Panas : Keringat", "Es : Dingin", "Lapar : Kenyang"], r: "Hubungan kejadian peristiwa alam dan efek/dampak fisik langsungnya." },
+        { q: "KERTAS : BUKU = ..... : .....", a: "Benang : Kain", o: ["Batu : Dinding", "Bata : Rumah", "Kayu : Mebel"], r: "Hubungan lembaran material pendukung dan kompilasi hasil jilidannya." },
+        { q: "KULIT : RABA = ..... : .....", a: "Lidah : Kecap", o: ["Hidung : Cium", "Mata : Pandang", "Telinga : Dengar"], r: "Hubungan indra luar dan mekanisme aksi pengenalan rangsangannya." },
+        { q: "SISWA : PERPUSTAKAAN = ..... : .....", a: "Nasabah : Bank", o: ["Pasien : Rumah Sakit", "Pembeli : Pasar", "Karyawan : Kantor"], r: "Hubungan pengunjung subjek dan tempat fasilitas penyedia layanan publik." },
+        { q: "SENTER : CAHAYA = ..... : .....", a: "Kipas : Angin", o: ["Radio : Suara", "Lampu : Terang", "Kompor : Panas"], r: "Hubungan perangkat elektronik dan radiasi/output energi fisik hasilnya." },
+        { q: "SAPI : HERBIVORA = ..... : .....", a: "Singa : Karnivora", o: ["Ayam : Omnivora", "Ular : Reptil", "Manusia : Omnivora"], r: "Hubungan spesies hewan dan golongan klasifikasi jenis makanannya." },
+        { q: "PAHAT : PATUNG = ..... : .....", a: "Jarum : Baju", o: ["Kuas : Lukisan", "Pena : Tulisan", "Gergaji : Meja"], r: "Hubungan alat ukir/kerja dan karya fisik 3 dimensi yang dihasilkannya." },
+        { q: "POHON : BUAH = ..... : .....", a: "Padi : Beras", o: ["Bunga : Wangi", "Akar : Tanah", "Ayam : Telur"], r: "Hubungan tanaman induk pembuat dan hasil produksi konsumsi utamanya." },
+        { q: "TELINGA : ANTING = ..... : .....", a: "Jari : Cincin", o: ["Leher : Kalung", "Tangan : Jam", "Kaki : Gelang"], r: "Hubungan anggota tubuh spesifik dan perhiasan yang melingkar di atasnya." },
+        { q: "MATAHARI : SIANG = ..... : .....", a: "Bulan : Malam", o: ["Bintang : Langit", "Lampu : Gelap", "Awan : Mendung"], r: "Hubungan benda langit pemancar cahaya dan periode waktu keberadaannya." }
+    ];
+
+    function checkExpiration() {
+        const today = new Date().toISOString().split('T')[0];
+        if (today > EXPIRATION_DATE) {
+            alert("Akses soal ini telah kedaluwarsa. Silakan hubungi Persona Research & Consulting.");
+            document.body.innerHTML = "<h2 style='text-align:center; margin-top:50px;'>Akses Soal Telah Berakhir</h2>";
+            return false;
+        }
+        return true;
+    }
+
+    function startTest() {
+        if (!checkExpiration()) return;
+
+        const nameVal = document.getElementById('userName').value.trim();
+        if(nameVal.length >= 2) {
+            // Auto-shuffle opsi jawaban untuk tiap soal
+            questions = pool.map(q => {
+                const allOpts = [q.a, ...q.o];
+                const shuffled = allOpts.sort(() => Math.random() - 0.5);
+                return {
+                    q: q.q,
+                    a: q.a,
+                    r: q.r,
+                    shuffled: shuffled
+                };
+            });
+            
+            document.getElementById('view-auth').style.display = 'none';
+            document.getElementById('view-test').style.display = 'block';
+            render(); 
+            startTimer(2400); // 40 menit = 2400 detik
+        } else { 
+            alert("Silakan masukkan nama lengkap Anda terlebih dahulu."); 
+        }
+    }
+
+    function render() {
+        const q = questions[currentIdx];
+        document.getElementById('q-label').innerText = `ITEM PASANGAN KATA ${currentIdx + 1} / 50`;
+        document.getElementById('q-body').innerText = q.q;
+        let h = "";
+        q.shuffled.forEach((opt, i) => {
+            const isActive = userSelections[currentIdx] === opt ? 'active' : '';
+            const safeOpt = opt.replace(/'/g, "\\'");
+            h += `<div class="option ${isActive}" onclick="pick('${safeOpt}')">
+                    <div class="opt-label">${labels[i]}</div>
+                    <div>${opt}</div>
+                  </div>`;
+        });
+        document.getElementById('q-options').innerHTML = h;
+        updateGrid();
+    }
+
+    function pick(val) {
+        userSelections[currentIdx] = val;
+        render();
+        
+        // Auto Next dengan delay halus 300ms
+        setTimeout(() => {
+            if(currentIdx < 49) {
+                currentIdx++;
+                render();
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }
+        }, 300);
+    }
+
+    function updateGrid() {
+        let h = "";
+        questions.forEach((_, i) => { 
+            const isCurr = currentIdx === i ? 'current' : '';
+            const isFilled = userSelections[i] ? 'filled' : '';
+            h += `<div class="dot ${isCurr} ${isFilled}" onclick="goToQuestion(${i})">${i+1}</div>`; 
+        });
+        document.getElementById('nav-dots').innerHTML = h;
+    }
+
+    function goToQuestion(idx) {
+        currentIdx = idx;
+        render();
+    }
+
+    let timerInterval = null;
+    function startTimer(sec) {
+        const t = document.getElementById('timer');
+        timerInterval = setInterval(() => {
+            sec--; 
+            let m = Math.floor(sec/60);
+            let s = sec % 60;
+            t.innerText = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+            
+            if(sec <= 300) { // 5 menit terakhir indikator merah
+                t.style.color = '#dc2626';
+            }
+            
+            if(sec <= 0) { 
+                clearInterval(timerInterval); 
+                alert("Waktu 40 menit telah habis! Jawaban Anda akan otomatis dikirim.");
+                finalize(); 
+            }
+        }, 1000);
+    }
+
+    function finalize() {
+        if(timerInterval) clearInterval(timerInterval);
+        
+        document.getElementById('view-test').style.display = 'none';
+        document.getElementById('page-res').style.display = 'block';
+        
+        let correct = 0;
+        let dHtml = "";
+        
+        questions.forEach((q, i) => {
+            const userAns = userSelections[i];
+            const isOk = userAns === q.a;
+            if(isOk) correct++;
+            
+            const cardClass = isOk ? 'correct' : 'wrong';
+            const statusBadge = isOk ? 
+                '<span style="color:var(--green); font-weight:bold;">[BENAR]</span>' : 
+                '<span style="color:var(--red); font-weight:bold;">[SALAH]</span>';
+            
+            dHtml += `<div class="pembahasan-card ${cardClass}">
+                <div style="font-weight:800; font-size:15px; margin-bottom:6px; color:var(--midnight);">
+                    SOAL ${i+1}: ${q.q} ${statusBadge}
+                </div>
+                <div style="margin-bottom:4px;">
+                    <strong>Jawaban Anda:</strong> ${userAns ? userAns : '<span style="color:var(--red)">Tidak Diisi</span>'}
+                </div>
+                <div style="margin-bottom:8px;">
+                    <strong>Kunci Jawaban:</strong> <span style="color:var(--green); font-weight:bold;">${q.a}</span>
+                </div>
+                <div style="color:#475569; font-size:13px; border-top:1px dashed #cbd5e1; padding-top:8px; margin-top:6px;">
+                    <strong>Analisis Logic:</strong> ${q.r}
+                </div>
+            </div>`;
+        });
+
+        const finalScore = Math.round((correct / 50) * 100);
+        document.getElementById('final-score').innerText = finalScore;
+        document.getElementById('score-raw').innerText = `HASIL AKHIR: ${correct} BENAR DARI 50 SOAL (${finalScore}%)`;
+        document.getElementById('res-name').innerText = "PESERTA: " + document.getElementById('userName').value;
+        document.getElementById('discussion-list').innerHTML = dHtml;
+        window.scrollTo(0,0);
+    }
+</script>
+</body>
+</html>
