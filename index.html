@@ -30,7 +30,7 @@
     }
 
     .container {
-      max-width: 800px;
+      max-width: 850px;
       margin: 40px auto;
       background: var(--card-bg);
       padding: 35px;
@@ -120,7 +120,7 @@
       background: #ffffff;
       border: 1px solid var(--border-color);
       border-radius: 8px;
-      padding: 20px;
+      padding: 18px 20px;
       text-decoration: none;
       color: var(--text-color);
       display: flex;
@@ -136,9 +136,9 @@
     }
 
     .menu-info h3 {
-      margin: 0 0 5px 0;
+      margin: 0 0 4px 0;
       color: var(--secondary-color);
-      font-size: 18px;
+      font-size: 17px;
     }
 
     .menu-info p {
@@ -152,8 +152,9 @@
       color: #0369a1;
       padding: 6px 12px;
       border-radius: 20px;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: bold;
+      white-space: nowrap;
     }
 
     .hidden {
@@ -186,13 +187,13 @@
     <div class="header">
       <h1>TES KECERDASAN VERBAL</h1>
       <p><strong>Persona Research & Consulting</strong> | WA: 0877 4251 5786</p>
-      <p>Portal Ujian Online & Modul Evaluasi Kecerdasan Verbal</p>
+      <p>Portal Ujian Online & 9 Modul Evaluasi Kecerdasan Verbal</p>
     </div>
 
     <!-- Verifikasi Akses Password -->
     <div id="authSection" class="auth-section">
       <h3>🔒 Masukkan Password Akses</h3>
-      <p style="font-size: 13px; color: #64748b; margin-bottom: 0;">Silakan masukkan password resmi untuk membuka menu modul kuis.</p>
+      <p style="font-size: 13px; color: #64748b; margin-bottom: 0;">Silakan masukkan password resmi untuk membuka seluruh menu modul kuis.</p>
       <div class="input-group">
         <input type="password" id="passInput" placeholder="Ketik Password..." onkeypress="checkEnter(event)" />
         <button class="btn-auth" onclick="validatePassword()">Buka Akses</button>
@@ -200,9 +201,9 @@
       <div id="errorMsg" class="error-msg hidden">Password salah! Silakan coba lagi.</div>
     </div>
 
-    <!-- Menu Portal Modul Kuis (Tersembunyi sebelum login) -->
+    <!-- Menu Portal 9 Modul Kuis (Tersembunyi sebelum login) -->
     <div id="menuSection" class="hidden">
-      <h3 style="color: var(--primary-color); border-bottom: 2px solid var(--border-color); padding-bottom: 8px;">Pilih Modul Ujian (5 Modul):</h3>
+      <h3 style="color: var(--primary-color); border-bottom: 2px solid var(--border-color); padding-bottom: 8px;">Pilih Modul Ujian (Total 9 Modul):</h3>
       <div class="menu-grid">
         
         <!-- Modul 1 -->
@@ -250,6 +251,42 @@
           <span class="badge">Evaluasi</span>
         </a>
 
+        <!-- Modul 6 (Tambahan Baru) -->
+        <a href="kecerdasan verbal campuran_3.html" class="menu-card">
+          <div class="menu-info">
+            <h3>6. Tes Kecerdasan Verbal Campuran (100 Soal)</h3>
+            <p>Ujian Komprehensif Sinonim, Antonim, Silogisme, dll</p>
+          </div>
+          <span class="badge" style="background-color:#dcfce7; color:#166534;">100 Soal</span>
+        </a>
+
+        <!-- Modul 7 (Tambahan Baru) -->
+        <a href="tes_analogi_50_soal_3.html" class="menu-card">
+          <div class="menu-info">
+            <h3>7. Tes Analogi Kata (50 Soal - Timer 40 Menit)</h3>
+            <p>Format Analogi 1 Kata Berstandar Waktu</p>
+          </div>
+          <span class="badge" style="background-color:#fef3c7; color:#92400e;">50 Soal / 40m</span>
+        </a>
+
+        <!-- Modul 8 (Tambahan Baru) -->
+        <a href="analogi hubungan_3.html" class="menu-card">
+          <div class="menu-info">
+            <h3>8. Analogi Pasangan Kata (50 Soal)</h3>
+            <p>Ujian Format Hubungan Pasangan Kata</p>
+          </div>
+          <span class="badge" style="background-color:#fef3c7; color:#92400e;">50 Soal / 40m</span>
+        </a>
+
+        <!-- Modul 9 (Tambahan Baru) -->
+        <a href="triple_analogy_assessment_3.html" class="menu-card">
+          <div class="menu-info">
+            <h3>9. Triple Analogy Assessment (50 Soal)</h3>
+            <p>Analogi Deret 3 / Triple Logic Assessment</p>
+          </div>
+          <span class="badge" style="background-color:#fae8ff; color:#86198f;">Triple Logic</span>
+        </a>
+
       </div>
     </div>
 
@@ -259,13 +296,13 @@
   </div>
 
   <script>
-    // 1. Check Masa Kadaluarsa (Expired Exactly 1 Year: 2027-08-05)
+    // 1. Check Masa Kadaluarsa (Expired Exactly: 2027-08-05)
     const expiryDate = new Date("2027-08-05T23:59:59");
     if (new Date() > expiryDate) {
       document.getElementById("mainContainer").innerHTML = `
         <div class="expired-screen">
           <h2>Portal Ujian Telah Kadaluarsa!</h2>
-          <p>Masa berlaku portal kuis ini telah berakhir. Silakan hubungi <strong>Persona Research & Consulting</strong> (WA: 0877 425 5786) untuk perpanjangan masa akses.</p>
+          <p>Masa berlaku portal kuis ini telah berakhir. Silakan hubungi <strong>Persona Research & Consulting</strong> (WA: 0877 4251 5786) untuk perpanjangan masa akses.</p>
         </div>
       `;
     }
