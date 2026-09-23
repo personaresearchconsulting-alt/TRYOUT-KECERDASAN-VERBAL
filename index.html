@@ -59,56 +59,6 @@
       margin: 3px 0;
     }
 
-    .auth-section {
-      background: #f1f5f9;
-      padding: 25px;
-      border-radius: 8px;
-      border-left: 4px solid var(--secondary-color);
-      margin-bottom: 30px;
-      text-align: center;
-    }
-
-    .auth-section h3 {
-      margin-top: 0;
-      color: var(--primary-color);
-    }
-
-    .input-group {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 15px;
-    }
-
-    input[type="password"] {
-      padding: 12px 16px;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      font-size: 16px;
-      width: 60%;
-      outline: none;
-    }
-
-    input[type="password"]:focus {
-      border-color: var(--secondary-color);
-      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
-    }
-
-    .btn-auth {
-      padding: 12px 24px;
-      background-color: var(--secondary-color);
-      color: white;
-      font-weight: bold;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-
-    .btn-auth:hover {
-      background-color: #1d4ed8;
-    }
-
     .menu-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -161,15 +111,9 @@
       display: none !important;
     }
 
-    .expired-screen, .error-msg {
+    .expired-screen {
       text-align: center;
       color: var(--danger-color);
-    }
-
-    .error-msg {
-      margin-top: 10px;
-      font-size: 14px;
-      font-weight: 600;
     }
 
     .footer {
@@ -190,19 +134,8 @@
       <p>Portal Ujian Online & 9 Modul Evaluasi Kecerdasan Verbal</p>
     </div>
 
-    <!-- Verifikasi Akses Password -->
-    <div id="authSection" class="auth-section">
-      <h3>🔒 Masukkan Password Akses</h3>
-      <p style="font-size: 13px; color: #64748b; margin-bottom: 0;">Silakan masukkan password resmi untuk membuka seluruh menu modul kuis.</p>
-      <div class="input-group">
-        <input type="password" id="passInput" placeholder="Ketik Password..." onkeypress="checkEnter(event)" />
-        <button class="btn-auth" onclick="validatePassword()">Buka Akses</button>
-      </div>
-      <div id="errorMsg" class="error-msg hidden">Password salah! Silakan coba lagi.</div>
-    </div>
-
-    <!-- Menu Portal 9 Modul Kuis (Tersembunyi sebelum login) -->
-    <div id="menuSection" class="hidden">
+    <!-- Menu Portal 9 Modul Kuis -->
+    <div id="menuSection">
       <h3 style="color: var(--primary-color); border-bottom: 2px solid var(--border-color); padding-bottom: 8px;">Pilih Modul Ujian (Total 9 Modul):</h3>
       <div class="menu-grid">
         
@@ -314,25 +247,6 @@
         e.preventDefault();
       }
     });
-
-    // 3. Password Validation System
-    function validatePassword() {
-      const input = document.getElementById("passInput").value;
-      const errorMsg = document.getElementById("errorMsg");
-      
-      if (input === "persona05") {
-        document.getElementById("authSection").classList.add("hidden");
-        document.getElementById("menuSection").classList.remove("hidden");
-      } else {
-        errorMsg.classList.remove("hidden");
-      }
-    }
-
-    function checkEnter(event) {
-      if (event.key === "Enter") {
-        validatePassword();
-      }
-    }
   </script>
 </body>
 </html>
